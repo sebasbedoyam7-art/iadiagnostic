@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Diagnostic Pro</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;
+  --border:#2a2a38;--border2:#3a3a50;
+  --accent:#6c63ff;--accent2:#a78bfa;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;
+  --text:#f0f0ff;--text2:#a0a0c0;--text3:#606080;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:radial-gradient(ellipse at 30% 20%,rgba(108,99,255,0.08),transparent 60%)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:420px}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:2rem}
+.login-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.login-brand{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700}
+.login-brand span{display:block;font-size:12px;font-weight:400;color:var(--text3)}
+.login-tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.login-tab{flex:1;padding:9px;font-size:13px;border:none;background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.login-tab.active{background:var(--accent);color:white}
+.lf{margin-bottom:14px}
+.lf label{display:block;font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+.lf input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
+.lf input:focus{border-color:var(--accent)}
+.login-err{font-size:12px;color:var(--red);margin-bottom:12px;display:none;padding:8px 12px;background:rgba(239,68,68,0.08);border-radius:6px}
+.btn-login{width:100%;padding:12px;font-size:14px;font-weight:600;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:white;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.15s;margin-top:4px}
+.btn-login:hover{opacity:0.9;transform:translateY(-1px)}
+.login-note{font-size:11px;color:var(--text3);text-align:center;margin-top:1rem}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0d0d1a,#1a0a2e 50%,#0a1a1a);padding:1.25rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600}
+.logo-sub{font-size:11px;color:var(--text3)}
+.header-right{display:flex;align-items:center;gap:10px}
+.prog-steps{display:flex;gap:5px}
+.pd{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all 0.3s}
+.pd.active{background:var(--accent);box-shadow:0 0 8px rgba(108,99,255,0.5)}
+.pd.done{background:var(--green)}
+.btn-out{font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer}
+.btn-out:hover{color:var(--text2)}
+
+/* MAIN */
+.main{padding:1.5rem 2rem;max-width:820px;margin:0 auto}
+.step{display:none}.step.active{display:block}
+
+/* STEP LABEL */
+.slabel{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.snum{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Space Grotesk',sans-serif;flex-shrink:0}
+.sinfo strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600}
+.sinfo span{font-size:12px;color:var(--text3)}
+
+/* FIELDS */
+.fg{display:grid;gap:12px;margin-bottom:12px}
+.fg2{grid-template-columns:1fr 1fr}
+.fg3{grid-template-columns:1fr 1fr 1fr}
+.fg1{grid-template-columns:1fr}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:75px;line-height:1.5}
+.field select option{background:var(--surface2)}
+
+/* PROCESO */
+.pc{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.pc-head{margin-bottom:10px}
+.pc-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px}
+
+/* SLIDER */
+.sf{margin-bottom:14px}
+.sf-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.sf-row label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
+.sf-val{font-size:13px;font-weight:600;color:var(--accent);font-family:'Space Grotesk',sans-serif}
+input[type=range]{width:100%;height:4px;background:var(--border2);border-radius:2px;outline:none;-webkit-appearance:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
+
+/* CHECKS */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ci{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:13px;color:var(--text2);user-select:none}
+.ci:hover{border-color:var(--border2)}
+.ci.on{border-color:var(--accent);background:rgba(108,99,255,0.08);color:var(--text)}
+.cdot{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;transition:all 0.15s}
+.ci.on .cdot{background:var(--accent);border-color:var(--accent);color:white}
+
+.divlbl{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin:14px 0 8px}
+
+/* NAV */
+.nav{display:flex;gap:10px;margin-top:1.5rem}
+.btn-back{padding:10px 18px;font-size:13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.btn-back:hover{border-color:var(--text3);color:var(--text)}
+.btn-next{flex:1;padding:11px;font-size:13px;font-weight:500;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:white;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.btn-next:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-gen{flex:1;padding:12px;font-size:14px;font-weight:600;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#059669);color:white;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.15s}
+.btn-gen:hover{opacity:0.9;transform:translateY(-1px)}
+
+/* GRACIAS */
+.gracias-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+.gracias-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;max-width:480px}
+.gracias-icon{font-size:48px;margin-bottom:1rem}
+.gracias-card h2{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin-bottom:0.75rem}
+.gracias-card p{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* RESULT */
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.sc-v{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700}
+.sc-l{font-size:11px;color:var(--text3);margin-top:4px}
+.result-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;min-height:180px}
+.loading{display:flex;align-items:center;gap:10px;padding:1.5rem 0}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:bounce 1.2s infinite}
+.dot:nth-child(2){animation-delay:0.2s}.dot:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-6px);opacity:1}}
+.result-text{font-size:13px;color:var(--text2);line-height:1.8;white-space:pre-wrap;display:none}
+.result-actions{margin-top:1rem;display:none;gap:10px;flex-wrap:wrap}
+.btn-pdf{padding:10px 20px;font-size:13px;font-weight:500;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:white;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-pdf:hover{opacity:0.9}
+.btn-sec{padding:10px 18px;font-size:13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+.send-status{font-size:12px;color:var(--green);margin-top:8px;display:none}
+
+/* PDF TEMPLATE */
+#pdf-template{display:none;font-family:'Inter',sans-serif;color:#1a1a2e;background:white;padding:40px;max-width:800px}
+#pdf-template h1{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;border-bottom:3px solid #6c63ff;padding-bottom:12px;margin-bottom:8px}
+#pdf-template .pdf-meta{font-size:13px;color:#666;margin-bottom:24px}
+#pdf-template .pdf-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+#pdf-template .pdf-sc{border:2px solid #e8e8f0;border-radius:8px;padding:12px;text-align:center}
+#pdf-template .pdf-sc-v{font-size:22px;font-weight:700;color:#6c63ff;font-family:'Space Grotesk',sans-serif}
+#pdf-template .pdf-sc-l{font-size:11px;color:#999;margin-top:3px}
+#pdf-template .pdf-content{font-size:13px;line-height:1.8;color:#333;white-space:pre-wrap}
+#pdf-template .pdf-footer{margin-top:32px;padding-top:16px;border-top:1px solid #e8e8f0;font-size:11px;color:#999;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="screen active" id="screen-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-icon">⚡</div>
+        <div><div class="login-brand">AI Diagnostic Pro<span>Consultoría IA Empresarial</span></div></div>
+      </div>
+      <div class="login-tabs">
+        <button class="login-tab active" onclick="setMode('cliente',this)">Soy cliente</button>
+        <button class="login-tab" onclick="setMode('consultor',this)">Consultor</button>
+      </div>
+      <div id="tab-cliente">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem">Completa el formulario de diagnóstico para recibir tu análisis IA personalizado.</p>
+        <button class="btn-login" onclick="enterAsCliente()">Comenzar diagnóstico →</button>
+        <div class="login-note">Sin registro necesario · Proceso de 5 minutos</div>
+      </div>
+      <div id="tab-consultor" style="display:none">
+        <div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
+        <div class="lf"><label>Usuario</label><input type="text" id="lu" placeholder="usuario" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div class="lf"><label>Contraseña</label><input type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="btn-login" onclick="doLogin()">Entrar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENTE: FORMULARIO -->
+<div class="screen" id="screen-cliente">
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Diagnóstico empresarial</div></div>
+    </div>
+    <div class="header-right">
+      <div class="prog-steps" id="cprog">
+        <div class="pd active" id="cpd1"></div>
+        <div class="pd" id="cpd2"></div>
+        <div class="pd" id="cpd3"></div>
+        <div class="pd" id="cpd4"></div>
+        <div class="pd" id="cpd5"></div>
+        <div class="pd" id="cpd6"></div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+
+    <!-- S1 -->
+    <div class="step active" id="cs1">
+      <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Tu empresa</strong><span>Cuéntanos quiénes son</span></div></div>
+      <div class="fg fg2">
+        <div class="field"><label>Nombre de la empresa</label><input type="text" id="c_empresa" placeholder="Ej. Distribuidora Los Andes"></div>
+        <div class="field"><label>Tu nombre</label><input type="text" id="c_nombre" placeholder="Ej. Carlos Mamani"></div>
+      </div>
+      <div class="fg fg2">
+        <div class="field"><label>Tu email (para recibir el diagnóstico)</label><input type="email" id="c_email" placeholder="tu@empresa.com"></div>
+        <div class="field"><label>Industria / Sector</label>
+          <select id="c_industria">
+            <option value="">Seleccionar...</option>
+            <option>Comercio / Retail</option><option>Servicios profesionales</option>
+            <option>Salud / Clínicas</option><option>Educación</option>
+            <option>Inmobiliaria</option><option>Logística / Transporte</option>
+            <option>Manufactura</option><option>Finanzas / Contabilidad</option>
+            <option>Restaurantes / Gastronomía</option><option>Construcción</option>
+            <option>Tecnología</option><option>Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg fg3">
+        <div class="field"><label>N° empleados</label>
+          <select id="c_emp"><option value="">Seleccionar...</option><option>1–5</option><option>6–20</option><option>21–50</option><option>51–200</option><option>200+</option></select>
+        </div>
+        <div class="field"><label>Años en el mercado</label>
+          <select id="c_anios"><option value="">Seleccionar...</option><option>Menos de 1 año</option><option>1–3 años</option><option>4–10 años</option><option>Más de 10 años</option></select>
+        </div>
+        <div class="field"><label>País</label>
+          <select id="c_pais"><option value="">Seleccionar...</option><option>Bolivia</option><option>Colombia</option><option>México</option><option>Perú</option><option>Argentina</option><option>Chile</option><option>Venezuela</option><option>Ecuador</option><option>Otro LATAM</option><option>EE.UU. (hispano)</option><option>España</option></select>
+        </div>
+      </div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Qué hace tu empresa? (describe brevemente)</label>
+          <textarea id="c_modelo" placeholder="Ej. Vendemos materiales de construcción al por mayor y detalle, con distribución a 3 ciudades..."></textarea>
+        </div>
+      </div>
+      <div class="nav"><button class="btn-next" onclick="cgo(2)">Siguiente →</button></div>
+    </div>
+
+    <!-- S2 -->
+    <div class="step" id="cs2">
+      <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Tus procesos</strong><span>Cómo funciona el día a día</span></div></div>
+      <div class="pc">
+        <div class="pc-head"><span class="pc-badge" style="background:rgba(239,68,68,0.15);color:#ef4444">Ventas</span></div>
+        <div class="fg fg2">
+          <div class="field"><label>¿Cómo consiguen clientes?</label><input type="text" id="c_vcanal" placeholder="Ej. WhatsApp, referidos, redes"></div>
+          <div class="field"><label>¿Cuánto tarda cerrar una venta?</label><input type="text" id="c_vtiempo" placeholder="Ej. 3–7 días"></div>
+        </div>
+        <div class="field"><label>¿Qué parte del proceso de ventas es más lenta o manual?</label>
+          <textarea id="c_vdolor" style="min-height:60px" placeholder="Ej. Cotizar manualmente toma 30 min, seguimiento a leads por WhatsApp..."></textarea>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-head"><span class="pc-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Atención al cliente</span></div>
+        <div class="fg fg2">
+          <div class="field"><label>Canales de atención</label><input type="text" id="c_acanal" placeholder="Ej. WhatsApp, teléfono, presencial"></div>
+          <div class="field"><label>Consultas por día aprox.</label>
+            <select id="c_avol"><option value="">Seleccionar...</option><option>Menos de 10</option><option>10–30</option><option>30–100</option><option>Más de 100</option></select>
+          </div>
+        </div>
+        <div class="field"><label>¿Qué preguntas o tareas se repiten más?</label>
+          <textarea id="c_adolor" style="min-height:60px" placeholder="Ej. Horarios, precios, estado de pedidos..."></textarea>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-head"><span class="pc-badge" style="background:rgba(108,99,255,0.15);color:#a78bfa">Operaciones</span></div>
+        <div class="field" style="margin-bottom:8px"><label>¿Qué tareas manuales y repetitivas hace tu equipo?</label>
+          <textarea id="c_otareas" placeholder="Ej. Actualizar inventario en Excel, generar reportes, facturas manuales..."></textarea>
+        </div>
+        <div class="field"><label>Horas semanales perdidas en tareas manuales</label>
+          <select id="c_ohoras"><option value="">Seleccionar...</option><option>Menos de 5 hrs</option><option>5–15 hrs</option><option>15–40 hrs</option><option>Más de 40 hrs</option></select>
+        </div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="cgo(1)">← Atrás</button><button class="btn-next" onclick="cgo(3)">Siguiente →</button></div>
+    </div>
+
+    <!-- S3 -->
+    <div class="step" id="cs3">
+      <div class="slabel"><div class="snum">3</div><div class="sinfo"><strong>Tecnología actual</strong><span>Qué herramientas usan hoy</span></div></div>
+      <div class="divlbl">Herramientas que usan (selecciona todas las que apliquen)</div>
+      <div class="cg">
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>CRM (HubSpot, Salesforce…)</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>ERP (SAP, Odoo…)</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Hojas de cálculo (Excel/Sheets)</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>WhatsApp Business</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Email marketing</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Redes sociales activas</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>E-commerce / tienda online</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Software de facturación</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Ninguna / todo manual</div>
+      </div>
+      <div class="sf">
+        <div class="sf-row"><label>Nivel tecnológico del equipo</label><span class="sf-val" id="sv1">Intermedio</span></div>
+        <input type="range" min="1" max="5" value="3" id="sr1" oninput="updateSl('sr1','sv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto'])">
+      </div>
+      <div class="sf">
+        <div class="sf-row"><label>Resistencia al cambio del equipo</label><span class="sf-val" id="sv2">Media</span></div>
+        <input type="range" min="1" max="5" value="3" id="sr2" oninput="updateSl('sr2','sv2',['Muy alta','Alta','Media','Baja','Muy baja'])">
+      </div>
+      <div class="nav"><button class="btn-back" onclick="cgo(2)">← Atrás</button><button class="btn-next" onclick="cgo(4)">Siguiente →</button></div>
+    </div>
+
+    <!-- S4 -->
+    <div class="step" id="cs4">
+      <div class="slabel"><div class="snum">4</div><div class="sinfo"><strong>Dolores del negocio</strong><span>Los problemas más urgentes</span></div></div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Cuál es el mayor problema operativo hoy?</label>
+          <textarea id="c_d1" placeholder="Ej. Perdemos leads porque no respondemos rápido..."></textarea>
+        </div>
+      </div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Dónde se pierden más clientes en el proceso de venta?</label>
+          <textarea id="c_d2" placeholder="Ej. Las cotizaciones tardan mucho y el cliente se va con la competencia..."></textarea>
+        </div>
+      </div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Qué tarea odia más hacer el equipo todos los días?</label>
+          <textarea id="c_d3" style="min-height:60px" placeholder="Ej. Hacer reportes manuales, responder las mismas preguntas..."></textarea>
+        </div>
+      </div>
+      <div class="sf">
+        <div class="sf-row"><label>Urgencia de resolver estos problemas</label><span class="sf-val" id="sv3">Media</span></div>
+        <input type="range" min="1" max="5" value="3" id="sr3" oninput="updateSl('sr3','sv3',['Muy baja','Baja','Media','Alta','Muy alta'])">
+      </div>
+      <div class="nav"><button class="btn-back" onclick="cgo(3)">← Atrás</button><button class="btn-next" onclick="cgo(5)">Siguiente →</button></div>
+    </div>
+
+    <!-- S5 -->
+    <div class="step" id="cs5">
+      <div class="slabel"><div class="snum">5</div><div class="sinfo"><strong>Capacidad de inversión</strong><span>Presupuesto y decisores</span></div></div>
+      <div class="fg fg2">
+        <div class="field"><label>¿Quién toma las decisiones tecnológicas?</label>
+          <select id="c_dec"><option value="">Seleccionar...</option><option>El dueño / CEO directamente</option><option>Gerente de operaciones</option><option>Gerente de TI / sistemas</option><option>Decisión en comité</option><option>No está claro</option></select>
+        </div>
+        <div class="field"><label>Presupuesto mensual disponible para IA</label>
+          <select id="c_pres"><option value="">Seleccionar...</option><option>No definido aún</option><option>Menos de $100/mes</option><option>$100–300/mes</option><option>$300–800/mes</option><option>$800–2000/mes</option><option>Más de $2000/mes</option></select>
+        </div>
+      </div>
+      <div class="sf">
+        <div class="sf-row"><label>Disposición a invertir en IA ahora</label><span class="sf-val" id="sv4">Media</span></div>
+        <input type="range" min="1" max="5" value="3" id="sr4" oninput="updateSl('sr4','sv4',['Muy baja','Baja','Media','Alta','Muy alta'])">
+      </div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Han intentado alguna solución tecnológica antes?</label>
+          <textarea id="c_int" style="min-height:60px" placeholder="Ej. Intentamos un CRM pero el equipo no lo adoptó..."></textarea>
+        </div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="cgo(4)">← Atrás</button><button class="btn-next" onclick="cgo(6)">Siguiente →</button></div>
+    </div>
+
+    <!-- S6 -->
+    <div class="step" id="cs6">
+      <div class="slabel"><div class="snum">6</div><div class="sinfo"><strong>Objetivos estratégicos</strong><span>Hacia dónde van</span></div></div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Qué quieren lograr en los próximos 12 meses?</label>
+          <textarea id="c_obj" placeholder="Ej. Doblar las ventas, abrir nueva sucursal, reducir costos un 30%..."></textarea>
+        </div>
+      </div>
+      <div class="divlbl">¿Qué es más importante para la empresa ahora mismo?</div>
+      <div class="cg">
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Crecer en ventas</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Reducir costos</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Mejorar atención al cliente</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Escalar sin contratar más</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Automatizar tareas repetitivas</div>
+        <div class="ci" onclick="toggleCI(this)"><div class="cdot">✓</div>Tener más datos y reportes</div>
+      </div>
+      <div class="fg fg1">
+        <div class="field"><label>¿Algo más que debamos saber?</label>
+          <textarea id="c_add" style="min-height:60px" placeholder="Contexto adicional, competencia relevante..."></textarea>
+        </div>
+      </div>
+      <div class="nav">
+        <button class="btn-back" onclick="cgo(5)">← Atrás</button>
+        <button class="btn-gen" onclick="submitForm()">Enviar diagnóstico →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GRACIAS -->
+<div class="screen" id="screen-gracias">
+  <div class="header">
+    <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div></div></div>
+  </div>
+  <div class="gracias-wrap">
+    <div class="gracias-card">
+      <div class="gracias-icon">✅</div>
+      <h2>¡Formulario enviado!</h2>
+      <p>Recibimos la información de tu empresa. Nuestro equipo analizará tus procesos y oportunidades de IA.<br><br>Recibirás tu diagnóstico personalizado en las próximas <strong>24–48 horas</strong>.<br><br>Si tienes alguna consulta puedes contactarnos directamente.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONSULTOR -->
+<div class="screen" id="screen-consultor">
+  <div class="header">
+    <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Panel consultor</div></div></div>
+    <div class="header-right">
+      <div class="prog-steps" id="kprog">
+        <div class="pd active" id="kpd1"></div>
+        <div class="pd" id="kpd2"></div>
+        <div class="pd" id="kpd3"></div>
+        <div class="pd" id="kpd4"></div>
+        <div class="pd" id="kpd5"></div>
+        <div class="pd" id="kpd6"></div>
+      </div>
+      <button class="btn-out" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+  <div class="main">
+
+    <!-- K-S1 -->
+    <div class="step active" id="ks1">
+      <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Datos de la empresa</strong><span>Completa o ajusta la información del cliente</span></div></div>
+      <div class="fg fg2">
+        <div class="field"><label>Nombre de la empresa</label><input type="text" id="k_empresa" placeholder="Ej. Distribuidora Los Andes"></div>
+        <div class="field"><label>Industria</label>
+          <select id="k_industria">
+            <option value="">Seleccionar...</option>
+            <option>Comercio / Retail</option><option>Servicios profesionales</option>
+            <option>Salud / Clínicas</option><option>Educación</option>
+            <option>Inmobiliaria</option><option>Logística / Transporte</option>
+            <option>Manufactura</option><option>Finanzas / Contabilidad</option>
+            <option>Restaurantes / Gastronomía</option><option>Construcción</option>
+            <option>Tecnología</option><option>Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg fg3">
+        <div class="field"><label>N° empleados</label>
+          <select id="k_emp"><option value="">Seleccionar...</option><option>1–5</option><option>6–20</option><option>21–50</option><option>51–200</option><option>200+</option></select>
+        </div>
+        <div class="field"><label>Años en el mercado</label>
+          <select id="k_anios"><option value="">Seleccionar...</option><option>Menos de 1 año</option><option>1–3 años</option><option>4–10 años</option><option>Más de 10 años</option></select>
+        </div>
+        <div class="field"><label>País</label>
+          <select id="k_pais"><option value="">Seleccionar...</option><option>Bolivia</option><option>Colombia</option><option>México</option><option>Perú</option><option>Argentina</option><option>Chile</option><option>Venezuela</option><option>Ecuador</option><option>Otro LATAM</option><option>EE.UU. (hispano)</option><option>España</option></select>
+        </div>
+      </div>
+      <div class="fg fg1"><div class="field"><label>Modelo de negocio</label><textarea id="k_modelo"></textarea></div></div>
+      <div class="nav"><button class="btn-next" onclick="kgo(2)">Siguiente →</button></div>
+    </div>
+
+    <!-- K-S2 -->
+    <div class="step" id="ks2">
+      <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Procesos</strong><span>Info de ventas, atención y operaciones</span></div></div>
+      <div class="pc">
+        <div class="pc-head"><span class="pc-badge" style="background:rgba(239,68,68,0.15);color:#ef4444">Ventas</span></div>
+        <div class="fg fg2">
+          <div class="field"><label>Canal de captación</label><input type="text" id="k_vcanal"></div>
+          <div class="field"><label>Tiempo de cierre</label><input type="text" id="k_vtiempo"></div>
+        </div>
+        <div class="field"><label>Dolor en ventas</label><textarea id="k_vdolor" style="min-height:60px"></textarea></div>
+      </div>
+      <div class="pc">
+        <div class="pc-head"><span class="pc-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Atención</span></div>
+        <div class="fg fg2">
+          <div class="field"><label>Canales</label><input type="text" id="k_acanal"></div>
+          <div class="field"><label>Volumen/día</label>
+            <select id="k_avol"><option value="">Seleccionar...</option><option>Menos de 10</option><option>10–30</option><option>30–100</option><option>Más de 100</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Tareas repetitivas</label><textarea id="k_adolor" style="min-height:60px"></textarea></div>
+      </div>
+      <div class="pc">
+        <div class="pc-head"><span class="pc-badge" style="background:rgba(108,99,255,0.15);color:#a78bfa">Operaciones</span></div>
+        <div class="field" style="margin-bottom:8px"><label>Tareas manuales internas</label><textarea id="k_otareas"></textarea></div>
+        <div class="field"><label>Horas perdidas/semana</label>
+          <select id="k_ohoras"><option value="">Seleccionar...</option><option>Menos de 5 hrs</option><option>5–15 hrs</option><option>15–40 hrs</option><option>Más de 40 hrs</option></select>
+        </div>
+      </div>
+      <div class="nav"><button class="btn-back" onclick="kgo(1)">← Atrás</button><button class="btn-next" onclick="kgo(3)">Siguiente →</button></div>
+    </div>
+
+    <!-- K-S3 -->
+    <div class="step" id="ks3">
+      <div class="slabel"><div class="snum">3</div><div class="sinfo"><strong>Tecnología y resistencia</strong></div></div>
+      <div class="fg fg1"><div class="field"><label>Herramientas que usan</label><textarea id="k_tools" placeholder="Ej. WhatsApp Business, Excel, sin CRM..."></textarea></div></div>
+      <div class="sf">
+        <div class="sf-row"><label>Nivel tecnológico del equipo</label><span class="sf-val" id="ksv1">Intermedio</span></div>
+        <input type="range" min="1" max="5" value="3" id="ksr1" oninput="updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto'])">
+      </div>
+      <div class="sf">
+        <div class="sf-row"><label>Resistencia al cambio</label><span class="sf-val" id="ksv2">Media</span></div>
+        <input type="range" min="1" max="5" value="3" id="ksr2" oninput="updateSl('ksr2','ksv2',['Muy alta','Alta','Media','Baja','Muy baja'])">
+      </div>
+      <div class="nav"><button class="btn-back" onclick="kgo(2)">← Atrás</button><button class="btn-next" onclick="kgo(4)">Siguiente →</button></div>
+    </div>
+
+    <!-- K-S4 -->
+    <div class="step" id="ks4">
+      <div class="slabel"><div class="snum">4</div><div class="sinfo"><strong>Dolores y urgencia</strong></div></div>
+      <div class="fg fg1"><div class="field"><label>Problema operativo principal</label><textarea id="k_d1"></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Dónde se pierden clientes</label><textarea id="k_d2"></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Tarea que más odian</label><textarea id="k_d3" style="min-height:60px"></textarea></div></div>
+      <div class="sf">
+        <div class="sf-row"><label>Urgencia</label><span class="sf-val" id="ksv3">Media</span></div>
+        <input type="range" min="1" max="5" value="3" id="ksr3" oninput="updateSl('ksr3','ksv3',['Muy baja','Baja','Media','Alta','Muy alta'])">
+      </div>
+      <div class="nav"><button class="btn-back" onclick="kgo(3)">← Atrás</button><button class="btn-next" onclick="kgo(5)">Siguiente →</button></div>
+    </div>
+
+    <!-- K-S5 -->
+    <div class="step" id="ks5">
+      <div class="slabel"><div class="snum">5</div><div class="sinfo"><strong>Capacidad e inversión</strong></div></div>
+      <div class="fg fg2">
+        <div class="field"><label>Decisor</label>
+          <select id="k_dec"><option value="">Seleccionar...</option><option>El dueño / CEO directamente</option><option>Gerente de operaciones</option><option>Gerente de TI</option><option>Comité</option><option>No está claro</option></select>
+        </div>
+        <div class="field"><label>Presupuesto mensual</label>
+          <select id="k_pres"><option value="">Seleccionar...</option><option>No definido</option><option>Menos de $100/mes</option><option>$100–300/mes</option><option>$300–800/mes</option><option>$800–2000/mes</option><option>Más de $2000/mes</option></select>
+        </div>
+      </div>
+      <div class="sf">
+        <div class="sf-row"><label>Disposición a invertir</label><span class="sf-val" id="ksv4">Media</span></div>
+        <input type="range" min="1" max="5" value="3" id="ksr4" oninput="updateSl('ksr4','ksv4',['Muy baja','Baja','Media','Alta','Muy alta'])">
+      </div>
+      <div class="fg fg1"><div class="field"><label>Intentos previos</label><textarea id="k_int" style="min-height:60px"></textarea></div></div>
+      <div class="nav"><button class="btn-back" onclick="kgo(4)">← Atrás</button><button class="btn-next" onclick="kgo(6)">Siguiente →</button></div>
+    </div>
+
+    <!-- K-S6 -->
+    <div class="step" id="ks6">
+      <div class="slabel"><div class="snum">6</div><div class="sinfo"><strong>Objetivos estratégicos</strong></div></div>
+      <div class="fg fg1"><div class="field"><label>Meta 12 meses</label><textarea id="k_obj"></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Prioridades y notas adicionales</label><textarea id="k_add" style="min-height:80px" placeholder="Prioridades del cliente, notas de la reunión, contexto extra..."></textarea></div></div>
+      <div class="nav"><button class="btn-back" onclick="kgo(5)">← Atrás</button><button class="btn-gen" onclick="genReport()">⚡ Generar diagnóstico</button></div>
+    </div>
+
+    <!-- K-S7 RESULTADO -->
+    <div class="step" id="ks7">
+      <div class="slabel"><div class="snum">✓</div><div class="sinfo"><strong>Diagnóstico generado</strong><span id="k_sub">Revisa antes de exportar</span></div></div>
+      <div class="score-grid" id="k_scores"></div>
+      <div class="result-box">
+        <div class="loading" id="k_loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span style="margin-left:8px;font-size:13px;color:var(--text3)">Generando diagnóstico con IA...</span></div>
+        <div class="result-text" id="k_text"></div>
+      </div>
+      <div class="result-actions" id="k_actions">
+        <button class="btn-pdf" onclick="exportPDF()">⬇ Exportar PDF</button>
+        <button class="btn-sec" onclick="kgo(1)">+ Nuevo diagnóstico</button>
+      </div>
+      <div class="send-status" id="send-status">✓ Email enviado correctamente</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PDF TEMPLATE -->
+<div id="pdf-template">
+  <h1>Diagnóstico IA Empresarial</h1>
+  <div class="pdf-meta" id="pdf-meta"></div>
+  <div class="pdf-scores" id="pdf-scores"></div>
+  <div class="pdf-content" id="pdf-content"></div>
+  <div class="pdf-footer">Generado por AI Diagnostic Pro · Consultoría IA Empresarial · Confidencial</div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────
+const USERS = { 'sebas': 'agencia2024' };
+const VERCEL_API = 'https://diagnosticpro.vercel.app/api/diagnostico';
+const EJS_SERVICE = 'service_sebasmail';
+const EJS_TEMPLATE = 'ayisl9m';
+const EJS_PUBLIC = 'SLAVvDh-aDomMebrV';
+// ────────────────────────────────────────────────
+
+emailjs.init(EJS_PUBLIC);
+
+let mode = 'cliente';
+let cStep = 1, kStep = 1;
+
+function setMode(m, btn){
+  mode = m;
+  document.querySelectorAll('.login-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-cliente').style.display = m==='cliente'?'block':'none';
+  document.getElementById('tab-consultor').style.display = m==='consultor'?'block':'none';
+}
+
+function enterAsCliente(){
+  showScreen('screen-cliente');
+}
+
+function doLogin(){
+  const u=document.getElementById('lu').value.trim().toLowerCase();
+  const p=document.getElementById('lp').value;
+  if(USERS[u]&&USERS[u]===p){
+    document.getElementById('login-err').style.display='none';
+    showScreen('screen-consultor');
+  } else {
+    document.getElementById('login-err').style.display='block';
+  }
+}
+
+function doLogout(){
+  showScreen('screen-login');
+  document.getElementById('lu').value='';
+  document.getElementById('lp').value='';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function toggleCI(el){ el.classList.toggle('on'); }
+
+function updateSl(sid,vid,labels){
+  document.getElementById(vid).textContent=labels[parseInt(document.getElementById(sid).value)-1];
+}
+
+function cgo(n){
+  document.getElementById('cs'+cStep).classList.remove('active');
+  document.getElementById('cs'+n).classList.add('active');
+  cStep=n;
+  for(let i=1;i<=6;i++){
+    const d=document.getElementById('cpd'+i);
+    if(!d)return;
+    if(i<n)d.className='pd done';
+    else if(i===n)d.className='pd active';
+    else d.className='pd';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function kgo(n){
+  document.getElementById('ks'+kStep).classList.remove('active');
+  document.getElementById('ks'+n).classList.add('active');
+  kStep=n;
+  for(let i=1;i<=6;i++){
+    const d=document.getElementById('kpd'+i);
+    if(!d)return;
+    if(i<n)d.className='pd done';
+    else if(i===n)d.className='pd active';
+    else d.className='pd';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function getChecked(){
+  return Array.from(document.querySelectorAll('#screen-cliente .ci.on')).map(el=>el.textContent.trim()).join(', ')||'Ninguna';
+}
+
+function buildPrompt(pre){
+  const g=id=>{ try{ return document.getElementById(id).value||'No especificado'; }catch(e){return 'No especificado';} };
+  const sl=id=>{ try{ return document.getElementById(id).value+'/5'; }catch(e){return '3/5';} };
+  return `Eres un consultor senior de IA y automatización especializado en LATAM. Genera un diagnóstico profesional y accionable.
+
+EMPRESA: ${g(pre+'empresa')} | Industria: ${g(pre+'industria')} | Empleados: ${g(pre+'emp')} | País: ${g(pre+'pais')} | Años: ${g(pre+'anios')}
+Modelo: ${g(pre+'modelo')}
+
+VENTAS: Canal: ${g(pre+'vcanal')} | Cierre: ${g(pre+'vtiempo')} | Dolor: ${g(pre+'vdolor')}
+ATENCIÓN: Canales: ${g(pre+'acanal')} | Volumen: ${g(pre+'avol')} | Repetitivas: ${g(pre+'adolor')}
+OPERACIONES: Tareas manuales: ${g(pre+'otareas')} | Horas perdidas: ${g(pre+'ohoras')}
+TECNOLOGÍA: Nivel: ${sl(pre==='k_'?'ksr1':'sr1')} | Resistencia: ${sl(pre==='k_'?'ksr2':'sr2')}
+DOLORES: Principal: ${g(pre+'d1')} | Pérdida clientes: ${g(pre+'d2')} | Tarea odiada: ${g(pre+'d3')} | Urgencia: ${sl(pre==='k_'?'ksr3':'sr3')}
+CAPACIDAD: Decisor: ${g(pre+'dec')} | Presupuesto: ${g(pre+'pres')} | Disposición: ${sl(pre==='k_'?'ksr4':'sr4')} | Intentos: ${g(pre+'int')}
+OBJETIVOS: ${g(pre+'obj')} | Adicional: ${g(pre+'add')}
+
+Genera el diagnóstico con estas secciones, en español, lenguaje directo y sin jerga técnica:
+
+RESUMEN EJECUTIVO
+(2-3 párrafos: situación actual, oportunidad principal, recomendación clave)
+
+TOP 3 OPORTUNIDADES DE IA
+(Para cada una: nombre, problema que resuelve, cómo funciona, ahorro estimado/mes, dificultad: Baja/Media/Alta, plazo)
+
+QUICK WINS — ACCIÓN INMEDIATA
+(2 cosas implementables en menos de 30 días con impacto inmediato)
+
+HOJA DE RUTA
+(3 fases: 0-30 días / 1-3 meses / 3-6 meses)
+
+RIESGOS Y CONSIDERACIONES
+(2-3 obstáculos reales y honestos para esta empresa específica)
+
+INVERSIÓN Y ROI ESTIMADO
+(Rango mensual recomendado y retorno esperado a 6 meses en USD)
+
+Sé específico para la industria y país. No seas genérico.`;
+}
+
+function calcScores(pre){
+  const sl=id=>{ try{ return parseInt(document.getElementById(id).value); }catch(e){return 3;} };
+  const tech=sl(pre==='k_'?'ksr1':'sr1');
+  const cambio=sl(pre==='k_'?'ksr2':'sr2');
+  const disp=sl(pre==='k_'?'ksr4':'sr4');
+  const urg=sl(pre==='k_'?'ksr3':'sr3');
+  const horas=document.getElementById(pre+'ohoras').value;
+  const readiness=Math.round((tech+(6-cambio)+disp)/3*20);
+  const impacto=urg>=4?'Alto':urg>=3?'Medio':'Bajo';
+  const color=readiness>=60?'#10b981':readiness>=40?'#f59e0b':'#ef4444';
+  let ahorro=0;
+  if(horas==='Más de 40 hrs')ahorro=2800;
+  else if(horas==='15–40 hrs')ahorro=1400;
+  else if(horas==='5–15 hrs')ahorro=600;
+  else ahorro=200;
+  return{readiness,impacto,color,ahorro};
+}
+
+async function submitForm(){
+  const empresa=document.getElementById('c_empresa').value||'Empresa';
+  const nombre=document.getElementById('c_nombre').value||'Cliente';
+  const email=document.getElementById('c_email').value||'';
+  showScreen('screen-gracias');
+
+  // Generar informe en background y enviar por email
+  try{
+    const res=await fetch(VERCEL_API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:buildPrompt('c_')})
+    });
+    const data=await res.json();
+    const informe=data.result||'Error generando el informe.';
+    const sc=calcScores('c_');
+
+    await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+      empresa: empresa,
+      nombre: nombre,
+      email: email,
+      pais: document.getElementById('c_pais').value||'',
+      industria: document.getElementById('c_industria').value||'',
+      informe: `📊 PREPARACIÓN IA: ${sc.readiness}% | AHORRO EST: $${sc.ahorro}/mes | IMPACTO: ${sc.impacto}\n\n${informe}`
+    });
+  }catch(e){
+    console.error('Error:', e);
+  }
+}
+
+async function genReport(){
+  kgo(7);
+  const empresa=document.getElementById('k_empresa').value||'Empresa';
+  document.getElementById('k_sub').textContent=empresa+' · '+(document.getElementById('k_industria').value||'')+' · '+(document.getElementById('k_pais').value||'');
+  const sc=calcScores('k_');
+  document.getElementById('k_scores').innerHTML=`
+    <div class="sc"><div class="sc-v" style="color:${sc.color}">${sc.readiness}%</div><div class="sc-l">Preparación IA</div></div>
+    <div class="sc"><div class="sc-v" style="color:var(--accent)">$${sc.ahorro.toLocaleString()}</div><div class="sc-l">Ahorro est./mes</div></div>
+    <div class="sc"><div class="sc-v" style="color:var(--yellow)">${sc.impacto}</div><div class="sc-l">Impacto potencial</div></div>`;
+  try{
+    const res=await fetch(VERCEL_API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:buildPrompt('k_')})
+    });
+    const data=await res.json();
+    const text=data.result||'Error generando el informe.';
+    document.getElementById('k_loading').style.display='none';
+    document.getElementById('k_text').style.display='block';
+    document.getElementById('k_text').textContent=text;
+    document.getElementById('k_actions').style.display='flex';
+  }catch(e){
+    document.getElementById('k_loading').style.display='none';
+    document.getElementById('k_text').style.display='block';
+    document.getElementById('k_text').textContent='Error al conectar con la IA. Verifica la API key en el archivo.';
+  }
+}
+
+function exportPDF(){
+  const empresa=document.getElementById('k_empresa').value||'Empresa';
+  const sc=calcScores('k_');
+  const text=document.getElementById('k_text').textContent;
+  const fecha=new Date().toLocaleDateString('es-ES',{year:'numeric',month:'long',day:'numeric'});
+
+  document.getElementById('pdf-meta').textContent=`${empresa} · ${document.getElementById('k_pais').value||''} · ${document.getElementById('k_industria').value||''} · ${fecha}`;
+  document.getElementById('pdf-scores').innerHTML=`
+    <div class="pdf-sc"><div class="pdf-sc-v" style="color:${sc.color}">${sc.readiness}%</div><div class="pdf-sc-l">Preparación IA</div></div>
+    <div class="pdf-sc"><div class="pdf-sc-v">$${sc.ahorro.toLocaleString()}</div><div class="pdf-sc-l">Ahorro est./mes</div></div>
+    <div class="pdf-sc"><div class="pdf-sc-v" style="color:#f59e0b">${sc.impacto}</div><div class="pdf-sc-l">Impacto potencial</div></div>`;
+  document.getElementById('pdf-content').textContent=text;
+
+  const el=document.getElementById('pdf-template');
+  html2pdf().set({
+    margin:10,filename:`Diagnostico_IA_${empresa.replace(/\s+/g,'_')}.pdf`,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(el).save();
+}
+</script>
+</body>
+</html>
