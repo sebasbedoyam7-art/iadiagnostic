@@ -201,8 +201,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
         <div class="field"><label>Nombre de la empresa</label><input type="text" id="c_empresa" placeholder="Ej. Distribuidora Los Andes"></div>
         <div class="field"><label>Tu nombre</label><input type="text" id="c_nombre" placeholder="Ej. Carlos Mamani"></div>
       </div>
-      <div class="fg fg2">
-        <div class="field"><label>Tu email (para recibir el diagnóstico)</label><input type="email" id="c_email" placeholder="tu@empresa.com"></div>
+      <div class="fg fg1">
         <div class="field"><label>Industria / Sector</label>
           <select id="c_industria">
             <option value="">Seleccionar...</option>
@@ -699,10 +698,9 @@ function calcScores(pre){
 async function submitForm(){
   const empresa=document.getElementById('c_empresa').value||'Empresa';
   const nombre=document.getElementById('c_nombre').value||'Cliente';
-  const email=document.getElementById('c_email').value||'';
+  const email='';
   showScreen('screen-gracias');
 
-  // Generar informe en background y enviar por email
   try{
     const res=await fetch(VERCEL_API,{
       method:'POST',
@@ -716,9 +714,6 @@ async function submitForm(){
     await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
       empresa: empresa,
       nombre: nombre,
-      email: email,
-      pais: document.getElementById('c_pais').value||'',
-      industria: document.getElementById('c_industria').value||'',
       informe: `📊 PREPARACIÓN IA: ${sc.readiness}% | AHORRO EST: $${sc.ahorro}/mes | IMPACTO: ${sc.impacto}\n\n${informe}`
     });
   }catch(e){
