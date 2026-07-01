@@ -674,13 +674,15 @@ async function submitForm() {
     var data = await res.json();
     var informe = data.result || 'Error generando el informe.';
     var sc = calcScores('c_');
-    await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+       await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
       empresa: empresa,
       nombre: nombre,
       informe: 'PREPARACION IA: ' + sc.readiness + '% | AHORRO EST: $' + sc.ahorro + '/mes | IMPACTO: ' + sc.impacto + '\n\n' + informe
     });
+    showScreen('screen-gracias');
   } catch(e) {
     console.error('Error:', e);
+    showScreen('screen-gracias');
   }
 }
 
