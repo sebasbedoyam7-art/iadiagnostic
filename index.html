@@ -638,7 +638,7 @@ function getChecked(){
   return Array.from(document.querySelectorAll('#screen-cliente .ci.on')).map(el=>el.textContent.trim()).join(', ')||'Ninguna';
 }
 
-function buildPrompt(pre){
+function TECNOLOGÍA: Nivel: ${sl(...)} | Resistencia: ${sl(...)}(pre){
   const g=id=>{ try{ return document.getElementById(id).value||'No especificado'; }catch(e){return 'No especificado';} };
   const sl=id=>{ try{ return document.getElementById(id).value+'/5'; }catch(e){return '3/5';} };
   return `Eres un consultor senior de IA y automatización especializado en LATAM. Genera un diagnóstico profesional y accionable.
