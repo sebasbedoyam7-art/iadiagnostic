@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Diagnostic Pro</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -17,8 +16,7 @@
   --text:#0f1a3d;--text2:#3d5280;--text3:#7a90c0;
 }
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
-.screen{display:none}
-.screen.active{display:block}
+.screen{display:none}.screen.active{display:block}
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(135deg,#e8eeff 0%,#f0f4ff 60%,#dbeafe 100%)}
 .login-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(26,86,219,0.08)}
 .login-logo{display:flex;align-items:center;gap:12px;margin-bottom:2rem}
@@ -106,7 +104,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .btn-pdf:hover{opacity:0.9}
 .btn-sec{padding:10px 18px;font-size:13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif}
 .btn-sec:hover{border-color:var(--accent);color:var(--accent)}
-.send-status{font-size:12px;color:var(--green);margin-top:8px;display:none}
+/* LISTA CLIENTES */
+.client-list{display:grid;gap:10px;margin-top:1rem}
+.client-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.15s;display:flex;justify-content:space-between;align-items:center}
+.client-card:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(26,86,219,0.1)}
+.client-info strong{display:block;font-size:14px;font-weight:600;color:var(--text)}
+.client-info span{font-size:12px;color:var(--text3)}
+.client-badge{font-size:11px;padding:3px 10px;border-radius:20px;background:#fef3c7;color:#d97706;font-weight:500}
+.client-badge.listo{background:#d1fae5;color:#059669}
+.empty-state{text-align:center;padding:3rem;color:var(--text3);font-size:14px}
 #pdf-template{display:none;font-family:'Inter',sans-serif;color:#1a1a2e;background:white;padding:40px;max-width:800px}
 #pdf-template h1{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;border-bottom:3px solid #1a56db;padding-bottom:12px;margin-bottom:8px}
 #pdf-template .pdf-meta{font-size:13px;color:#666;margin-bottom:24px}
@@ -126,7 +132,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
     <div class="login-card">
       <div class="login-logo">
         <div class="login-icon">⚡</div>
-        <div><div class="login-brand">AI Diagnostic Pro<span>Consultoría IA Empresarial</span></div></div>
+        <div><div class="login-brand">AI Diagnostic Pro<span>Consultoria IA Empresarial</span></div></div>
       </div>
       <div class="login-tabs">
         <button class="login-tab active" onclick="setMode('cliente',this)">Soy cliente</button>
@@ -150,24 +156,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 <!-- CLIENTE: FORMULARIO -->
 <div class="screen" id="screen-cliente">
   <div class="header">
-    <div class="logo">
-      <div class="logo-icon">⚡</div>
-      <div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Diagnostico empresarial</div></div>
-    </div>
+    <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Diagnostico empresarial</div></div></div>
     <div class="header-right">
       <div class="prog-steps" id="cprog">
-        <div class="pd active" id="cpd1"></div>
-        <div class="pd" id="cpd2"></div>
-        <div class="pd" id="cpd3"></div>
-        <div class="pd" id="cpd4"></div>
-        <div class="pd" id="cpd5"></div>
-        <div class="pd" id="cpd6"></div>
+        <div class="pd active" id="cpd1"></div><div class="pd" id="cpd2"></div><div class="pd" id="cpd3"></div>
+        <div class="pd" id="cpd4"></div><div class="pd" id="cpd5"></div><div class="pd" id="cpd6"></div>
       </div>
     </div>
   </div>
   <div class="main">
-
-    <!-- S1 -->
     <div class="step active" id="cs1">
       <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Tu empresa</strong><span>Cuentanos quienes son</span></div></div>
       <div class="fg fg2">
@@ -179,11 +176,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
           <select id="c_industria">
             <option value="">Seleccionar...</option>
             <option>Comercio / Retail</option><option>Servicios profesionales</option>
-            <option>Salud / Clinicas</option><option>Educacion</option>
-            <option>Inmobiliaria</option><option>Logistica / Transporte</option>
-            <option>Manufactura</option><option>Finanzas / Contabilidad</option>
-            <option>Restaurantes / Gastronomia</option><option>Construccion</option>
-            <option>Tecnologia</option><option>Otro</option>
+            <option>Salud / Clinicas</option><option>Educacion</option><option>Inmobiliaria</option>
+            <option>Logistica / Transporte</option><option>Manufactura</option>
+            <option>Finanzas / Contabilidad</option><option>Restaurantes / Gastronomia</option>
+            <option>Construccion</option><option>Tecnologia</option><option>Otro</option>
           </select>
         </div>
       </div>
@@ -206,7 +202,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-next" onclick="cgo(2)">Siguiente</button></div>
     </div>
 
-    <!-- S2 -->
     <div class="step" id="cs2">
       <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Tus procesos</strong><span>Como funciona el dia a dia</span></div></div>
       <div class="pc">
@@ -215,7 +210,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
           <div class="field"><label>Como consiguen clientes?</label><input type="text" id="c_vcanal" placeholder="Ej. WhatsApp, referidos, redes"></div>
           <div class="field"><label>Cuanto tarda cerrar una venta?</label><input type="text" id="c_vtiempo" placeholder="Ej. 3-7 dias"></div>
         </div>
-        <div class="field"><label>Que parte del proceso de ventas es mas lenta o manual?</label>
+        <div class="field"><label>Que parte del proceso de ventas es mas lenta?</label>
           <textarea id="c_vdolor" style="min-height:60px" placeholder="Ej. Cotizar manualmente toma 30 min..."></textarea>
         </div>
       </div>
@@ -233,8 +228,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       </div>
       <div class="pc">
         <div class="pc-head"><span class="pc-badge" style="background:rgba(26,86,219,0.1);color:#1a56db">Operaciones</span></div>
-        <div class="field" style="margin-bottom:8px"><label>Que tareas manuales y repetitivas hace tu equipo?</label>
-          <textarea id="c_otareas" placeholder="Ej. Actualizar inventario en Excel, generar reportes..."></textarea>
+        <div class="field" style="margin-bottom:8px"><label>Que tareas manuales hace tu equipo?</label>
+          <textarea id="c_otareas" placeholder="Ej. Actualizar inventario en Excel..."></textarea>
         </div>
         <div class="field"><label>Horas semanales perdidas en tareas manuales</label>
           <select id="c_ohoras"><option value="">Seleccionar...</option><option>Menos de 5 hrs</option><option>5-15 hrs</option><option>15-40 hrs</option><option>Mas de 40 hrs</option></select>
@@ -243,10 +238,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="cgo(1)">Atras</button><button class="btn-next" onclick="cgo(3)">Siguiente</button></div>
     </div>
 
-    <!-- S3 -->
     <div class="step" id="cs3">
       <div class="slabel"><div class="snum">3</div><div class="sinfo"><strong>Tecnologia actual</strong><span>Que herramientas usan hoy</span></div></div>
-      <div class="divlbl">Herramientas que usan (selecciona todas las que apliquen)</div>
+      <div class="divlbl">Herramientas que usan</div>
       <div class="cg">
         <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>CRM (HubSpot, Salesforce)</div>
         <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>ERP (SAP, Odoo)</div>
@@ -269,24 +263,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="cgo(2)">Atras</button><button class="btn-next" onclick="cgo(4)">Siguiente</button></div>
     </div>
 
-    <!-- S4 -->
     <div class="step" id="cs4">
       <div class="slabel"><div class="snum">4</div><div class="sinfo"><strong>Dolores del negocio</strong><span>Los problemas mas urgentes</span></div></div>
-      <div class="fg fg1">
-        <div class="field"><label>Cual es el mayor problema operativo hoy?</label>
-          <textarea id="c_d1" placeholder="Ej. Perdemos leads porque no respondemos rapido..."></textarea>
-        </div>
-      </div>
-      <div class="fg fg1">
-        <div class="field"><label>Donde se pierden mas clientes en el proceso de venta?</label>
-          <textarea id="c_d2" placeholder="Ej. Las cotizaciones tardan mucho..."></textarea>
-        </div>
-      </div>
-      <div class="fg fg1">
-        <div class="field"><label>Que tarea odia mas hacer el equipo todos los dias?</label>
-          <textarea id="c_d3" style="min-height:60px" placeholder="Ej. Hacer reportes manuales..."></textarea>
-        </div>
-      </div>
+      <div class="fg fg1"><div class="field"><label>Cual es el mayor problema operativo hoy?</label><textarea id="c_d1" placeholder="Ej. Perdemos leads porque no respondemos rapido..."></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Donde se pierden mas clientes?</label><textarea id="c_d2" placeholder="Ej. Las cotizaciones tardan mucho..."></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Que tarea odia mas hacer el equipo?</label><textarea id="c_d3" style="min-height:60px" placeholder="Ej. Hacer reportes manuales..."></textarea></div></div>
       <div class="sf">
         <div class="sf-row"><label>Urgencia de resolver estos problemas</label><span class="sf-val" id="sv3">Media</span></div>
         <input type="range" min="1" max="5" value="3" id="sr3" oninput="updateSl('sr3','sv3',['Muy baja','Baja','Media','Alta','Muy alta'])">
@@ -294,14 +275,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="cgo(3)">Atras</button><button class="btn-next" onclick="cgo(5)">Siguiente</button></div>
     </div>
 
-    <!-- S5 -->
     <div class="step" id="cs5">
       <div class="slabel"><div class="snum">5</div><div class="sinfo"><strong>Capacidad de inversion</strong><span>Presupuesto y decisores</span></div></div>
       <div class="fg fg2">
         <div class="field"><label>Quien toma las decisiones tecnologicas?</label>
           <select id="c_dec"><option value="">Seleccionar...</option><option>El dueno / CEO directamente</option><option>Gerente de operaciones</option><option>Gerente de TI / sistemas</option><option>Decision en comite</option><option>No esta claro</option></select>
         </div>
-        <div class="field"><label>Presupuesto mensual disponible para IA</label>
+        <div class="field"><label>Presupuesto mensual para IA</label>
           <select id="c_pres"><option value="">Seleccionar...</option><option>No definido aun</option><option>Menos de $100/mes</option><option>$100-300/mes</option><option>$300-800/mes</option><option>$800-2000/mes</option><option>Mas de $2000/mes</option></select>
         </div>
       </div>
@@ -309,23 +289,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
         <div class="sf-row"><label>Disposicion a invertir en IA ahora</label><span class="sf-val" id="sv4">Media</span></div>
         <input type="range" min="1" max="5" value="3" id="sr4" oninput="updateSl('sr4','sv4',['Muy baja','Baja','Media','Alta','Muy alta'])">
       </div>
-      <div class="fg fg1">
-        <div class="field"><label>Han intentado alguna solucion tecnologica antes?</label>
-          <textarea id="c_int" style="min-height:60px" placeholder="Ej. Intentamos un CRM pero el equipo no lo adopto..."></textarea>
-        </div>
-      </div>
+      <div class="fg fg1"><div class="field"><label>Han intentado alguna solucion tecnologica antes?</label><textarea id="c_int" style="min-height:60px" placeholder="Ej. Intentamos un CRM pero el equipo no lo adopto..."></textarea></div></div>
       <div class="nav"><button class="btn-back" onclick="cgo(4)">Atras</button><button class="btn-next" onclick="cgo(6)">Siguiente</button></div>
     </div>
 
-    <!-- S6 -->
     <div class="step" id="cs6">
       <div class="slabel"><div class="snum">6</div><div class="sinfo"><strong>Objetivos estrategicos</strong><span>Hacia donde van</span></div></div>
-      <div class="fg fg1">
-        <div class="field"><label>Que quieren lograr en los proximos 12 meses?</label>
-          <textarea id="c_obj" placeholder="Ej. Doblar las ventas, abrir nueva sucursal..."></textarea>
-        </div>
-      </div>
-      <div class="divlbl">Que es mas importante para la empresa ahora mismo?</div>
+      <div class="fg fg1"><div class="field"><label>Que quieren lograr en los proximos 12 meses?</label><textarea id="c_obj" placeholder="Ej. Doblar las ventas, abrir nueva sucursal..."></textarea></div></div>
+      <div class="divlbl">Que es mas importante ahora mismo?</div>
       <div class="cg">
         <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Crecer en ventas</div>
         <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Reducir costos</div>
@@ -334,30 +305,23 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
         <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Automatizar tareas repetitivas</div>
         <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Tener mas datos y reportes</div>
       </div>
-      <div class="fg fg1">
-        <div class="field"><label>Algo mas que debamos saber?</label>
-          <textarea id="c_add" style="min-height:60px" placeholder="Contexto adicional, competencia relevante..."></textarea>
-        </div>
-      </div>
+      <div class="fg fg1"><div class="field"><label>Algo mas que debamos saber?</label><textarea id="c_add" style="min-height:60px" placeholder="Contexto adicional..."></textarea></div></div>
       <div class="nav">
         <button class="btn-back" onclick="cgo(5)">Atras</button>
         <button class="btn-gen" onclick="submitForm()">Enviar diagnostico</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- GRACIAS -->
 <div class="screen" id="screen-gracias">
-  <div class="header">
-    <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div></div></div>
-  </div>
+  <div class="header"><div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div></div></div></div>
   <div class="gracias-wrap">
     <div class="gracias-card">
       <div class="gracias-icon">✅</div>
       <h2>Formulario enviado!</h2>
-      <p>Recibimos la informacion de tu empresa. Nuestro equipo analizara tus procesos y oportunidades de IA.<br><br>Recibiras tu diagnostico personalizado en las proximas <strong>24-48 horas</strong>.<br><br>Si tienes alguna consulta puedes contactarnos directamente.</p>
+      <p>Recibimos la informacion de tu empresa. Nuestro equipo analizara tus procesos y oportunidades de IA.<br><br>Recibiras tu diagnostico personalizado en las proximas <strong>24-48 horas</strong>.</p>
     </div>
   </div>
 </div>
@@ -368,32 +332,37 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
     <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Panel consultor</div></div></div>
     <div class="header-right">
       <div class="prog-steps" id="kprog">
-        <div class="pd active" id="kpd1"></div>
-        <div class="pd" id="kpd2"></div>
-        <div class="pd" id="kpd3"></div>
-        <div class="pd" id="kpd4"></div>
-        <div class="pd" id="kpd5"></div>
-        <div class="pd" id="kpd6"></div>
+        <div class="pd active" id="kpd1"></div><div class="pd" id="kpd2"></div><div class="pd" id="kpd3"></div>
+        <div class="pd" id="kpd4"></div><div class="pd" id="kpd5"></div><div class="pd" id="kpd6"></div>
       </div>
       <button class="btn-out" onclick="doLogout()">Salir</button>
     </div>
   </div>
   <div class="main">
 
-    <!-- K-S1 -->
-    <div class="step active" id="ks1">
-      <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Datos de la empresa</strong><span>Completa o ajusta la informacion del cliente</span></div></div>
+    <!-- LISTA DE CLIENTES -->
+    <div class="step active" id="ks0">
+      <div class="slabel"><div class="snum">📋</div><div class="sinfo"><strong>Clientes pendientes</strong><span>Selecciona uno para generar su diagnostico</span></div></div>
+      <div id="client-list-container">
+        <div class="empty-state">Cargando clientes...</div>
+      </div>
+      <div style="margin-top:1rem">
+        <button class="btn-next" onclick="kgo(1);limpiarFormK()">+ Nuevo diagnostico manual</button>
+      </div>
+    </div>
+
+    <div class="step" id="ks1">
+      <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Datos de la empresa</strong><span>Completa o ajusta la informacion</span></div></div>
       <div class="fg fg2">
-        <div class="field"><label>Nombre de la empresa</label><input type="text" id="k_empresa" placeholder="Ej. Distribuidora Los Andes"></div>
+        <div class="field"><label>Nombre de la empresa</label><input type="text" id="k_empresa"></div>
         <div class="field"><label>Industria</label>
           <select id="k_industria">
             <option value="">Seleccionar...</option>
             <option>Comercio / Retail</option><option>Servicios profesionales</option>
-            <option>Salud / Clinicas</option><option>Educacion</option>
-            <option>Inmobiliaria</option><option>Logistica / Transporte</option>
-            <option>Manufactura</option><option>Finanzas / Contabilidad</option>
-            <option>Restaurantes / Gastronomia</option><option>Construccion</option>
-            <option>Tecnologia</option><option>Otro</option>
+            <option>Salud / Clinicas</option><option>Educacion</option><option>Inmobiliaria</option>
+            <option>Logistica / Transporte</option><option>Manufactura</option>
+            <option>Finanzas / Contabilidad</option><option>Restaurantes / Gastronomia</option>
+            <option>Construccion</option><option>Tecnologia</option><option>Otro</option>
           </select>
         </div>
       </div>
@@ -409,12 +378,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
         </div>
       </div>
       <div class="fg fg1"><div class="field"><label>Modelo de negocio</label><textarea id="k_modelo"></textarea></div></div>
-      <div class="nav"><button class="btn-next" onclick="kgo(2)">Siguiente</button></div>
+      <div class="nav"><button class="btn-back" onclick="kgo(0)">Atras</button><button class="btn-next" onclick="kgo(2)">Siguiente</button></div>
     </div>
 
-    <!-- K-S2 -->
     <div class="step" id="ks2">
-      <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Procesos</strong><span>Info de ventas, atencion y operaciones</span></div></div>
+      <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Procesos</strong></div></div>
       <div class="pc">
         <div class="pc-head"><span class="pc-badge" style="background:rgba(220,38,38,0.1);color:#dc2626">Ventas</span></div>
         <div class="fg fg2">
@@ -443,12 +411,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="kgo(1)">Atras</button><button class="btn-next" onclick="kgo(3)">Siguiente</button></div>
     </div>
 
-    <!-- K-S3 -->
     <div class="step" id="ks3">
       <div class="slabel"><div class="snum">3</div><div class="sinfo"><strong>Tecnologia y resistencia</strong></div></div>
-      <div class="fg fg1"><div class="field"><label>Herramientas que usan</label><textarea id="k_tools" placeholder="Ej. WhatsApp Business, Excel, sin CRM..."></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Herramientas que usan</label><textarea id="k_tools"></textarea></div></div>
       <div class="sf">
-        <div class="sf-row"><label>Nivel tecnologico del equipo</label><span class="sf-val" id="ksv1">Intermedio</span></div>
+        <div class="sf-row"><label>Nivel tecnologico</label><span class="sf-val" id="ksv1">Intermedio</span></div>
         <input type="range" min="1" max="5" value="3" id="ksr1" oninput="updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto'])">
       </div>
       <div class="sf">
@@ -458,7 +425,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="kgo(2)">Atras</button><button class="btn-next" onclick="kgo(4)">Siguiente</button></div>
     </div>
 
-    <!-- K-S4 -->
     <div class="step" id="ks4">
       <div class="slabel"><div class="snum">4</div><div class="sinfo"><strong>Dolores y urgencia</strong></div></div>
       <div class="fg fg1"><div class="field"><label>Problema operativo principal</label><textarea id="k_d1"></textarea></div></div>
@@ -471,7 +437,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="kgo(3)">Atras</button><button class="btn-next" onclick="kgo(5)">Siguiente</button></div>
     </div>
 
-    <!-- K-S5 -->
     <div class="step" id="ks5">
       <div class="slabel"><div class="snum">5</div><div class="sinfo"><strong>Capacidad e inversion</strong></div></div>
       <div class="fg fg2">
@@ -490,15 +455,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       <div class="nav"><button class="btn-back" onclick="kgo(4)">Atras</button><button class="btn-next" onclick="kgo(6)">Siguiente</button></div>
     </div>
 
-    <!-- K-S6 -->
     <div class="step" id="ks6">
       <div class="slabel"><div class="snum">6</div><div class="sinfo"><strong>Objetivos estrategicos</strong></div></div>
       <div class="fg fg1"><div class="field"><label>Meta 12 meses</label><textarea id="k_obj"></textarea></div></div>
-      <div class="fg fg1"><div class="field"><label>Prioridades y notas adicionales</label><textarea id="k_add" style="min-height:80px" placeholder="Prioridades del cliente, notas de la reunion, contexto extra..."></textarea></div></div>
+      <div class="fg fg1"><div class="field"><label>Notas adicionales</label><textarea id="k_add" style="min-height:80px"></textarea></div></div>
       <div class="nav"><button class="btn-back" onclick="kgo(5)">Atras</button><button class="btn-gen" onclick="genReport()">Generar diagnostico</button></div>
     </div>
 
-    <!-- K-S7 RESULTADO -->
     <div class="step" id="ks7">
       <div class="slabel"><div class="snum">✓</div><div class="sinfo"><strong>Diagnostico generado</strong><span id="k_sub">Revisa antes de exportar</span></div></div>
       <div class="score-grid" id="k_scores"></div>
@@ -508,15 +471,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
       </div>
       <div class="result-actions" id="k_actions">
         <button class="btn-pdf" onclick="exportPDF()">Exportar PDF</button>
-        <button class="btn-sec" onclick="kgo(1)">Nuevo diagnostico</button>
+        <button class="btn-sec" onclick="kgo(0)">Ver otros clientes</button>
       </div>
-      <div class="send-status" id="send-status">Email enviado correctamente</div>
     </div>
-
   </div>
 </div>
 
-<!-- PDF TEMPLATE -->
 <div id="pdf-template">
   <h1>Diagnostico IA Empresarial</h1>
   <div class="pdf-meta" id="pdf-meta"></div>
@@ -528,14 +488,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 <script>
 var USERS = { 'sebas': 'agencia2024' };
 var VERCEL_API = 'https://diagnosticpro.vercel.app/api/diagnostico';
-var EJS_SERVICE = 'service_sebasmail';
-var EJS_TEMPLATE = 'template_9syfhvp';
-var EJS_PUBLIC = 'SLAVvDh-aDomMebrV';
-
-emailjs.init(EJS_PUBLIC);
+var SUPABASE_URL = 'https://nucyjjywvguhelvzzaaj.supabase.co';
+var SUPABASE_KEY = 'eyJhbGci••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••';
 
 var mode = 'cliente';
-var cStep = 1, kStep = 1;
+var cStep = 1, kStep = 0;
 
 function setMode(m, btn) {
   mode = m;
@@ -545,9 +502,7 @@ function setMode(m, btn) {
   document.getElementById('tab-consultor').style.display = m === 'consultor' ? 'block' : 'none';
 }
 
-function enterAsCliente() {
-  showScreen('screen-cliente');
-}
+function enterAsCliente() { showScreen('screen-cliente'); }
 
 function doLogin() {
   var u = document.getElementById('lu').value.trim().toLowerCase();
@@ -555,6 +510,7 @@ function doLogin() {
   if (USERS[u] && USERS[u] === p) {
     document.getElementById('login-err').style.display = 'none';
     showScreen('screen-consultor');
+    cargarClientes();
   } else {
     document.getElementById('login-err').style.display = 'block';
   }
@@ -619,7 +575,6 @@ function buildPrompt(pre) {
   var sr2 = gs(isK ? 'ksr2' : 'sr2');
   var sr3 = gs(isK ? 'ksr3' : 'sr3');
   var sr4 = gs(isK ? 'ksr4' : 'sr4');
-
   var prompt = 'Eres un consultor senior de IA y automatizacion especializado en LATAM. Genera un diagnostico profesional y accionable.\n\n';
   prompt += 'EMPRESA: ' + gv(pre+'empresa') + ' | Industria: ' + gv(pre+'industria') + ' | Empleados: ' + gv(pre+'emp') + ' | Pais: ' + gv(pre+'pais') + ' | Anos: ' + gv(pre+'anios') + '\n';
   prompt += 'Modelo: ' + gv(pre+'modelo') + '\n\n';
@@ -630,14 +585,9 @@ function buildPrompt(pre) {
   prompt += 'DOLORES: Principal: ' + gv(pre+'d1') + ' | Perdida clientes: ' + gv(pre+'d2') + ' | Tarea odiada: ' + gv(pre+'d3') + ' | Urgencia: ' + sr3 + '\n';
   prompt += 'CAPACIDAD: Decisor: ' + gv(pre+'dec') + ' | Presupuesto: ' + gv(pre+'pres') + ' | Disposicion: ' + sr4 + ' | Intentos: ' + gv(pre+'int') + '\n';
   prompt += 'OBJETIVOS: ' + gv(pre+'obj') + ' | Adicional: ' + gv(pre+'add') + '\n\n';
-  prompt += 'Genera el diagnostico con estas secciones, en espanol, lenguaje directo y sin jerga tecnica:\n\n';
-  prompt += 'RESUMEN EJECUTIVO\n(2-3 parrafos: situacion actual, oportunidad principal, recomendacion clave)\n\n';
-  prompt += 'TOP 3 OPORTUNIDADES DE IA\n(Para cada una: nombre, problema que resuelve, como funciona, ahorro estimado/mes, dificultad: Baja/Media/Alta, plazo)\n\n';
-  prompt += 'QUICK WINS - ACCION INMEDIATA\n(2 cosas implementables en menos de 30 dias con impacto inmediato)\n\n';
-  prompt += 'HOJA DE RUTA\n(3 fases: 0-30 dias / 1-3 meses / 3-6 meses)\n\n';
-  prompt += 'RIESGOS Y CONSIDERACIONES\n(2-3 obstaculos reales y honestos para esta empresa especifica)\n\n';
-  prompt += 'INVERSION Y ROI ESTIMADO\n(Rango mensual recomendado y retorno esperado a 6 meses en USD)\n\n';
-  prompt += 'Se especifico para la industria y pais. No seas generico. Importante: WhatsApp Business y Notion NO tienen IA incorporada, no los menciones como herramientas de IA.';
+  prompt += 'Genera el diagnostico con estas secciones en espanol:\n\n';
+  prompt += 'RESUMEN EJECUTIVO\nTOP 3 OPORTUNIDADES DE IA\nQUICK WINS - ACCION INMEDIATA\nHOJA DE RUTA\nRIESGOS Y CONSIDERACIONES\nINVERSION Y ROI ESTIMADO\n\n';
+  prompt += 'Se especifico para la industria y pais. No uses WhatsApp Business ni Notion como herramientas de IA.';
   return prompt;
 }
 
@@ -659,31 +609,108 @@ function calcScores(pre) {
   return { readiness: readiness, impacto: impacto, color: color, ahorro: ahorro };
 }
 
+async function cargarClientes() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=id,created_at,empresa,industria,pais,estado&order=created_at.desc', {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      }
+    });
+    var data = await res.json();
+    var container = document.getElementById('client-list-container');
+    if (!data || data.length === 0) {
+      container.innerHTML = '<div class="empty-state">No hay clientes aun. Cuando alguien llene el formulario aparecera aqui.</div>';
+      return;
+    }
+    var html = '<div class="client-list">';
+    data.forEach(function(c) {
+      var fecha = new Date(c.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+      var badge = c.estado === 'listo' ? '<span class="client-badge listo">Listo</span>' : '<span class="client-badge">Pendiente</span>';
+      html += '<div class="client-card" onclick="seleccionarCliente(\'' + c.id + '\')">';
+      html += '<div class="client-info"><strong>' + (c.empresa || 'Sin nombre') + '</strong>';
+      html += '<span>' + (c.industria || '') + ' · ' + (c.pais || '') + ' · ' + fecha + '</span></div>';
+      html += badge + '</div>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  } catch(e) {
+    document.getElementById('client-list-container').innerHTML = '<div class="empty-state">Error cargando clientes.</div>';
+  }
+}
+
+async function seleccionarCliente(id) {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/submissions?id=eq.' + id, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    var data = await res.json();
+    var c = data[0];
+    if (!c) return;
+    function sv(id, val) { try { document.getElementById(id).value = val || ''; } catch(e){} }
+    sv('k_empresa', c.empresa); sv('k_industria', c.industria); sv('k_pais', c.pais);
+    sv('k_emp', c.empleados); sv('k_anios', c.anios); sv('k_modelo', c.modelo);
+    sv('k_vcanal', c.vcanal); sv('k_vtiempo', c.vtiempo); sv('k_vdolor', c.vdolor);
+    sv('k_acanal', c.acanal); sv('k_avol', c.avol); sv('k_adolor', c.adolor);
+    sv('k_otareas', c.otareas); sv('k_ohoras', c.ohoras);
+    sv('k_d1', c.d1); sv('k_d2', c.d2); sv('k_d3', c.d3);
+    sv('k_dec', c.decisor); sv('k_pres', c.presupuesto);
+    sv('k_int', c.intentos); sv('k_obj', c.objetivo); sv('k_add', c.adicional);
+    if (c.nivel_tech) { document.getElementById('ksr1').value = c.nivel_tech; updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto']); }
+    if (c.resistencia) { document.getElementById('ksr2').value = c.resistencia; updateSl('ksr2','ksv2',['Muy alta','Alta','Media','Baja','Muy baja']); }
+    if (c.urgencia) { document.getElementById('ksr3').value = c.urgencia; updateSl('ksr3','ksv3',['Muy baja','Baja','Media','Alta','Muy alta']); }
+    if (c.disposicion) { document.getElementById('ksr4').value = c.disposicion; updateSl('ksr4','ksv4',['Muy baja','Baja','Media','Alta','Muy alta']); }
+    kgo(1);
+  } catch(e) {
+    alert('Error cargando el cliente.');
+  }
+}
+
+function limpiarFormK() {
+  var ids = ['k_empresa','k_industria','k_pais','k_emp','k_anios','k_modelo','k_vcanal','k_vtiempo','k_vdolor','k_acanal','k_avol','k_adolor','k_otareas','k_ohoras','k_d1','k_d2','k_d3','k_dec','k_pres','k_int','k_obj','k_add','k_tools'];
+  ids.forEach(function(id){ try{ document.getElementById(id).value=''; }catch(e){} });
+  ['ksr1','ksr2','ksr3','ksr4'].forEach(function(id){ try{ document.getElementById(id).value=3; }catch(e){} });
+}
+
 async function submitForm() {
   var empresa = document.getElementById('c_empresa').value || 'Empresa';
   var nombre = document.getElementById('c_nombre').value || 'Cliente';
-  var btn = document.querySelector('#cs6 .btn-gen');
-  btn.textContent = 'Enviando...';
-  btn.disabled = true;
+  showScreen('screen-gracias');
   try {
-    var res = await fetch(VERCEL_API, {
+    await fetch(VERCEL_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: buildPrompt('c_') })
+      body: JSON.stringify({
+        prompt: buildPrompt('c_'),
+        empresa: empresa, nombre: nombre,
+        industria: document.getElementById('c_industria').value || '',
+        pais: document.getElementById('c_pais').value || '',
+        empleados: document.getElementById('c_emp').value || '',
+        anios: document.getElementById('c_anios').value || '',
+        modelo: document.getElementById('c_modelo').value || '',
+        vcanal: document.getElementById('c_vcanal').value || '',
+        vtiempo: document.getElementById('c_vtiempo').value || '',
+        vdolor: document.getElementById('c_vdolor').value || '',
+        acanal: document.getElementById('c_acanal').value || '',
+        avol: document.getElementById('c_avol').value || '',
+        adolar: document.getElementById('c_adolor').value || '',
+        otareas: document.getElementById('c_otareas').value || '',
+        ohoras: document.getElementById('c_ohoras').value || '',
+        nivel_tech: document.getElementById('sr1').value || '3',
+        resistencia: document.getElementById('sr2').value || '3',
+        d1: document.getElementById('c_d1').value || '',
+        d2: document.getElementById('c_d2').value || '',
+        d3: document.getElementById('c_d3').value || '',
+        urgencia: document.getElementById('sr3').value || '3',
+        decisor: document.getElementById('c_dec').value || '',
+        presupuesto: document.getElementById('c_pres').value || '',
+        disposicion: document.getElementById('sr4').value || '3',
+        intentos: document.getElementById('c_int').value || '',
+        objetivo: document.getElementById('c_obj').value || '',
+        adicional: document.getElementById('c_add').value || ''
+      })
     });
-    var data = await res.json();
-    var informe = data.result || 'Error generando el informe.';
-    var sc = calcScores('c_');
-       await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
-      empresa: empresa,
-      nombre: nombre,
-      informe: 'PREPARACION IA: ' + sc.readiness + '% | AHORRO EST: $' + sc.ahorro + '/mes | IMPACTO: ' + sc.impacto + '\n\n' + informe
-    });
-    showScreen('screen-gracias');
-  } catch(e) {
-    console.error('Error:', e);
-    showScreen('screen-gracias');
-  }
+  } catch(e) { console.error('Error:', e); }
 }
 
 async function genReport() {
@@ -725,14 +752,12 @@ function exportPDF() {
     '<div class="pdf-sc"><div class="pdf-sc-v">$' + sc.ahorro.toLocaleString() + '</div><div class="pdf-sc-l">Ahorro est./mes</div></div>' +
     '<div class="pdf-sc"><div class="pdf-sc-v" style="color:#d97706">' + sc.impacto + '</div><div class="pdf-sc-l">Impacto potencial</div></div>';
   document.getElementById('pdf-content').textContent = text;
-  var el = document.getElementById('pdf-template');
   html2pdf().set({
-    margin: 10,
-    filename: 'Diagnostico_IA_' + empresa.replace(/\s+/g, '_') + '.pdf',
+    margin: 10, filename: 'Diagnostico_IA_' + empresa.replace(/\s+/g, '_') + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(el).save();
+  }).from(document.getElementById('pdf-template')).save();
 }
 </script>
 </body>
