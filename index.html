@@ -662,7 +662,9 @@ function calcScores(pre) {
 async function submitForm() {
   var empresa = document.getElementById('c_empresa').value || 'Empresa';
   var nombre = document.getElementById('c_nombre').value || 'Cliente';
-  showScreen('screen-gracias');
+  var btn = document.querySelector('#cs6 .btn-gen');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
   try {
     var res = await fetch(VERCEL_API, {
       method: 'POST',
