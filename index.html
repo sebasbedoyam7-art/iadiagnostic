@@ -659,33 +659,6 @@ async function seleccionarCliente(id) {
   }
 }
 
-async function seleccionarCliente(id) {
-  try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/submissions?id=eq.' + id, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-    });
-    var data = await res.json();
-    var c = data[0];
-    if (!c) return;
-    function sv(id, val) { try { document.getElementById(id).value = val || ''; } catch(e){} }
-    sv('k_empresa', c.empresa); sv('k_industria', c.industria); sv('k_pais', c.pais);
-    sv('k_emp', c.empleados); sv('k_anios', c.anios); sv('k_modelo', c.modelo);
-    sv('k_vcanal', c.vcanal); sv('k_vtiempo', c.vtiempo); sv('k_vdolor', c.vdolor);
-    sv('k_acanal', c.acanal); sv('k_avol', c.avol); sv('k_adolor', c.adolor);
-    sv('k_otareas', c.otareas); sv('k_ohoras', c.ohoras);
-    sv('k_d1', c.d1); sv('k_d2', c.d2); sv('k_d3', c.d3);
-    sv('k_dec', c.decisor); sv('k_pres', c.presupuesto);
-    sv('k_int', c.intentos); sv('k_obj', c.objetivo); sv('k_add', c.adicional);
-    if (c.nivel_tech) { document.getElementById('ksr1').value = c.nivel_tech; updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto']); }
-    if (c.resistencia) { document.getElementById('ksr2').value = c.resistencia; updateSl('ksr2','ksv2',['Muy alta','Alta','Media','Baja','Muy baja']); }
-    if (c.urgencia) { document.getElementById('ksr3').value = c.urgencia; updateSl('ksr3','ksv3',['Muy baja','Baja','Media','Alta','Muy alta']); }
-    if (c.disposicion) { document.getElementById('ksr4').value = c.disposicion; updateSl('ksr4','ksv4',['Muy baja','Baja','Media','Alta','Muy alta']); }
-    kgo(1);
-  } catch(e) {
-    alert('Error cargando el cliente.');
-  }
-}
-
 function limpiarFormK() {
   var ids = ['k_empresa','k_industria','k_pais','k_emp','k_anios','k_modelo','k_vcanal','k_vtiempo','k_vdolor','k_acanal','k_avol','k_adolor','k_otareas','k_ohoras','k_d1','k_d2','k_d3','k_dec','k_pres','k_int','k_obj','k_add','k_tools'];
   ids.forEach(function(id){ try{ document.getElementById(id).value=''; }catch(e){} });
