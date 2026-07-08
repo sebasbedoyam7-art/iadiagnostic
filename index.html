@@ -611,12 +611,7 @@ function calcScores(pre) {
 
 async function cargarClientes() {
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/submissions?select=id,created_at,empresa,industria,pais,estado&order=created_at.desc', {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY
-      }
-    });
+    var res = await fetch('https://diagnosticpro.vercel.app/api/clientes');
     var data = await res.json();
     var container = document.getElementById('client-list-container');
     if (!data || data.length === 0) {
@@ -636,6 +631,31 @@ async function cargarClientes() {
     container.innerHTML = html;
   } catch(e) {
     document.getElementById('client-list-container').innerHTML = '<div class="empty-state">Error cargando clientes.</div>';
+  }
+}
+
+async function seleccionarCliente(id) {
+  try {
+    var res = await fetch('https://diagnosticpro.vercel.app/api/clientes?id=' + id);
+    var data = await res.json();
+    var c = data[0];
+    if (!c) return;
+    function sv(id, val) { try { document.getElementById(id).value = val || ''; } catch(e){} }
+    sv('k_empresa', c.empresa); sv('k_industria', c.industria); sv('k_pais', c.pais);
+    sv('k_emp', c.empleados); sv('k_anios', c.anios); sv('k_modelo', c.modelo);
+    sv('k_vcanal', c.vcanal); sv('k_vtiempo', c.vtiempo); sv('k_vdolor', c.vdolor);
+    sv('k_acanal', c.acanal); sv('k_avol', c.avol); sv('k_adolor', c.adolor);
+    sv('k_otareas', c.otareas); sv('k_ohoras', c.ohoras);
+    sv('k_d1', c.d1); sv('k_d2', c.d2); sv('k_d3', c.d3);
+    sv('k_dec', c.decisor); sv('k_pres', c.presupuesto);
+    sv('k_int', c.intentos); sv('k_obj', c.objetivo); sv('k_add', c.adicional);
+    if (c.nivel_tech) { document.getElementById('ksr1').value = c.nivel_tech; updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto']); }
+    if (c.resistencia) { document.getElementById('ksr2').value = c.resistencia; updateSl('ksr2','ksv2',['Muy alta','Alta','Media','Baja','Muy baja']); }
+    if (c.urgencia) { document.getElementById('ksr3').value = c.urgencia; updateSl('ksr3','ksv3',['Muy baja','Baja','Media','Alta','Muy alta']); }
+    if (c.disposicion) { document.getElementById('ksr4').value = c.disposicion; updateSl('ksr4','ksv4',['Muy baja','Baja','Media','Alta','Muy alta']); }
+    kgo(1);
+  } catch(e) {
+    alert('Error cargando el cliente.');
   }
 }
 
