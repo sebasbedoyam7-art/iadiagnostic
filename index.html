@@ -19,11 +19,7 @@ input[type="range"]{accent-color:#10162a;width:100%}
 .screen{display:none!important}
 .screen.active{display:block!important}
 #s-intro.active,#s-login.active,#s-loading.active{display:flex!important}
-
-/* ---- LOGO SVG ---- */
 .logo-svg{height:30px;width:auto;display:block}
-
-/* ---- NAV ---- */
 .nav{display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:76px;background:#10162a;color:#fff;position:sticky;top:0;z-index:10}
 .nav-brand{display:flex;align-items:center;gap:14px}
 .nav-brand-text{display:flex;flex-direction:column;line-height:1.25;border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
@@ -36,18 +32,12 @@ input[type="range"]{accent-color:#10162a;width:100%}
 .dot.active{width:28px;background:#fff}
 .dot.done{width:8px;border-radius:50%;background:rgba(255,255,255,.5)}
 .dot.pending{width:8px;border-radius:50%;background:rgba(255,255,255,.2)}
-
-/* ---- CARD ---- */
 .card{background:#fff;border:1px solid #e2e4ea;border-radius:6px;box-shadow:0 1px 3px rgba(16,22,42,.08)}
-
-/* ---- WIZARD CONTENT ---- */
 .wizard-wrap{max-width:900px;margin:0 auto;padding:56px 56px 100px}
 .step-header{display:flex;align-items:center;gap:16px;margin-bottom:36px}
 .step-num{width:34px;height:34px;flex:none;border-radius:50%;background:#10162a;color:#fff;display:flex;align-items:center;justify-content:center;font:700 14px 'Public Sans',sans-serif}
 .step-title{font:700 22px 'Public Sans',sans-serif;color:#10162a}
 .step-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
-
-/* ---- FORM FIELDS ---- */
 .field-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:8px}
 .field-input{width:100%;padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font-size:14.5px;color:#10162a;background:#fff;outline:none;transition:border-color .2s}
 .field-input:focus{border-color:#10162a}
@@ -56,44 +46,24 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
 .mb-22{margin-bottom:22px}
 .mb-28{margin-bottom:28px}
-.mb-32{margin-bottom:32px}
-
-/* ---- SECTION CARD ---- */
 .section-card{border:1px solid #e2e4ea;border-radius:6px;padding:28px;margin-bottom:20px}
 .section-badge{display:inline-block;font:600 12px 'Public Sans',sans-serif;color:#10162a;background:#eef0f4;padding:5px 12px;border-radius:3px;margin-bottom:20px}
-
-/* ---- HERRAMIENTAS CHECKBOXES ---- */
 .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
 .tool-item{padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font:500 13.5px 'Public Sans',sans-serif;color:#47516e;cursor:pointer;transition:all .2s;user-select:none}
 .tool-item.selected{border-color:#10162a;background:#f5f6f8;color:#10162a;font-weight:600}
-
-/* ---- RANGE SLIDER ROW ---- */
 .range-row{margin-bottom:28px}
 .range-header{display:flex;justify-content:space-between;margin-bottom:10px}
 .range-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase}
 .range-val{font:600 13px 'Public Sans',sans-serif;color:#10162a}
-
-/* ---- PRIORIDADES CHECKBOXES ---- */
 .prio-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px}
-
-/* ---- WIZARD FOOTER ---- */
 .wizard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:28px;border-top:1px solid #e2e4ea}
 .btn-back{border:1px solid #dfe2e8;background:#fff;color:#47516e;font:600 14px 'Public Sans',sans-serif;padding:14px 24px;border-radius:4px;cursor:pointer;transition:all .2s}
 .btn-back:hover{border-color:#10162a;color:#10162a}
 .btn-next{border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;transition:opacity .2s}
 .btn-next:hover{opacity:.85}
-.btn-next:disabled{opacity:.4;cursor:not-allowed}
-
-/* ---- LOADING ---- */
-#s-loading{min-height:100vh;display:none;align-items:center;justify-content:center}
-#s-loading.active{display:flex}
-.loading-card{text-align:center;padding:60px 48px}
+#s-loading{min-height:100vh;align-items:center;justify-content:center}
 .loader{width:44px;height:44px;border:3px solid #e2e4ea;border-top-color:#10162a;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-title{font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px}
-.loading-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
-
-/* ---- PREVIEW (client result) ---- */
 .preview-wrap{max-width:780px;margin:0 auto;padding:56px 24px 100px}
 .preview-tag{font:600 11px 'Public Sans',sans-serif;letter-spacing:.14em;color:#8890a4;text-transform:uppercase;margin-bottom:10px}
 .preview-title{font:700 28px 'Public Sans',sans-serif;color:#10162a;margin:0 0 6px}
@@ -113,22 +83,17 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .cta-block h3{font:700 20px 'Public Sans',sans-serif;margin:0 0 10px}
 .cta-block p{font:400 14px 'Public Sans',sans-serif;color:#8890a4;margin:0 0 22px}
 .btn-cta-white{display:inline-block;background:#fff;color:#10162a;font:600 14px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;text-decoration:none;border:none;cursor:pointer}
-
-/* ---- LOGIN ---- */
-#s-login{min-height:100vh;display:none;align-items:center;justify-content:center;padding:40px}
-#s-login.active{display:flex}
+#s-login{min-height:100vh;align-items:center;justify-content:center;padding:40px}
 .login-card{width:420px;max-width:100%;padding:44px}
 .login-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:30px}
 .login-title{font:700 15px 'Public Sans',sans-serif;color:#10162a}
 .tab-switch{display:flex;background:#eef0f4;border-radius:4px;padding:4px;margin-bottom:28px}
-.tab-item{flex:1;text-align:center;padding:11px 0;border-radius:3px;font:600 13.5px 'Public Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;color:#47516e}
+.tab-item{flex:1;text-align:center;padding:11px 0;border-radius:3px;font:600 13.5px 'Public Sans',sans-serif;cursor:pointer;transition:all .2s;color:#47516e}
 .tab-item.active{background:#10162a;color:#fff}
 .login-error{font:500 12.5px 'Public Sans',sans-serif;color:#a03b3b;margin-bottom:14px;display:none}
 .login-hint{text-align:center;margin-top:16px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4}
 .btn-full{width:100%;border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 0;border-radius:4px;margin-top:8px;transition:opacity .2s}
 .btn-full:hover{opacity:.85}
-
-/* ---- DASHBOARD ---- */
 .dash-wrap{max-width:1180px;margin:0 auto;padding:48px 56px 100px}
 .dash-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
 .dash-title{font:700 24px 'Public Sans',sans-serif;color:#10162a;margin:0}
@@ -146,8 +111,6 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .estado-enviado{background:#10162a;color:#fff}
 .btn-ver{border:1px solid #dfe2e8;background:#fff;color:#10162a;font:600 12.5px 'Public Sans',sans-serif;padding:9px 16px;border-radius:4px;cursor:pointer;transition:all .2s}
 .btn-ver:hover{border-color:#10162a}
-
-/* ---- DETAIL / REPORT ---- */
 .detail-wrap{max-width:1020px;margin:0 auto;padding:48px 56px 100px}
 .detail-section{padding:28px;margin-bottom:22px}
 .detail-label{font:600 10.5px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:5px}
@@ -173,13 +136,9 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .report-html strong{color:#10162a}
 .report-not-generated{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4;padding:32px;text-align:center;background:#f9fafb;border:1px dashed #dfe2e8;border-radius:4px}
 .send-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:flex-start;margin-top:14px}
-
-/* ---- STATUS MSG ---- */
 .status-msg{font:400 13px 'Public Sans',sans-serif;padding:10px 14px;border-radius:4px;display:none;margin-top:10px}
 .status-ok{background:rgba(5,150,105,.1);color:#065f46;border:1px solid rgba(5,150,105,.2)}
 .status-err{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.15)}
-
-/* ---- MOBILE ---- */
 @media(max-width:700px){
   .nav{padding:0 20px;height:64px}
   .nav-brand-text{display:none}
@@ -194,7 +153,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
 </head>
 <body>
 
-<!-- =================== SCREEN: INTRO =================== -->
+<!-- INTRO -->
 <div id="s-intro" class="screen active" style="min-height:100vh;align-items:center;justify-content:center;padding:40px">
   <div class="card" style="width:560px;max-width:100%;padding:44px 44px 36px">
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:34px">
@@ -209,20 +168,17 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <span style="font:400 12px 'Public Sans',sans-serif;color:#8890a4">Consultoría IA empresarial</span>
       </div>
     </div>
-
     <div class="tab-switch" style="margin-bottom:28px">
       <div class="tab-item active">Soy cliente</div>
       <div class="tab-item" onclick="irALogin()">Consultor</div>
     </div>
-
     <p style="font:400 14.5px/1.6 'Public Sans',sans-serif;color:#47516e;margin:0 0 26px">Completa el formulario de diagnóstico para recibir tu análisis de IA personalizado. Sin registro necesario.</p>
-
     <button onclick="iniciarFormulario()" class="btn-full">Comenzar diagnóstico</button>
     <div style="text-align:center;margin-top:14px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4">Sin registro necesario · Proceso de 5 minutos</div>
   </div>
 </div>
 
-<!-- =================== SCREEN: WIZARD =================== -->
+<!-- WIZARD -->
 <div id="s-wizard" class="screen">
   <nav class="nav">
     <div class="nav-brand">
@@ -239,15 +195,10 @@ textarea.field-input{resize:vertical;line-height:1.5}
     </div>
     <div class="nav-dots" id="step-dots"></div>
   </nav>
-
   <div class="wizard-wrap">
-
     <!-- STEP 1 -->
     <div id="step-1" style="display:none">
-      <div class="step-header">
-        <div class="step-num">1</div>
-        <div><div class="step-title">Tu empresa</div><div class="step-sub">Cuéntanos quiénes son</div></div>
-      </div>
+      <div class="step-header"><div class="step-num">1</div><div><div class="step-title">Tu empresa</div><div class="step-sub">Cuéntanos quiénes son</div></div></div>
       <div class="grid-2 mb-22">
         <div><div class="field-label">Nombre de la empresa</div><input class="field-input" id="f-empresa" placeholder="Ej. Distribuidora Los Andes"></div>
         <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Carlos Mamani"></div>
@@ -278,18 +229,13 @@ textarea.field-input{resize:vertical;line-height:1.5}
           </select>
         </div>
       </div>
-      <div>
-        <div class="field-label">¿Qué hace tu empresa?</div>
+      <div><div class="field-label">¿Qué hace tu empresa?</div>
         <textarea class="field-input" id="f-descripcion" rows="3" placeholder="Ej. Vendemos materiales de construcción al por mayor..."></textarea>
       </div>
     </div>
-
     <!-- STEP 2 -->
     <div id="step-2" style="display:none">
-      <div class="step-header">
-        <div class="step-num">2</div>
-        <div><div class="step-title">Tus procesos</div><div class="step-sub">Cómo funciona el día a día</div></div>
-      </div>
+      <div class="step-header"><div class="step-num">2</div><div><div class="step-title">Tus procesos</div><div class="step-sub">Cómo funciona el día a día</div></div></div>
       <div class="section-card">
         <div class="section-badge">Ventas</div>
         <div class="grid-2 mb-22">
@@ -320,14 +266,10 @@ textarea.field-input{resize:vertical;line-height:1.5}
         </div>
       </div>
     </div>
-
     <!-- STEP 3 -->
     <div id="step-3" style="display:none">
-      <div class="step-header">
-        <div class="step-num">3</div>
-        <div><div class="step-title">Tecnología actual</div><div class="step-sub">Qué herramientas usan hoy</div></div>
-      </div>
-      <div class="field-label mb-22" style="margin-bottom:12px">Herramientas que usan</div>
+      <div class="step-header"><div class="step-num">3</div><div><div class="step-title">Tecnología actual</div><div class="step-sub">Qué herramientas usan hoy</div></div></div>
+      <div class="field-label" style="margin-bottom:12px">Herramientas que usan</div>
       <div class="tool-grid" id="herramientas-grid">
         <div class="tool-item" data-tool="crm">CRM</div>
         <div class="tool-item" data-tool="erp">ERP</div>
@@ -348,13 +290,9 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <input type="range" min="0" max="100" value="50" id="f-resistenciaCambio" oninput="document.getElementById('resistencia-label').textContent=this.value+'%'">
       </div>
     </div>
-
     <!-- STEP 4 -->
     <div id="step-4" style="display:none">
-      <div class="step-header">
-        <div class="step-num">4</div>
-        <div><div class="step-title">Dolores del negocio</div><div class="step-sub">Los problemas más urgentes</div></div>
-      </div>
+      <div class="step-header"><div class="step-num">4</div><div><div class="step-title">Dolores del negocio</div><div class="step-sub">Los problemas más urgentes</div></div></div>
       <div class="mb-22"><div class="field-label">¿Cuál es el mayor problema operativo hoy?</div><textarea class="field-input" id="f-problemaOperativo" rows="3" placeholder="Ej. Perdemos leads porque no respondemos rápido..."></textarea></div>
       <div class="mb-22"><div class="field-label">¿Dónde se pierden más clientes?</div><textarea class="field-input" id="f-dondeSePierden" rows="3" placeholder="Ej. Las cotizaciones tardan mucho..."></textarea></div>
       <div class="mb-28"><div class="field-label">¿Qué tarea odia más hacer el equipo?</div><textarea class="field-input" id="f-tareaOdiada" rows="3" placeholder="Ej. Hacer reportes manuales..."></textarea></div>
@@ -363,13 +301,9 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <input type="range" min="0" max="100" value="50" id="f-urgencia" oninput="document.getElementById('urgencia-label').textContent=this.value+'%'">
       </div>
     </div>
-
     <!-- STEP 5 -->
     <div id="step-5" style="display:none">
-      <div class="step-header">
-        <div class="step-num">5</div>
-        <div><div class="step-title">Capacidad de inversión</div><div class="step-sub">Presupuesto y decisores</div></div>
-      </div>
+      <div class="step-header"><div class="step-num">5</div><div><div class="step-title">Capacidad de inversión</div><div class="step-sub">Presupuesto y decisores</div></div></div>
       <div class="grid-2 mb-22">
         <div><div class="field-label">¿Quién toma la decisión de inversión?</div>
           <select class="field-input" id="f-quienDecide">
@@ -388,16 +322,12 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <input type="range" min="0" max="100" value="50" id="f-disposicionInvertir" oninput="document.getElementById('disposicion-label').textContent=this.value+'%'">
       </div>
     </div>
-
     <!-- STEP 6 -->
     <div id="step-6" style="display:none">
-      <div class="step-header">
-        <div class="step-num">6</div>
-        <div><div class="step-title">Objetivos y prioridades</div><div class="step-sub">Hacia dónde quiere ir tu empresa</div></div>
-      </div>
+      <div class="step-header"><div class="step-num">6</div><div><div class="step-title">Objetivos y prioridades</div><div class="step-sub">Hacia dónde quiere ir tu empresa</div></div></div>
       <div class="mb-22"><div class="field-label">Objetivo principal a 12 meses</div><textarea class="field-input" id="f-objetivos12meses" rows="3" placeholder="Ej. Doblar las ventas y abrir una nueva sucursal..."></textarea></div>
       <div class="mb-22">
-        <div class="field-label" style="margin-bottom:12px">Prioridades del negocio (selecciona las que apliquen)</div>
+        <div class="field-label" style="margin-bottom:12px">Prioridades del negocio</div>
         <div class="prio-grid" id="prioridades-grid">
           <div class="tool-item" data-prio="crecer">Crecer en ventas</div>
           <div class="tool-item" data-prio="reducir">Reducir costos</div>
@@ -407,10 +337,9 @@ textarea.field-input{resize:vertical;line-height:1.5}
           <div class="tool-item" data-prio="datos">Más datos y reportes</div>
         </div>
       </div>
-      <div><div class="field-label">¿Algo más que quieras agregar?</div><textarea class="field-input" id="f-contextoAdicional" rows="3" placeholder="Cualquier contexto adicional que pueda ser útil..."></textarea></div>
+      <div><div class="field-label">¿Algo más que quieras agregar?</div><textarea class="field-input" id="f-contextoAdicional" rows="3" placeholder="Cualquier contexto adicional..."></textarea></div>
     </div>
-
-    <!-- WIZARD FOOTER -->
+    <!-- FOOTER -->
     <div class="wizard-footer">
       <button class="btn-back" id="btn-back" onclick="pasoAnterior()">← Atrás</button>
       <div style="font:400 12.5px 'Public Sans',sans-serif;color:#8890a4" id="step-counter">Paso 1 de 6</div>
@@ -419,7 +348,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
   </div>
 </div>
 
-<!-- =================== SCREEN: LOADING =================== -->
+<!-- LOADING -->
 <div id="s-loading" class="screen" style="background:#eef0f4">
   <div style="min-height:100vh;display:flex;align-items:center;justify-content:center">
     <div class="card" style="text-align:center;padding:60px 48px;width:460px;max-width:90vw">
@@ -430,7 +359,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
   </div>
 </div>
 
-<!-- =================== SCREEN: PREVIEW (cliente) =================== -->
+<!-- PREVIEW -->
 <div id="s-preview" class="screen" style="background:#eef0f4">
   <nav class="nav">
     <div class="nav-brand">
@@ -461,11 +390,10 @@ textarea.field-input{resize:vertical;line-height:1.5}
       <p>Un consultor de Astrum revisará tu diagnóstico y te enviará un análisis detallado con recomendaciones.</p>
       <a href="https://astrum-agency.com#contacto" class="btn-cta-white" target="_blank">Hablar con un consultor</a>
     </div>
-    <div style="text-align:center;margin-top:20px;font:400 11.5px 'Public Sans',sans-serif;color:#8890a4">Este diagnóstico es una estimación preliminar. Las recomendaciones finales son elaboradas por un consultor especializado.</div>
   </div>
 </div>
 
-<!-- =================== SCREEN: LOGIN =================== -->
+<!-- LOGIN -->
 <div id="s-login" class="screen" style="background:#eef0f4">
   <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px">
     <div class="card login-card">
@@ -478,7 +406,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
         </svg>
         <div class="login-title">Acceso de consultores</div>
       </div>
-      <div class="tab-switch" style="margin-bottom:28px">
+      <div class="tab-switch">
         <div class="tab-item" onclick="showScreen('s-intro')">← Portal clientes</div>
         <div class="tab-item active">Consultor</div>
       </div>
@@ -492,12 +420,12 @@ textarea.field-input{resize:vertical;line-height:1.5}
       </div>
       <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
       <button class="btn-full" onclick="doLogin()">Ingresar</button>
-      <div class="login-hint" style="margin-top:16px">¿Eres cliente? <span style="color:#10162a;font-weight:600;cursor:pointer" onclick="showScreen('s-intro')">Ir al portal →</span></div>
+      <div class="login-hint">¿Eres cliente? <span style="color:#10162a;font-weight:600;cursor:pointer" onclick="showScreen('s-intro')">Ir al portal →</span></div>
     </div>
   </div>
 </div>
 
-<!-- =================== SCREEN: DASHBOARD =================== -->
+<!-- DASHBOARD -->
 <div id="s-dashboard" class="screen" style="background:#eef0f4">
   <nav class="nav">
     <div class="nav-brand">
@@ -521,20 +449,16 @@ textarea.field-input{resize:vertical;line-height:1.5}
     </div>
     <div class="card" style="overflow:hidden">
       <table class="client-table">
-        <thead>
-          <tr>
-            <th>Empresa</th><th>Industria</th><th>Fecha</th><th>Estado</th><th style="text-align:right">Acción</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Empresa</th><th>Industria</th><th>Fecha</th><th>Estado</th><th style="text-align:right">Acción</th></tr></thead>
         <tbody id="clients-tbody">
-          <tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4;font:400 13.5px 'Public Sans',sans-serif">Cargando clientes...</td></tr>
+          <tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4">Cargando clientes...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- =================== SCREEN: DETAIL =================== -->
+<!-- DETAIL -->
 <div id="s-detail" class="screen" style="background:#eef0f4">
   <nav class="nav">
     <div class="nav-brand">
@@ -552,31 +476,23 @@ textarea.field-input{resize:vertical;line-height:1.5}
     <button class="nav-btn" onclick="showScreen('s-dashboard')">← Volver</button>
   </nav>
   <div class="detail-wrap">
-
     <div class="card detail-section">
       <div class="section-badge">Datos de la empresa</div>
       <div class="detail-grid-4" id="d-empresa-grid"></div>
-      <div style="margin-top:16px">
-        <div class="detail-label">Qué hace la empresa</div>
-        <div class="detail-val" id="d-descripcion"></div>
-      </div>
+      <div style="margin-top:16px"><div class="detail-label">Qué hace la empresa</div><div class="detail-val" id="d-descripcion"></div></div>
     </div>
-
     <div class="card detail-section">
       <div class="section-badge">Procesos</div>
       <div class="detail-grid-2" id="d-procesos-grid"></div>
     </div>
-
     <div class="card detail-section">
       <div class="section-badge">Tecnología y dolores</div>
       <div id="d-tech-content"></div>
     </div>
-
     <div class="card detail-section">
       <div class="section-badge">Inversión y objetivos</div>
       <div id="d-inversion-content"></div>
     </div>
-
     <div class="analyst-card">
       <div class="analyst-title">Informe de IA</div>
       <div class="analyst-sub" id="report-subtitle">Genera el análisis automático de este cliente.</div>
@@ -585,7 +501,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <button class="btn-action" id="btn-edit-report" onclick="toggleEdit()" style="display:none">Editar</button>
         <button class="btn-action" id="btn-pdf" onclick="exportPDF()" style="display:none">Descargar PDF</button>
       </div>
-      <div id="report-view"><div class="report-not-generated">El informe aún no ha sido generado. Haz clic en "Generar informe con IA" para comenzar.</div></div>
+      <div id="report-view"><div class="report-not-generated">El informe aún no ha sido generado.</div></div>
       <textarea id="report-edit" class="report-area" style="display:none"></textarea>
       <div style="margin-top:16px">
         <div class="field-label" style="margin-bottom:8px">Enviar informe al cliente</div>
@@ -600,400 +516,158 @@ textarea.field-input{resize:vertical;line-height:1.5}
 </div>
 
 <script>
-// ===================== CONFIG =====================
-var VERCEL_API    = 'https://diagnosticpro.vercel.app/api/diagnostico';
+var VERCEL_API = 'https://diagnosticpro.vercel.app/api/diagnostico';
 var VERCEL_CLIENTES = 'https://diagnosticpro.vercel.app/api/clientes';
 var USERS = { 'sebas': 'agencia2024', 'consultor': 'astrum2026' };
+var paso = 1, totalPasos = 6;
+var herramientasSeleccionadas = [], prioridadesSeleccionadas = [];
+var clienteActual = null, reporteTexto = '';
 
-var paso = 1;
-var totalPasos = 6;
-var herramientasSeleccionadas = [];
-var prioridadesSeleccionadas = [];
-var clienteActual = null;
-var reporteTexto = '';
-
-// ===================== SESSION =====================
 (function() {
   emailjs.init({ publicKey: 'SLAVvDh-aDomMebrV' });
-  if (localStorage.getItem('consultor_ok') === '1') {
-    showScreen('s-dashboard');
-    cargarClientes();
-  }
+  if (localStorage.getItem('consultor_ok') === '1') { showScreen('s-dashboard'); cargarClientes(); }
 })();
 
-// ===================== NAVEGACIÓN =====================
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
 }
-
 function irALogin() { showScreen('s-login'); }
+function iniciarFormulario() { paso = 1; showScreen('s-wizard'); mostrarPaso(); }
 
-function iniciarFormulario() {
-  paso = 1;
-  showScreen('s-wizard');
-  mostrarPaso();
-}
-
-// ===================== WIZARD =====================
 function mostrarPaso() {
-  for (var i = 1; i <= totalPasos; i++) {
-    document.getElementById('step-' + i).style.display = i === paso ? 'block' : 'none';
-  }
-  document.getElementById('step-counter').textContent = 'Paso ' + paso + ' de ' + totalPasos;
-  document.getElementById('btn-back').style.visibility = paso === 1 ? 'hidden' : 'visible';
-  document.getElementById('btn-next').textContent = paso === totalPasos ? 'Obtener diagnóstico' : 'Continuar →';
-  renderDots();
-  window.scrollTo(0, 0);
+  for (var i = 1; i <= totalPasos; i++) document.getElementById('step-'+i).style.display = i===paso?'block':'none';
+  document.getElementById('step-counter').textContent = 'Paso '+paso+' de '+totalPasos;
+  document.getElementById('btn-back').style.visibility = paso===1?'hidden':'visible';
+  document.getElementById('btn-next').textContent = paso===totalPasos?'Obtener diagnóstico':'Continuar →';
+  renderDots(); window.scrollTo(0,0);
 }
-
 function renderDots() {
-  var html = '';
-  for (var i = 1; i <= totalPasos; i++) {
-    var cls = i < paso ? 'done' : i === paso ? 'active' : 'pending';
-    html += '<div class="dot ' + cls + '"></div>';
-  }
-  document.getElementById('step-dots').innerHTML = html;
+  var h=''; for(var i=1;i<=totalPasos;i++){var c=i<paso?'done':i===paso?'active':'pending';h+='<div class="dot '+c+'"></div>';}
+  document.getElementById('step-dots').innerHTML=h;
 }
-
-function pasoSiguiente() {
-  if (!validarPaso()) return;
-  if (paso < totalPasos) { paso++; mostrarPaso(); }
-  else { enviarFormulario(); }
-}
-
-function pasoAnterior() {
-  if (paso > 1) { paso--; mostrarPaso(); }
-  else { showScreen('s-intro'); }
-}
-
+function pasoSiguiente() { if(!validarPaso())return; if(paso<totalPasos){paso++;mostrarPaso();}else{enviarFormulario();} }
+function pasoAnterior() { if(paso>1){paso--;mostrarPaso();}else{showScreen('s-intro');} }
 function validarPaso() {
-  if (paso === 1) {
-    if (!v('f-empresa') || !v('f-nombre') || !v('f-industria')) {
-      alert('Por favor completa: empresa, nombre e industria.'); return false;
-    }
-  }
+  if(paso===1&&(!v('f-empresa')||!v('f-nombre')||!v('f-industria'))){alert('Completa empresa, nombre e industria.');return false;}
   return true;
 }
-function v(id) { return document.getElementById(id)?.value?.trim(); }
+function v(id){return document.getElementById(id)?.value?.trim();}
 
-// Herramientas toggles
-document.querySelectorAll('#herramientas-grid .tool-item').forEach(el => {
-  el.addEventListener('click', function() {
-    var t = this.dataset.tool;
-    this.classList.toggle('selected');
-    if (herramientasSeleccionadas.includes(t)) {
-      herramientasSeleccionadas = herramientasSeleccionadas.filter(x => x !== t);
-    } else {
-      herramientasSeleccionadas.push(t);
-    }
+document.querySelectorAll('#herramientas-grid .tool-item').forEach(el=>{
+  el.addEventListener('click',function(){
+    var t=this.dataset.tool; this.classList.toggle('selected');
+    herramientasSeleccionadas=this.classList.contains('selected')?[...herramientasSeleccionadas,t]:herramientasSeleccionadas.filter(x=>x!==t);
+  });
+});
+document.querySelectorAll('#prioridades-grid .tool-item').forEach(el=>{
+  el.addEventListener('click',function(){
+    var p=this.dataset.prio; this.classList.toggle('selected');
+    prioridadesSeleccionadas=this.classList.contains('selected')?[...prioridadesSeleccionadas,p]:prioridadesSeleccionadas.filter(x=>x!==p);
   });
 });
 
-// Prioridades toggles
-document.querySelectorAll('#prioridades-grid .tool-item').forEach(el => {
-  el.addEventListener('click', function() {
-    var p = this.dataset.prio;
-    this.classList.toggle('selected');
-    if (prioridadesSeleccionadas.includes(p)) {
-      prioridadesSeleccionadas = prioridadesSeleccionadas.filter(x => x !== p);
-    } else {
-      prioridadesSeleccionadas.push(p);
-    }
-  });
-});
-
-// ===================== ENVIAR FORMULARIO =====================
 async function enviarFormulario() {
   showScreen('s-loading');
-
   var data = {
-    empresa: v('f-empresa'), nombre: v('f-nombre'), industria: v('f-industria'),
-    pais: v('f-pais'), empleados: v('f-empleados'), anios: v('f-anios'),
-    modelo: v('f-descripcion'),
-    vcanal: v('f-comoConsiguen'), vtiempo: v('f-tiempoCierre'), vdolor: v('f-procesoLento'),
-    acanal: v('f-canalesAtencion'), avol: v('f-consultasDia'), adolar: v('f-preguntasRepiten'),
-    otareas: v('f-tareasManuales'), ohoras: v('f-horasPerdidas'),
-    nivel_tech: document.getElementById('f-nivelTecnologico').value,
-    resistencia: document.getElementById('f-resistenciaCambio').value,
-    d1: v('f-problemaOperativo'), d2: v('f-dondeSePierden'), d3: v('f-tareaOdiada'),
-    urgencia: document.getElementById('f-urgencia').value,
-    decisor: v('f-quienDecide'), presupuesto: v('f-presupuesto'),
-    disposicion: document.getElementById('f-disposicionInvertir').value,
-    intentos: v('f-solucionesIntentadas'), objetivo: v('f-objetivos12meses'),
-    adicional: JSON.stringify({ herramientas: herramientasSeleccionadas, prioridades: prioridadesSeleccionadas, contexto: v('f-contextoAdicional') })
+    empresa:v('f-empresa'),nombre:v('f-nombre'),industria:v('f-industria'),pais:v('f-pais'),empleados:v('f-empleados'),anios:v('f-anios'),
+    modelo:v('f-descripcion'),vcanal:v('f-comoConsiguen'),vtiempo:v('f-tiempoCierre'),vdolor:v('f-procesoLento'),
+    acanal:v('f-canalesAtencion'),avol:v('f-consultasDia'),adolar:v('f-preguntasRepiten'),
+    otareas:v('f-tareasManuales'),ohoras:v('f-horasPerdidas'),
+    nivel_tech:document.getElementById('f-nivelTecnologico').value,
+    resistencia:document.getElementById('f-resistenciaCambio').value,
+    d1:v('f-problemaOperativo'),d2:v('f-dondeSePierden'),d3:v('f-tareaOdiada'),
+    urgencia:document.getElementById('f-urgencia').value,
+    decisor:v('f-quienDecide'),presupuesto:v('f-presupuesto'),
+    disposicion:document.getElementById('f-disposicionInvertir').value,
+    intentos:v('f-solucionesIntentadas'),objetivo:v('f-objetivos12meses'),
+    adicional:JSON.stringify({herramientas:herramientasSeleccionadas,prioridades:prioridadesSeleccionadas,contexto:v('f-contextoAdicional')})
   };
-
-  var prompt = buildPrompt(data);
-
   try {
-    var res = await fetch(VERCEL_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, ...data })
-    });
-    var json = await res.json();
-    mostrarPreview(data, json.content || json.result || json.texto || 'Error generando el diagnóstico.');
-  } catch(e) {
-    mostrarPreview(data, 'Error al conectar con el servidor. Por favor intenta de nuevo.');
-  }
+    var res=await fetch(VERCEL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:buildPrompt(data),...data})});
+    var json=await res.json();
+    mostrarPreview(data,json.content||json.result||json.texto||'Error generando el diagnóstico.');
+  } catch(e){mostrarPreview(data,'Error al conectar con el servidor.');}
 }
 
-function buildPrompt(d) {
+function buildPrompt(d){
   return `Eres un consultor experto en inteligencia artificial aplicada a negocios. Analiza esta empresa y genera un diagnóstico profesional en español.
 
-EMPRESA: ${d.empresa || '—'} | Industria: ${d.industria || '—'} | País: ${d.pais || '—'} | Empleados: ${d.empleados || '—'} | Años: ${d.anios || '—'}
-QUÉ HACE: ${d.modelo || '—'}
-
-VENTAS: Canal: ${d.vcanal || '—'} | Tiempo cierre: ${d.vtiempo || '—'} | Proceso lento: ${d.vdolor || '—'}
-ATENCIÓN: Canales: ${d.acanal || '—'} | Consultas/día: ${d.avol || '—'} | Repetitivo: ${d.adolar || '—'}
-OPERACIONES: Tareas manuales: ${d.otareas || '—'} | Horas perdidas/semana: ${d.ohoras || '—'}
-TECNOLOGÍA: Nivel tech: ${d.nivel_tech || 50}% | Resistencia al cambio: ${d.resistencia || 50}%
-DOLORES: Problema operativo: ${d.d1 || '—'} | Dónde pierden clientes: ${d.d2 || '—'} | Tarea odiada: ${d.d3 || '—'} | Urgencia: ${d.urgencia || 50}%
-INVERSIÓN: Decisor: ${d.decisor || '—'} | Presupuesto: ${d.presupuesto || '—'} | Disposición: ${d.disposicion || 50}%
-OBJETIVOS: ${d.objetivo || '—'} | Intentos previos: ${d.intentos || '—'}
-ADICIONAL: ${d.adicional || '—'}
+EMPRESA: ${d.empresa||'—'} | Industria: ${d.industria||'—'} | País: ${d.pais||'—'} | Empleados: ${d.empleados||'—'} | Años: ${d.anios||'—'}
+QUÉ HACE: ${d.modelo||'—'}
+VENTAS: Canal: ${d.vcanal||'—'} | Tiempo cierre: ${d.vtiempo||'—'} | Proceso lento: ${d.vdolor||'—'}
+ATENCIÓN: Canales: ${d.acanal||'—'} | Consultas/día: ${d.avol||'—'} | Repetitivo: ${d.adolar||'—'}
+OPERACIONES: Tareas manuales: ${d.otareas||'—'} | Horas perdidas/semana: ${d.ohoras||'—'}
+TECNOLOGÍA: Nivel tech: ${d.nivel_tech||50}% | Resistencia al cambio: ${d.resistencia||50}%
+DOLORES: Problema operativo: ${d.d1||'—'} | Dónde pierden clientes: ${d.d2||'—'} | Tarea odiada: ${d.d3||'—'} | Urgencia: ${d.urgencia||50}%
+INVERSIÓN: Decisor: ${d.decisor||'—'} | Presupuesto: ${d.presupuesto||'—'} | Disposición: ${d.disposicion||50}%
+OBJETIVOS: ${d.objetivo||'—'} | Intentos previos: ${d.intentos||'—'}
+ADICIONAL: ${d.adicional||'—'}
 
 Genera el diagnóstico con estas secciones en markdown:
 ## Resumen ejecutivo
-(2-3 párrafos con diagnóstico general)
-
 ## Puntuaciones
 - **Potencial de automatización**: X/100
 - **Madurez digital**: X/100
 - **Urgencia de implementación**: X/100
-
 ## Oportunidades identificadas
-(3-5 oportunidades concretas de IA numeradas)
-
 ## Recomendaciones prioritarias
-(3 recomendaciones específicas con impacto estimado)
-
 ## Próximos pasos sugeridos
-(3-4 pasos concretos y accionables)
 
 Sé específico, usa los datos de la empresa. Máximo 600 palabras.`;
 }
 
-// ===================== PREVIEW =====================
-function mostrarPreview(data, texto) {
-  reporteTexto = texto;
-  document.getElementById('preview-empresa').textContent = data.empresa || 'Tu empresa';
-  document.getElementById('preview-empresa-nav').textContent = data.empresa || '';
-
-  // Extract scores
-  var scores = extractScores(texto);
-  var grid = document.getElementById('scores-grid');
-  grid.innerHTML = [
-    { label: 'Potencial de automatización', val: scores[0] },
-    { label: 'Madurez digital', val: scores[1] },
-    { label: 'Urgencia de implementación', val: scores[2] }
-  ].map(function(s) {
-    var badge = s.val >= 70 ? 'badge-alto' : s.val >= 40 ? 'badge-medio' : 'badge-bajo';
-    var label = s.val >= 70 ? 'Alto' : s.val >= 40 ? 'Medio' : 'Bajo';
-    return '<div class="card score-card"><div class="score-num">' + s.val + '</div><div class="score-label">' + s.label + '</div><span class="score-badge ' + badge + '">' + label + '</span></div>';
+function mostrarPreview(data,texto){
+  reporteTexto=texto;
+  document.getElementById('preview-empresa').textContent=data.empresa||'Tu empresa';
+  document.getElementById('preview-empresa-nav').textContent=data.empresa||'';
+  var scores=extractScores(texto);
+  document.getElementById('scores-grid').innerHTML=[
+    {label:'Potencial de automatización',val:scores[0]},
+    {label:'Madurez digital',val:scores[1]},
+    {label:'Urgencia de implementación',val:scores[2]}
+  ].map(function(s){
+    var b=s.val>=70?'badge-alto':s.val>=40?'badge-medio':'badge-bajo';
+    var l=s.val>=70?'Alto':s.val>=40?'Medio':'Bajo';
+    return '<div class="card score-card"><div class="score-num">'+s.val+'</div><div class="score-label">'+s.label+'</div><span class="score-badge '+b+'">'+l+'</span></div>';
   }).join('');
-
-  // Summary
-  var summary = extractSection(texto, 'Resumen ejecutivo') || texto.substring(0, 500);
-  document.getElementById('preview-summary').innerHTML = marked.parse(summary);
-
+  var summary=extractSection(texto,'Resumen ejecutivo')||texto.substring(0,500);
+  document.getElementById('preview-summary').innerHTML=marked.parse(summary);
   showScreen('s-preview');
 }
-
-function extractScores(text) {
-  var nums = [];
-  var matches = text.match(/:\s*(\d{1,3})\/100/g) || [];
-  matches.forEach(function(m) { var n = parseInt(m.match(/\d+/)[0]); if (n >= 0 && n <= 100) nums.push(n); });
-  while (nums.length < 3) nums.push(50);
-  return nums.slice(0, 3);
+function extractScores(text){
+  var nums=[],m=text.match(/:\s*(\d{1,3})\/100/g)||[];
+  m.forEach(function(x){var n=parseInt(x.match(/\d+/)[0]);if(n>=0&&n<=100)nums.push(n);});
+  while(nums.length<3)nums.push(50); return nums.slice(0,3);
+}
+function extractSection(text,section){
+  var m=text.match(new RegExp('##\\s*'+section+'\\s*\\n([\\s\\S]*?)(?=\\n##|$)','i'));
+  return m?m[1].trim():null;
 }
 
-function extractSection(text, section) {
-  var re = new RegExp('##\\s*' + section + '\\s*\\n([\\s\\S]*?)(?=\\n##|$)', 'i');
-  var m = text.match(re);
-  return m ? m[1].trim() : null;
+function doLogin(){
+  var u=document.getElementById('login-user').value.trim(),p=document.getElementById('login-pass').value;
+  var err=document.getElementById('login-error');
+  if(USERS[u]&&USERS[u]===p){err.style.display='none';localStorage.setItem('consultor_ok','1');showScreen('s-dashboard');cargarClientes();}
+  else{err.style.display='block';}
 }
+function doLogout(){localStorage.removeItem('consultor_ok');showScreen('s-login');}
 
-// ===================== LOGIN =====================
-function doLogin() {
-  var u = document.getElementById('login-user').value.trim();
-  var p = document.getElementById('login-pass').value;
-  var err = document.getElementById('login-error');
-  if (USERS[u] && USERS[u] === p) {
-    err.style.display = 'none';
-    localStorage.setItem('consultor_ok', '1');
-    showScreen('s-dashboard');
-    cargarClientes();
-  } else {
-    err.style.display = 'block';
-  }
-}
-
-function doLogout() {
-  localStorage.removeItem('consultor_ok');
-  showScreen('s-login');
-}
-
-// ===================== CLIENTES =====================
-async function cargarClientes() {
-  try {
-    var res = await fetch(VERCEL_CLIENTES);
-    var clientes = await res.json();
-    var tbody = document.getElementById('clients-tbody');
-    document.getElementById('dash-count').textContent = clientes.length + ' diagnóstico' + (clientes.length !== 1 ? 's' : '') + ' recibido' + (clientes.length !== 1 ? 's' : '');
-    if (!clientes.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4;font:400 13.5px \'Public Sans\',sans-serif">No hay clientes aún.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = clientes.filter(c => c.empresa).map(function(c) {
-      var fecha = c.created_at ? new Date(c.created_at).toLocaleDateString('es-BO', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
-      var estado = c.estado || 'Nuevo';
-      var estCls = estado === 'Informe enviado' ? 'estado-enviado' : estado === 'En análisis' ? 'estado-analisis' : 'estado-nuevo';
-      return '<tr onclick="seleccionarCliente(\'' + c.id + '\')" style="cursor:pointer"><td><div class="client-empresa">' + (c.empresa || '—') + '</div><div class="client-nombre">' + (c.nombre || '') + '</div></td><td class="client-text">' + (c.industria || '—') + '</td><td class="client-text">' + fecha + '</td><td><span class="estado-badge ' + estCls + '">' + estado + '</span></td><td style="text-align:right"><button class="btn-ver" onclick="event.stopPropagation();seleccionarCliente(\'' + c.id + '\')">Ver diagnóstico</button></td></tr>';
+async function cargarClientes(){
+  try{
+    var res=await fetch(VERCEL_CLIENTES),clientes=await res.json();
+    document.getElementById('dash-count').textContent=clientes.length+' diagnóstico'+(clientes.length!==1?'s':'')+' recibido'+(clientes.length!==1?'s':'');
+    if(!clientes.length){document.getElementById('clients-tbody').innerHTML='<tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4">No hay clientes aún.</td></tr>';return;}
+    document.getElementById('clients-tbody').innerHTML=clientes.filter(c=>c.empresa).map(function(c){
+      var fecha=c.created_at?new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'}):'—';
+      var estado=c.estado||'Nuevo';
+      var ec=estado==='Informe enviado'?'estado-enviado':estado==='En análisis'?'estado-analisis':'estado-nuevo';
+      return '<tr onclick="seleccionarCliente(\''+c.id+'\')" style="cursor:pointer"><td><div class="client-empresa">'+(c.empresa||'—')+'</div><div class="client-nombre">'+(c.nombre||'')+'</div></td><td class="client-text">'+(c.industria||'—')+'</td><td class="client-text">'+fecha+'</td><td><span class="estado-badge '+ec+'">'+estado+'</span></td><td style="text-align:right"><button class="btn-ver" onclick="event.stopPropagation();seleccionarCliente(\''+c.id+'\')">Ver diagnóstico</button></td></tr>';
     }).join('');
-  } catch(e) {
-    document.getElementById('clients-tbody').innerHTML = '<tr><td colspan="5" style="padding:24px;text-align:center;color:#a03b3b">Error cargando clientes.</td></tr>';
-  }
+  }catch(e){document.getElementById('clients-tbody').innerHTML='<tr><td colspan="5" style="padding:24px;text-align:center;color:#a03b3b">Error cargando clientes.</td></tr>';}
 }
 
-async function seleccionarCliente(id) {
-  try {
-    var res = await fetch(VERCEL_CLIENTES + '?id=' + id);
-    var data = await res.json();
-    clienteActual = Array.isArray(data) ? data[0] : data;
-    if (!clienteActual) { alert('Error cargando el cliente.'); return; }
-    mostrarDetalle(clienteActual);
-  } catch(e) {
-    alert('Error cargando el cliente.');
-  }
-}
-
-function mostrarDetalle(c) {
-  document.getElementById('detail-nav-empresa').textContent = c.empresa || '—';
-  document.getElementById('detail-nav-nombre').textContent = 'Diagnóstico de ' + (c.nombre || '—');
-
-  // Empresa grid
-  var dg = [
-    { l: 'Industria', v: c.industria }, { l: 'Empleados', v: c.empleados },
-    { l: 'Años en el mercado', v: c.anios }, { l: 'País', v: c.pais }
-  ];
-  document.getElementById('d-empresa-grid').innerHTML = dg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
-  document.getElementById('d-descripcion').textContent = c.modelo || '—';
-
-  // Procesos
-  var pg = [
-    { l: 'Cómo consiguen clientes', v: c.vcanal }, { l: 'Tiempo en cerrar venta', v: c.vtiempo },
-    { l: 'Proceso más lento', v: c.vdolor }, { l: 'Canales de atención', v: c.acanal },
-    { l: 'Consultas por día', v: c.avol }, { l: 'Tareas que se repiten', v: c.adolar },
-    { l: 'Tareas manuales', v: c.otareas }, { l: 'Horas perdidas/semana', v: c.ohoras }
-  ];
-  document.getElementById('d-procesos-grid').innerHTML = pg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
-
-  // Tech & dolores
-  var adicional = {};
-  try { adicional = JSON.parse(c.adicional || '{}'); } catch(e) {}
-  document.getElementById('d-tech-content').innerHTML = '<div class="detail-grid-4" style="margin-bottom:16px"><div><div class="detail-label">Nivel tecnológico</div><div class="detail-val">' + (c.nivel_tech || '—') + '%</div></div><div><div class="detail-label">Resistencia al cambio</div><div class="detail-val">' + (c.resistencia || '—') + '%</div></div><div><div class="detail-label">Urgencia</div><div class="detail-val">' + (c.urgencia || '—') + '%</div></div><div><div class="detail-label">Disposición a invertir</div><div class="detail-val">' + (c.disposicion || '—') + '%</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Herramientas</div><div class="detail-val">' + ((adicional.herramientas || []).join(', ') || '—') + '</div></div><div><div class="detail-label">Problema operativo</div><div class="detail-val">' + (c.d1 || '—') + '</div></div><div><div class="detail-label">Dónde se pierden clientes</div><div class="detail-val">' + (c.d2 || '—') + '</div></div><div><div class="detail-label">Tarea más odiada</div><div class="detail-val">' + (c.d3 || '—') + '</div></div></div>';
-
-  // Inversión
-  document.getElementById('d-inversion-content').innerHTML = '<div class="detail-grid-2" style="margin-bottom:14px"><div><div class="detail-label">Quién decide</div><div class="detail-val">' + (c.decisor || '—') + '</div></div><div><div class="detail-label">Presupuesto</div><div class="detail-val">' + (c.presupuesto || '—') + '</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Soluciones previas intentadas</div><div class="detail-val">' + (c.intentos || '—') + '</div></div><div><div class="detail-label">Objetivo a 12 meses</div><div class="detail-val">' + (c.objetivo || '—') + '</div></div><div><div class="detail-label">Prioridades</div><div class="detail-val">' + ((adicional.prioridades || []).join(', ') || '—') + '</div></div></div>';
-
-  // Report state
-  document.getElementById('report-view').innerHTML = '<div class="report-not-generated">El informe aún no ha sido generado. Haz clic en "Generar informe con IA" para comenzar.</div>';
-  document.getElementById('report-edit').style.display = 'none';
-  document.getElementById('btn-edit-report').style.display = 'none';
-  document.getElementById('btn-pdf').style.display = 'none';
-  reporteTexto = '';
-
-  showScreen('s-detail');
-}
-
-// ===================== GENERAR INFORME =====================
-async function generarInforme() {
-  if (!clienteActual) return;
-  var btn = document.getElementById('btn-gen-report');
-  btn.textContent = 'Generando...';
-  btn.disabled = true;
-
-  var prompt = buildPrompt(clienteActual);
-  try {
-    var res = await fetch(VERCEL_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
-    });
-    var json = await res.json();
-    reporteTexto = json.content || json.result || json.texto || 'Error generando el informe.';
-    mostrarReporte(reporteTexto);
-  } catch(e) {
-    document.getElementById('report-view').innerHTML = '<div class="report-not-generated" style="color:#a03b3b">Error al conectar con el servidor.</div>';
-  }
-
-  btn.textContent = 'Regenerar informe';
-  btn.disabled = false;
-  document.getElementById('btn-edit-report').style.display = 'inline-block';
-  document.getElementById('btn-pdf').style.display = 'inline-block';
-}
-
-function mostrarReporte(texto) {
-  document.getElementById('report-view').innerHTML = '<div class="report-html">' + marked.parse(texto) + '</div>';
-  document.getElementById('report-edit').value = texto;
-  document.getElementById('report-subtitle').textContent = 'Informe generado · puedes editarlo antes de enviar.';
-}
-
-function toggleEdit() {
-  var view = document.getElementById('report-view');
-  var edit = document.getElementById('report-edit');
-  var btn = document.getElementById('btn-edit-report');
-  if (edit.style.display === 'none') {
-    edit.style.display = 'block';
-    view.style.display = 'none';
-    btn.textContent = 'Guardar';
-  } else {
-    reporteTexto = edit.value;
-    mostrarReporte(reporteTexto);
-    edit.style.display = 'none';
-    view.style.display = 'block';
-    btn.textContent = 'Editar';
-  }
-}
-
-function exportPDF() {
-  if (!reporteTexto) return;
-  var c = clienteActual || {};
-  var fecha = new Date().toLocaleDateString('es-BO', { day: '2-digit', month: 'long', year: 'numeric' });
-  var html = '<div style="font-family:\'Public Sans\',sans-serif;max-width:700px;margin:0 auto;padding:40px">' +
-    '<div style="margin-bottom:40px"><div style="font:600 11px sans-serif;letter-spacing:.16em;color:#8890a4;text-transform:uppercase;margin-bottom:12px">INFORME DE DIAGNÓSTICO EMPRESARIAL</div>' +
-    '<div style="font:500 32px serif;font-style:italic;color:#10162a;margin-bottom:24px">' + (c.empresa || '—') + '</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid #dfe2e8;padding-top:20px">' +
-    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Preparado para</div><div style="font:600 13px sans-serif;color:#10162a">' + (c.nombre || '—') + '</div></div>' +
-    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Fecha</div><div style="font:600 13px sans-serif;color:#10162a">' + fecha + '</div></div>' +
-    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Industria</div><div style="font:600 13px sans-serif;color:#10162a">' + (c.industria || '—') + '</div></div>' +
-    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Elaborado por</div><div style="font:600 13px sans-serif;color:#10162a">ASTRUM — Agencia de IA</div></div></div></div>' +
-    '<div style="font:400 14px/1.8 sans-serif;color:#34394a">' + marked.parse(reporteTexto) + '</div>' +
-    '<div style="margin-top:48px;padding-top:16px;border-top:1px solid #dfe2e8;font:400 11px sans-serif;color:#8890a4">Documento confidencial · astrum-agency.com · sebasbedoyam7@gmail.com</div></div>';
-  html2pdf().set({ margin: 0, filename: 'diagnostico-' + (c.empresa || 'astrum').toLowerCase().replace(/\s+/g, '-') + '.pdf', jsPDF: { unit: 'mm', format: 'a4' } }).from(html).save();
-}
-
-async function enviarInforme() {
-  var email = document.getElementById('send-email').value.trim();
-  var status = document.getElementById('send-status');
-  if (!email || !reporteTexto) { status.textContent = 'Agrega un email y genera el informe primero.'; status.className = 'status-msg status-err'; status.style.display = 'block'; return; }
-  var c = clienteActual || {};
-  try {
-    await emailjs.send('service_sebasmail', 'template_9syfhvp', {
-      to_email: email, empresa: c.empresa || '—', nombre: c.nombre || '—',
-      message: reporteTexto.substring(0, 3000)
-    });
-    status.textContent = 'Informe enviado correctamente a ' + email;
-    status.className = 'status-msg status-ok';
-  } catch(e) {
-    status.textContent = 'Error al enviar. Intenta de nuevo.';
-    status.className = 'status-msg status-err';
-  }
-  status.style.display = 'block';
-}
-</script>
-</body>
-</html>
+async function seleccionarCliente(id){
+  try{
+    var res=
