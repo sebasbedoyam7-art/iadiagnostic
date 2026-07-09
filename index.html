@@ -4,71 +4,285 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Diagnóstico IA — Astrum</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Public Sans',system-ui,sans-serif;background:#eef0f4;-webkit-font-smoothing:antialiased;color:#10162a}
-a{color:#10162a}
+body{font-family:'Public Sans',system-ui,sans-serif;background:#eef0f4;color:#10162a}
 input,textarea,select{font-family:'Public Sans',sans-serif;box-sizing:border-box}
 input::placeholder,textarea::placeholder{color:#a6acba}
 input[type="range"]{accent-color:#10162a;width:100%}
+
 .screen{display:none!important}
 .screen.active{display:block!important}
 #s-intro.active,#s-login.active,#s-loading.active{display:flex!important}
+
 .logo-svg{height:30px;width:auto;display:block}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:76px;background:#10162a;color:#fff;position:sticky;top:0;z-index:10}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 56px;
+  height:76px;
+  background:#10162a;
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:10
+}
+
 .nav-brand{display:flex;align-items:center;gap:14px}
-.nav-brand-text{display:flex;flex-direction:column;line-height:1.25;border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
+
+.nav-brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.25;
+  border-left:1px solid rgba(255,255,255,.2);
+  padding-left:14px
+}
+
 .nav-brand-title{font:700 13.5px 'Public Sans',sans-serif;color:#fff}
 .nav-brand-sub{font:400 11px 'Public Sans',sans-serif;color:#8890a4}
-.nav-btn{border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font:600 12.5px 'Public Sans',sans-serif;padding:9px 18px;border-radius:3px;cursor:pointer;transition:border-color .2s}
-.nav-btn:hover{border-color:rgba(255,255,255,.7)}
-.nav-dots{display:flex;align-items:center;gap:9px}
-.dot{height:8px;border-radius:4px;transition:all .3s}
-.dot.active{width:28px;background:#fff}
-.dot.done{width:8px;border-radius:50%;background:rgba(255,255,255,.5)}
-.dot.pending{width:8px;border-radius:50%;background:rgba(255,255,255,.2)}
-.card{background:#fff;border:1px solid #e2e4ea;border-radius:6px;box-shadow:0 1px 3px rgba(16,22,42,.08)}
-.wizard-wrap{max-width:900px;margin:0 auto;padding:56px 56px 100px}
-.step-header{display:flex;align-items:center;gap:16px;margin-bottom:36px}
-.step-num{width:34px;height:34px;flex:none;border-radius:50%;background:#10162a;color:#fff;display:flex;align-items:center;justify-content:center;font:700 14px 'Public Sans',sans-serif}
+
+.nav-btn{
+  border:1px solid rgba(255,255,255,.35);
+  background:transparent;
+  color:#fff;
+  font:600 12.5px 'Public Sans',sans-serif;
+  padding:9px 18px;
+  border-radius:3px;
+  cursor:pointer;
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e2e4ea;
+  border-radius:6px;
+  box-shadow:0 1px 3px rgba(16,22,42,.08)
+}
+
+.tab-switch{
+  display:flex;
+  background:#eef0f4;
+  border-radius:4px;
+  padding:4px;
+  margin-bottom:28px
+}
+
+.tab-item{
+  flex:1;
+  text-align:center;
+  padding:11px 0;
+  border-radius:3px;
+  font:600 13.5px 'Public Sans',sans-serif;
+  cursor:pointer;
+  color:#47516e
+}
+
+.tab-item.active{background:#10162a;color:#fff}
+
+.btn-full,.btn-next{
+  border:none;
+  cursor:pointer;
+  background:#10162a;
+  color:#fff;
+  font:600 14.5px 'Public Sans',sans-serif;
+  padding:14px 0;
+  border-radius:4px;
+  transition:opacity .2s
+}
+
+.btn-full{width:100%;margin-top:8px}
+.btn-full:hover,.btn-next:hover{opacity:.85}
+
+.wizard-wrap{
+  max-width:900px;
+  margin:0 auto;
+  padding:56px 56px 100px
+}
+
+.step-header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:36px
+}
+
+.step-num{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#10162a;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font:700 14px 'Public Sans',sans-serif
+}
+
 .step-title{font:700 22px 'Public Sans',sans-serif;color:#10162a}
 .step-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
-.field-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:8px}
-.field-input{width:100%;padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font-size:14.5px;color:#10162a;background:#fff;outline:none;transition:border-color .2s}
+
+.field-label{
+  font:600 11px 'Public Sans',sans-serif;
+  letter-spacing:.08em;
+  color:#8890a4;
+  text-transform:uppercase;
+  margin-bottom:8px
+}
+
+.field-input{
+  width:100%;
+  padding:14px 16px;
+  border:1px solid #dfe2e8;
+  border-radius:4px;
+  font-size:14.5px;
+  color:#10162a;
+  background:#fff;
+  outline:none
+}
+
 .field-input:focus{border-color:#10162a}
 textarea.field-input{resize:vertical;line-height:1.5}
+
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
 .mb-22{margin-bottom:22px}
 .mb-28{margin-bottom:28px}
-.section-card{border:1px solid #e2e4ea;border-radius:6px;padding:28px;margin-bottom:20px}
-.section-badge{display:inline-block;font:600 12px 'Public Sans',sans-serif;color:#10162a;background:#eef0f4;padding:5px 12px;border-radius:3px;margin-bottom:20px}
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
-.tool-item{padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font:500 13.5px 'Public Sans',sans-serif;color:#47516e;cursor:pointer;transition:all .2s;user-select:none}
-.tool-item.selected{border-color:#10162a;background:#f5f6f8;color:#10162a;font-weight:600}
+
+.section-card{
+  border:1px solid #e2e4ea;
+  border-radius:6px;
+  padding:28px;
+  margin-bottom:20px
+}
+
+.section-badge{
+  display:inline-block;
+  font:600 12px 'Public Sans',sans-serif;
+  color:#10162a;
+  background:#eef0f4;
+  padding:5px 12px;
+  border-radius:3px;
+  margin-bottom:20px
+}
+
+.tool-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:32px
+}
+
+.tool-item{
+  padding:14px 16px;
+  border:1px solid #dfe2e8;
+  border-radius:4px;
+  font:500 13.5px 'Public Sans',sans-serif;
+  color:#47516e;
+  cursor:pointer;
+  transition:all .2s;
+  user-select:none
+}
+
+.tool-item.selected{
+  border-color:#10162a;
+  background:#f5f6f8;
+  color:#10162a;
+  font-weight:600
+}
+
 .range-row{margin-bottom:28px}
 .range-header{display:flex;justify-content:space-between;margin-bottom:10px}
 .range-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase}
 .range-val{font:600 13px 'Public Sans',sans-serif;color:#10162a}
-.prio-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px}
-.wizard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:28px;border-top:1px solid #e2e4ea}
-.btn-back{border:1px solid #dfe2e8;background:#fff;color:#47516e;font:600 14px 'Public Sans',sans-serif;padding:14px 24px;border-radius:4px;cursor:pointer;transition:all .2s}
-.btn-back:hover{border-color:#10162a;color:#10162a}
-.btn-next{border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;transition:opacity .2s}
-.btn-next:hover{opacity:.85}
-#s-loading{min-height:100vh;align-items:center;justify-content:center}
-.loader{width:44px;height:44px;border:3px solid #e2e4ea;border-top-color:#10162a;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px}
+
+.prio-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+  margin-bottom:22px
+}
+
+.wizard-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:40px;
+  padding-top:28px;
+  border-top:1px solid #e2e4ea
+}
+
+.btn-back{
+  border:1px solid #dfe2e8;
+  background:#fff;
+  color:#47516e;
+  font:600 14px 'Public Sans',sans-serif;
+  padding:14px 24px;
+  border-radius:4px;
+  cursor:pointer
+}
+
+.btn-next{padding:14px 28px}
+
+.nav-dots{display:flex;align-items:center;gap:9px}
+.dot{height:8px;border-radius:4px}
+.dot.active{width:28px;background:#fff}
+.dot.done{width:8px;border-radius:50%;background:rgba(255,255,255,.5)}
+.dot.pending{width:8px;border-radius:50%;background:rgba(255,255,255,.2)}
+
+.loader{
+  width:44px;
+  height:44px;
+  border:3px solid #e2e4ea;
+  border-top-color:#10162a;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 24px
+}
+
 @keyframes spin{to{transform:rotate(360deg)}}
-.preview-wrap{max-width:780px;margin:0 auto;padding:56px 24px 100px}
-.preview-tag{font:600 11px 'Public Sans',sans-serif;letter-spacing:.14em;color:#8890a4;text-transform:uppercase;margin-bottom:10px}
-.preview-title{font:700 28px 'Public Sans',sans-serif;color:#10162a;margin:0 0 6px}
-.preview-sub{font:400 14px 'Public Sans',sans-serif;color:#8890a4;margin:0 0 36px}
-.scores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px}
+
+.preview-wrap{
+  max-width:780px;
+  margin:0 auto;
+  padding:56px 24px 100px
+}
+
+.preview-tag{
+  font:600 11px 'Public Sans',sans-serif;
+  letter-spacing:.14em;
+  color:#8890a4;
+  text-transform:uppercase;
+  margin-bottom:10px
+}
+
+.preview-title{
+  font:700 28px 'Public Sans',sans-serif;
+  color:#10162a;
+  margin:0 0 6px
+}
+
+.preview-sub{
+  font:400 14px 'Public Sans',sans-serif;
+  color:#8890a4;
+  margin:0 0 36px
+}
+
+.scores-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:36px
+}
+
 .score-card{padding:24px;text-align:center}
 .score-num{font:800 36px 'Public Sans',sans-serif;color:#10162a;line-height:1}
 .score-label{font:500 12px 'Public Sans',sans-serif;color:#8890a4;margin-top:6px;text-transform:uppercase;letter-spacing:.06em}
@@ -76,81 +290,166 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .badge-alto{background:#dcfce7;color:#166534}
 .badge-medio{background:#fef9c3;color:#854d0e}
 .badge-bajo{background:#fee2e2;color:#991b1b}
+
 .executive-card{margin-bottom:28px}
 .executive-card h3{font:700 15px 'Public Sans',sans-serif;color:#10162a;margin-bottom:12px}
 .executive-body{font:400 14.5px/1.7 'Public Sans',sans-serif;color:#34394a}
-.cta-block{background:#10162a;border-radius:6px;padding:36px;color:#fff;text-align:center}
+
+.cta-block{
+  background:#10162a;
+  border-radius:6px;
+  padding:36px;
+  color:#fff;
+  text-align:center
+}
+
 .cta-block h3{font:700 20px 'Public Sans',sans-serif;margin:0 0 10px}
 .cta-block p{font:400 14px 'Public Sans',sans-serif;color:#8890a4;margin:0 0 22px}
-.btn-cta-white{display:inline-block;background:#fff;color:#10162a;font:600 14px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;text-decoration:none;border:none;cursor:pointer}
-#s-login{min-height:100vh;align-items:center;justify-content:center;padding:40px}
+
+.btn-cta-white{
+  display:inline-block;
+  background:#fff;
+  color:#10162a;
+  font:600 14px 'Public Sans',sans-serif;
+  padding:14px 28px;
+  border-radius:4px;
+  text-decoration:none
+}
+
 .login-card{width:420px;max-width:100%;padding:44px}
 .login-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:30px}
 .login-title{font:700 15px 'Public Sans',sans-serif;color:#10162a}
-.tab-switch{display:flex;background:#eef0f4;border-radius:4px;padding:4px;margin-bottom:28px}
-.tab-item{flex:1;text-align:center;padding:11px 0;border-radius:3px;font:600 13.5px 'Public Sans',sans-serif;cursor:pointer;transition:all .2s;color:#47516e}
-.tab-item.active{background:#10162a;color:#fff}
 .login-error{font:500 12.5px 'Public Sans',sans-serif;color:#a03b3b;margin-bottom:14px;display:none}
 .login-hint{text-align:center;margin-top:16px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4}
-.btn-full{width:100%;border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 0;border-radius:4px;margin-top:8px;transition:opacity .2s}
-.btn-full:hover{opacity:.85}
+
 .dash-wrap{max-width:1180px;margin:0 auto;padding:48px 56px 100px}
 .dash-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
-.dash-title{font:700 24px 'Public Sans',sans-serif;color:#10162a;margin:0}
+.dash-title{font:700 24px 'Public Sans',sans-serif;color:#10162a}
 .dash-count{font:400 13px 'Public Sans',sans-serif;color:#8890a4}
+
 .client-table{width:100%;border-collapse:collapse}
-.client-table th{text-align:left;padding:16px 24px;font:600 11px 'Public Sans',sans-serif;letter-spacing:.06em;color:#8890a4;text-transform:uppercase;border-bottom:1px solid #e2e4ea;background:#f5f6f8}
+.client-table th{
+  text-align:left;
+  padding:16px 24px;
+  font:600 11px 'Public Sans',sans-serif;
+  letter-spacing:.06em;
+  color:#8890a4;
+  text-transform:uppercase;
+  border-bottom:1px solid #e2e4ea;
+  background:#f5f6f8
+}
+
 .client-table td{padding:18px 24px;border-bottom:1px solid #eef0f4}
 .client-table tr:hover td{background:#f9fafb}
 .client-empresa{font:600 14px 'Public Sans',sans-serif;color:#10162a}
 .client-nombre{font:400 12.5px 'Public Sans',sans-serif;color:#8890a4}
 .client-text{font:400 13.5px 'Public Sans',sans-serif;color:#47516e}
+
 .estado-badge{display:inline-block;font:600 11.5px 'Public Sans',sans-serif;padding:5px 12px;border-radius:12px}
 .estado-nuevo{background:#eef0f4;color:#47516e}
 .estado-analisis{background:#dfe2e8;color:#10162a}
 .estado-enviado{background:#10162a;color:#fff}
-.btn-ver{border:1px solid #dfe2e8;background:#fff;color:#10162a;font:600 12.5px 'Public Sans',sans-serif;padding:9px 16px;border-radius:4px;cursor:pointer;transition:all .2s}
-.btn-ver:hover{border-color:#10162a}
+
+.btn-ver{
+  border:1px solid #dfe2e8;
+  background:#fff;
+  color:#10162a;
+  font:600 12.5px 'Public Sans',sans-serif;
+  padding:9px 16px;
+  border-radius:4px;
+  cursor:pointer
+}
+
 .detail-wrap{max-width:1020px;margin:0 auto;padding:48px 56px 100px}
 .detail-section{padding:28px;margin-bottom:22px}
 .detail-label{font:600 10.5px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:5px}
 .detail-val{font:400 14px 'Public Sans',sans-serif;color:#10162a;line-height:1.5}
 .detail-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .detail-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}
-.analyst-card{border:1.5px solid #10162a;border-radius:6px;padding:28px;background:#fff}
+
+.analyst-card{
+  border:1.5px solid #10162a;
+  border-radius:6px;
+  padding:28px;
+  background:#fff
+}
+
 .analyst-title{font:700 16px 'Public Sans',sans-serif;color:#10162a;margin-bottom:6px}
 .analyst-sub{font:400 13px 'Public Sans',sans-serif;color:#8890a4;margin-bottom:18px}
-.report-area{width:100%;padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font:400 14px 'Public Sans',sans-serif;color:#10162a;resize:vertical;min-height:140px;line-height:1.6}
+
 .report-toolbar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
-.btn-action{border:1px solid #dfe2e8;background:#fff;color:#10162a;font:600 12.5px 'Public Sans',sans-serif;padding:10px 18px;border-radius:4px;cursor:pointer;transition:all .2s}
-.btn-action:hover{border-color:#10162a}
+
+.btn-action{
+  border:1px solid #dfe2e8;
+  background:#fff;
+  color:#10162a;
+  font:600 12.5px 'Public Sans',sans-serif;
+  padding:10px 18px;
+  border-radius:4px;
+  cursor:pointer
+}
+
 .btn-action.primary{background:#10162a;color:#fff;border-color:#10162a}
-.btn-action.primary:hover{opacity:.85}
+
 .report-html{font:400 14.5px/1.7 'Public Sans',sans-serif;color:#34394a}
-.report-html h1,.report-html h2,.report-html h3{font-family:'Public Sans',sans-serif;color:#10162a;margin:20px 0 10px}
+.report-html h1,.report-html h2,.report-html h3{color:#10162a;margin:20px 0 10px}
 .report-html h2{font-size:18px;border-bottom:1.5px solid #e2e4ea;padding-bottom:8px}
 .report-html h3{font-size:15px}
 .report-html p{margin:0 0 12px}
 .report-html ul,.report-html ol{padding-left:20px;margin:0 0 12px}
-.report-html li{margin-bottom:5px}
-.report-html strong{color:#10162a}
-.report-not-generated{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4;padding:32px;text-align:center;background:#f9fafb;border:1px dashed #dfe2e8;border-radius:4px}
-.send-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:flex-start;margin-top:14px}
-.status-msg{font:400 13px 'Public Sans',sans-serif;padding:10px 14px;border-radius:4px;display:none;margin-top:10px}
+
+.report-not-generated{
+  font:400 13.5px 'Public Sans',sans-serif;
+  color:#8890a4;
+  padding:32px;
+  text-align:center;
+  background:#f9fafb;
+  border:1px dashed #dfe2e8;
+  border-radius:4px
+}
+
+.report-area{
+  width:100%;
+  padding:14px 16px;
+  border:1px solid #dfe2e8;
+  border-radius:4px;
+  font:400 14px 'Public Sans',sans-serif;
+  color:#10162a;
+  resize:vertical;
+  min-height:220px;
+  line-height:1.6
+}
+
+.send-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:flex-start;
+  margin-top:14px
+}
+
+.status-msg{
+  font:400 13px 'Public Sans',sans-serif;
+  padding:10px 14px;
+  border-radius:4px;
+  display:none;
+  margin-top:10px
+}
+
 .status-ok{background:rgba(5,150,105,.1);color:#065f46;border:1px solid rgba(5,150,105,.2)}
 .status-err{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.15)}
+
 @media(max-width:700px){
   .nav{padding:0 20px;height:64px}
   .nav-brand-text{display:none}
   .wizard-wrap,.detail-wrap,.dash-wrap{padding:32px 16px 80px}
-  .grid-2,.grid-3{grid-template-columns:1fr}
-  .scores-grid{grid-template-columns:1fr}
+  .grid-2,.grid-3,.scores-grid,.detail-grid-2{grid-template-columns:1fr}
   .prio-grid{grid-template-columns:1fr 1fr}
   .detail-grid-4{grid-template-columns:1fr 1fr}
-  .detail-grid-2{grid-template-columns:1fr}
 }
 </style>
 </head>
+
 <body>
 
 <!-- INTRO -->
@@ -168,13 +467,21 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <span style="font:400 12px 'Public Sans',sans-serif;color:#8890a4">Consultoría IA empresarial</span>
       </div>
     </div>
-    <div class="tab-switch" style="margin-bottom:28px">
+
+    <div class="tab-switch">
       <div class="tab-item active">Soy cliente</div>
       <div class="tab-item" onclick="irALogin()">Consultor</div>
     </div>
-    <p style="font:400 14.5px/1.6 'Public Sans',sans-serif;color:#47516e;margin:0 0 26px">Completa el formulario de diagnóstico para recibir tu análisis de IA personalizado. Sin registro necesario.</p>
+
+    <p style="font:400 14.5px/1.6 'Public Sans',sans-serif;color:#47516e;margin:0 0 26px">
+      Completa el formulario de diagnóstico para recibir tu análisis de IA personalizado. Sin registro necesario.
+    </p>
+
     <button onclick="iniciarFormulario()" class="btn-full">Comenzar diagnóstico</button>
-    <div style="text-align:center;margin-top:14px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4">Sin registro necesario · Proceso de 5 minutos</div>
+
+    <div style="text-align:center;margin-top:14px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4">
+      Sin registro necesario · Proceso de 5 minutos
+    </div>
   </div>
 </div>
 
@@ -184,8 +491,6 @@ textarea.field-input{resize:vertical;line-height:1.5}
     <div class="nav-brand">
       <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
-        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
-        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
         <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
       </svg>
       <div class="nav-brand-text">
@@ -195,80 +500,171 @@ textarea.field-input{resize:vertical;line-height:1.5}
     </div>
     <div class="nav-dots" id="step-dots"></div>
   </nav>
+
   <div class="wizard-wrap">
+
     <!-- STEP 1 -->
     <div id="step-1" style="display:none">
-      <div class="step-header"><div class="step-num">1</div><div><div class="step-title">Tu empresa</div><div class="step-sub">Cuéntanos quiénes son</div></div></div>
-      <div class="grid-2 mb-22">
-        <div><div class="field-label">Nombre de la empresa</div><input class="field-input" id="f-empresa" placeholder="Ej. Distribuidora Los Andes"></div>
-        <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Carlos Mamani"></div>
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Tu empresa</div>
+          <div class="step-sub">Cuéntanos quiénes son</div>
+        </div>
       </div>
+
+      <div class="grid-2 mb-22">
+        <div>
+          <div class="field-label">Nombre de la empresa</div>
+          <input class="field-input" id="f-empresa" placeholder="Ej. Distribuidora Los Andes">
+        </div>
+        <div>
+          <div class="field-label">Tu nombre</div>
+          <input class="field-input" id="f-nombre" placeholder="Ej. Carlos Mamani">
+        </div>
+      </div>
+
       <div class="mb-22">
         <div class="field-label">Industria / Sector</div>
         <select class="field-input" id="f-industria">
           <option value="">Seleccionar...</option>
-          <option>Comercio / Retail</option><option>Manufactura</option><option>Servicios profesionales</option>
-          <option>Tecnología</option><option>Salud</option><option>Construcción</option>
-          <option>Alimentos y bebidas</option><option>Educación</option><option>Logística y transporte</option><option>Otro</option>
+          <option>Comercio / Retail</option>
+          <option>Manufactura</option>
+          <option>Servicios profesionales</option>
+          <option>Tecnología</option>
+          <option>Salud</option>
+          <option>Construcción</option>
+          <option>Alimentos y bebidas</option>
+          <option>Educación</option>
+          <option>Logística y transporte</option>
+          <option>Otro</option>
         </select>
       </div>
+
       <div class="grid-3 mb-22">
-        <div><div class="field-label">N° de empleados</div>
+        <div>
+          <div class="field-label">N° de empleados</div>
           <select class="field-input" id="f-empleados">
-            <option value="">Seleccionar...</option><option>1-10</option><option>11-50</option><option>51-200</option><option>201-500</option><option>Más de 500</option>
+            <option value="">Seleccionar...</option>
+            <option>1-10</option>
+            <option>11-50</option>
+            <option>51-200</option>
+            <option>201-500</option>
+            <option>Más de 500</option>
           </select>
         </div>
-        <div><div class="field-label">Años en el mercado</div>
+        <div>
+          <div class="field-label">Años en el mercado</div>
           <select class="field-input" id="f-anios">
-            <option value="">Seleccionar...</option><option>Menos de 1 año</option><option>1-3 años</option><option>4-10 años</option><option>Más de 10 años</option>
+            <option value="">Seleccionar...</option>
+            <option>Menos de 1 año</option>
+            <option>1-3 años</option>
+            <option>4-10 años</option>
+            <option>Más de 10 años</option>
           </select>
         </div>
-        <div><div class="field-label">País</div>
+        <div>
+          <div class="field-label">País</div>
           <select class="field-input" id="f-pais">
-            <option value="">Seleccionar...</option><option>Bolivia</option><option>Perú</option><option>Chile</option><option>Colombia</option><option>Argentina</option><option>México</option><option>Otro</option>
+            <option value="">Seleccionar...</option>
+            <option>Bolivia</option>
+            <option>Perú</option>
+            <option>Chile</option>
+            <option>Colombia</option>
+            <option>Argentina</option>
+            <option>México</option>
+            <option>Otro</option>
           </select>
         </div>
       </div>
-      <div><div class="field-label">¿Qué hace tu empresa?</div>
+
+      <div>
+        <div class="field-label">¿Qué hace tu empresa?</div>
         <textarea class="field-input" id="f-descripcion" rows="3" placeholder="Ej. Vendemos materiales de construcción al por mayor..."></textarea>
       </div>
     </div>
+
     <!-- STEP 2 -->
     <div id="step-2" style="display:none">
-      <div class="step-header"><div class="step-num">2</div><div><div class="step-title">Tus procesos</div><div class="step-sub">Cómo funciona el día a día</div></div></div>
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Tus procesos</div>
+          <div class="step-sub">Cómo funciona el día a día</div>
+        </div>
+      </div>
+
       <div class="section-card">
         <div class="section-badge">Ventas</div>
         <div class="grid-2 mb-22">
-          <div><div class="field-label">¿Cómo consiguen clientes?</div><input class="field-input" id="f-comoConsiguen" placeholder="Ej. WhatsApp, referidos, redes"></div>
-          <div><div class="field-label">¿Cuánto tarda cerrar una venta?</div><input class="field-input" id="f-tiempoCierre" placeholder="Ej. 3-7 días"></div>
+          <div>
+            <div class="field-label">¿Cómo consiguen clientes?</div>
+            <input class="field-input" id="f-comoConsiguen" placeholder="Ej. WhatsApp, referidos, redes">
+          </div>
+          <div>
+            <div class="field-label">¿Cuánto tarda cerrar una venta?</div>
+            <input class="field-input" id="f-tiempoCierre" placeholder="Ej. 3-7 días">
+          </div>
         </div>
-        <div><div class="field-label">¿Qué parte del proceso de ventas es más lenta?</div><textarea class="field-input" id="f-procesoLento" rows="2" placeholder="Ej. Cotizar manualmente toma 30 min..."></textarea></div>
+        <div>
+          <div class="field-label">¿Qué parte del proceso de ventas es más lenta?</div>
+          <textarea class="field-input" id="f-procesoLento" rows="2"></textarea>
+        </div>
       </div>
+
       <div class="section-card">
         <div class="section-badge">Atención al cliente</div>
         <div class="grid-2 mb-22">
-          <div><div class="field-label">Canales de atención</div><input class="field-input" id="f-canalesAtencion" placeholder="Ej. WhatsApp, teléfono, presencial"></div>
-          <div><div class="field-label">Consultas por día aprox.</div>
+          <div>
+            <div class="field-label">Canales de atención</div>
+            <input class="field-input" id="f-canalesAtencion" placeholder="Ej. WhatsApp, teléfono, presencial">
+          </div>
+          <div>
+            <div class="field-label">Consultas por día aprox.</div>
             <select class="field-input" id="f-consultasDia">
-              <option value="">Seleccionar...</option><option>Menos de 10</option><option>10-30</option><option>30-100</option><option>Más de 100</option>
+              <option value="">Seleccionar...</option>
+              <option>Menos de 10</option>
+              <option>10-30</option>
+              <option>30-100</option>
+              <option>Más de 100</option>
             </select>
           </div>
         </div>
-        <div><div class="field-label">¿Qué preguntas o tareas se repiten más?</div><textarea class="field-input" id="f-preguntasRepiten" rows="2" placeholder="Ej. Horarios, precios, estado de pedidos..."></textarea></div>
+        <div>
+          <div class="field-label">¿Qué preguntas o tareas se repiten más?</div>
+          <textarea class="field-input" id="f-preguntasRepiten" rows="2"></textarea>
+        </div>
       </div>
+
       <div class="section-card">
         <div class="section-badge">Operaciones</div>
-        <div class="mb-22"><div class="field-label">¿Qué tareas manuales hace tu equipo?</div><textarea class="field-input" id="f-tareasManuales" rows="2" placeholder="Ej. Actualizar inventario en Excel..."></textarea></div>
-        <div><div class="field-label">Horas semanales perdidas en tareas manuales</div>
+        <div class="mb-22">
+          <div class="field-label">¿Qué tareas manuales hace tu equipo?</div>
+          <textarea class="field-input" id="f-tareasManuales" rows="2"></textarea>
+        </div>
+        <div>
+          <div class="field-label">Horas semanales perdidas en tareas manuales</div>
           <select class="field-input" id="f-horasPerdidas">
-            <option value="">Seleccionar...</option><option>Menos de 5h</option><option>5-15h</option><option>15-30h</option><option>Más de 30h</option>
+            <option value="">Seleccionar...</option>
+            <option>Menos de 5h</option>
+            <option>5-15h</option>
+            <option>15-30h</option>
+            <option>Más de 30h</option>
           </select>
         </div>
       </div>
     </div>
+
     <!-- STEP 3 -->
     <div id="step-3" style="display:none">
-      <div class="step-header"><div class="step-num">3</div><div><div class="step-title">Tecnología actual</div><div class="step-sub">Qué herramientas usan hoy</div></div></div>
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Tecnología actual</div>
+          <div class="step-sub">Qué herramientas usan hoy</div>
+        </div>
+      </div>
+
       <div class="field-label" style="margin-bottom:12px">Herramientas que usan</div>
       <div class="tool-grid" id="herramientas-grid">
         <div class="tool-item" data-tool="crm">CRM</div>
@@ -281,51 +677,122 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <div class="tool-item" data-tool="facturacion">Software de facturación</div>
         <div class="tool-item" data-tool="ninguna" style="grid-column:span 2">Ninguna / todo manual</div>
       </div>
+
       <div class="range-row">
-        <div class="range-header"><span class="range-label">Nivel tecnológico del equipo</span><span class="range-val" id="nivel-label">50%</span></div>
+        <div class="range-header">
+          <span class="range-label">Nivel tecnológico del equipo</span>
+          <span class="range-val" id="nivel-label">50%</span>
+        </div>
         <input type="range" min="0" max="100" value="50" id="f-nivelTecnologico" oninput="document.getElementById('nivel-label').textContent=this.value+'%'">
       </div>
+
       <div class="range-row">
-        <div class="range-header"><span class="range-label">Resistencia al cambio del equipo</span><span class="range-val" id="resistencia-label">50%</span></div>
+        <div class="range-header">
+          <span class="range-label">Resistencia al cambio del equipo</span>
+          <span class="range-val" id="resistencia-label">50%</span>
+        </div>
         <input type="range" min="0" max="100" value="50" id="f-resistenciaCambio" oninput="document.getElementById('resistencia-label').textContent=this.value+'%'">
       </div>
     </div>
+
     <!-- STEP 4 -->
     <div id="step-4" style="display:none">
-      <div class="step-header"><div class="step-num">4</div><div><div class="step-title">Dolores del negocio</div><div class="step-sub">Los problemas más urgentes</div></div></div>
-      <div class="mb-22"><div class="field-label">¿Cuál es el mayor problema operativo hoy?</div><textarea class="field-input" id="f-problemaOperativo" rows="3" placeholder="Ej. Perdemos leads porque no respondemos rápido..."></textarea></div>
-      <div class="mb-22"><div class="field-label">¿Dónde se pierden más clientes?</div><textarea class="field-input" id="f-dondeSePierden" rows="3" placeholder="Ej. Las cotizaciones tardan mucho..."></textarea></div>
-      <div class="mb-28"><div class="field-label">¿Qué tarea odia más hacer el equipo?</div><textarea class="field-input" id="f-tareaOdiada" rows="3" placeholder="Ej. Hacer reportes manuales..."></textarea></div>
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Dolores del negocio</div>
+          <div class="step-sub">Los problemas más urgentes</div>
+        </div>
+      </div>
+
+      <div class="mb-22">
+        <div class="field-label">¿Cuál es el mayor problema operativo hoy?</div>
+        <textarea class="field-input" id="f-problemaOperativo" rows="3"></textarea>
+      </div>
+
+      <div class="mb-22">
+        <div class="field-label">¿Dónde se pierden más clientes?</div>
+        <textarea class="field-input" id="f-dondeSePierden" rows="3"></textarea>
+      </div>
+
+      <div class="mb-28">
+        <div class="field-label">¿Qué tarea odia más hacer el equipo?</div>
+        <textarea class="field-input" id="f-tareaOdiada" rows="3"></textarea>
+      </div>
+
       <div class="range-row">
-        <div class="range-header"><span class="range-label">Urgencia de resolver estos problemas</span><span class="range-val" id="urgencia-label">50%</span></div>
+        <div class="range-header">
+          <span class="range-label">Urgencia de resolver estos problemas</span>
+          <span class="range-val" id="urgencia-label">50%</span>
+        </div>
         <input type="range" min="0" max="100" value="50" id="f-urgencia" oninput="document.getElementById('urgencia-label').textContent=this.value+'%'">
       </div>
     </div>
+
     <!-- STEP 5 -->
     <div id="step-5" style="display:none">
-      <div class="step-header"><div class="step-num">5</div><div><div class="step-title">Capacidad de inversión</div><div class="step-sub">Presupuesto y decisores</div></div></div>
+      <div class="step-header">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">Capacidad de inversión</div>
+          <div class="step-sub">Presupuesto y decisores</div>
+        </div>
+      </div>
+
       <div class="grid-2 mb-22">
-        <div><div class="field-label">¿Quién toma la decisión de inversión?</div>
+        <div>
+          <div class="field-label">¿Quién toma la decisión de inversión?</div>
           <select class="field-input" id="f-quienDecide">
-            <option value="">Seleccionar...</option><option>Dueño / Gerente general</option><option>Comité / Directorio</option><option>Área de TI</option><option>Área financiera</option><option>Yo mismo</option>
+            <option value="">Seleccionar...</option>
+            <option>Dueño / Gerente general</option>
+            <option>Comité / Directorio</option>
+            <option>Área de TI</option>
+            <option>Área financiera</option>
+            <option>Yo mismo</option>
           </select>
         </div>
-        <div><div class="field-label">Presupuesto mensual disponible</div>
+        <div>
+          <div class="field-label">Presupuesto mensual disponible</div>
           <select class="field-input" id="f-presupuesto">
-            <option value="">Seleccionar...</option><option>Menos de $200</option><option>$200 - $500</option><option>$500 - $2,000</option><option>$2,000 - $5,000</option><option>Más de $5,000</option>
+            <option value="">Seleccionar...</option>
+            <option>Menos de $200</option>
+            <option>$200 - $500</option>
+            <option>$500 - $2,000</option>
+            <option>$2,000 - $5,000</option>
+            <option>Más de $5,000</option>
           </select>
         </div>
       </div>
-      <div class="mb-22"><div class="field-label">¿Han intentado soluciones similares antes?</div><textarea class="field-input" id="f-solucionesIntentadas" rows="3" placeholder="Ej. Intentamos un CRM pero el equipo no lo adoptó..."></textarea></div>
+
+      <div class="mb-22">
+        <div class="field-label">¿Han intentado soluciones similares antes?</div>
+        <textarea class="field-input" id="f-solucionesIntentadas" rows="3"></textarea>
+      </div>
+
       <div class="range-row">
-        <div class="range-header"><span class="range-label">Disposición a invertir en IA ahora mismo</span><span class="range-val" id="disposicion-label">50%</span></div>
+        <div class="range-header">
+          <span class="range-label">Disposición a invertir en IA ahora mismo</span>
+          <span class="range-val" id="disposicion-label">50%</span>
+        </div>
         <input type="range" min="0" max="100" value="50" id="f-disposicionInvertir" oninput="document.getElementById('disposicion-label').textContent=this.value+'%'">
       </div>
     </div>
+
     <!-- STEP 6 -->
     <div id="step-6" style="display:none">
-      <div class="step-header"><div class="step-num">6</div><div><div class="step-title">Objetivos y prioridades</div><div class="step-sub">Hacia dónde quiere ir tu empresa</div></div></div>
-      <div class="mb-22"><div class="field-label">Objetivo principal a 12 meses</div><textarea class="field-input" id="f-objetivos12meses" rows="3" placeholder="Ej. Doblar las ventas y abrir una nueva sucursal..."></textarea></div>
+      <div class="step-header">
+        <div class="step-num">6</div>
+        <div>
+          <div class="step-title">Objetivos y prioridades</div>
+          <div class="step-sub">Hacia dónde quiere ir tu empresa</div>
+        </div>
+      </div>
+
+      <div class="mb-22">
+        <div class="field-label">Objetivo principal a 12 meses</div>
+        <textarea class="field-input" id="f-objetivos12meses" rows="3"></textarea>
+      </div>
+
       <div class="mb-22">
         <div class="field-label" style="margin-bottom:12px">Prioridades del negocio</div>
         <div class="prio-grid" id="prioridades-grid">
@@ -337,25 +804,28 @@ textarea.field-input{resize:vertical;line-height:1.5}
           <div class="tool-item" data-prio="datos">Más datos y reportes</div>
         </div>
       </div>
-      <div><div class="field-label">¿Algo más que quieras agregar?</div><textarea class="field-input" id="f-contextoAdicional" rows="3" placeholder="Cualquier contexto adicional..."></textarea></div>
+
+      <div>
+        <div class="field-label">¿Algo más que quieras agregar?</div>
+        <textarea class="field-input" id="f-contextoAdicional" rows="3"></textarea>
+      </div>
     </div>
-    <!-- FOOTER -->
+
     <div class="wizard-footer">
       <button class="btn-back" id="btn-back" onclick="pasoAnterior()">← Atrás</button>
       <div style="font:400 12.5px 'Public Sans',sans-serif;color:#8890a4" id="step-counter">Paso 1 de 6</div>
       <button class="btn-next" id="btn-next" onclick="pasoSiguiente()">Continuar →</button>
     </div>
+
   </div>
 </div>
 
 <!-- LOADING -->
-<div id="s-loading" class="screen" style="background:#eef0f4">
-  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center">
-    <div class="card" style="text-align:center;padding:60px 48px;width:460px;max-width:90vw">
-      <div class="loader"></div>
-      <div style="font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px">Generando tu diagnóstico</div>
-      <div style="font:400 13.5px 'Public Sans',sans-serif;color:#8890a4">La IA está analizando tu empresa. Esto puede tomar hasta 30 segundos.</div>
-    </div>
+<div id="s-loading" class="screen" style="background:#eef0f4;min-height:100vh;align-items:center;justify-content:center">
+  <div class="card" style="text-align:center;padding:60px 48px;width:460px;max-width:90vw">
+    <div class="loader"></div>
+    <div style="font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px">Generando tu diagnóstico</div>
+    <div style="font:400 13.5px 'Public Sans',sans-serif;color:#8890a4">La IA está analizando tu empresa.</div>
   </div>
 </div>
 
@@ -365,8 +835,6 @@ textarea.field-input{resize:vertical;line-height:1.5}
     <div class="nav-brand">
       <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
-        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
-        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
         <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
       </svg>
       <div class="nav-brand-text">
@@ -376,15 +844,19 @@ textarea.field-input{resize:vertical;line-height:1.5}
     </div>
     <button class="nav-btn" onclick="showScreen('s-intro')">← Nueva consulta</button>
   </nav>
+
   <div class="preview-wrap">
     <div class="preview-tag">Diagnóstico IA · Astrum</div>
     <div class="preview-title" id="preview-empresa">Tu empresa</div>
     <div class="preview-sub">Resultados preliminares de tu diagnóstico de inteligencia artificial</div>
+
     <div class="scores-grid" id="scores-grid"></div>
+
     <div class="card executive-card" style="padding:28px">
       <h3>Resumen ejecutivo</h3>
       <div class="executive-body" id="preview-summary"></div>
     </div>
+
     <div class="cta-block" style="margin-top:24px">
       <h3>¿Quieres el informe completo?</h3>
       <p>Un consultor de Astrum revisará tu diagnóstico y te enviará un análisis detallado con recomendaciones.</p>
@@ -394,33 +866,37 @@ textarea.field-input{resize:vertical;line-height:1.5}
 </div>
 
 <!-- LOGIN -->
-<div id="s-login" class="screen" style="background:#eef0f4">
-  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px">
-    <div class="card login-card">
-      <div class="login-logo-wrap">
-        <svg style="height:36px;width:auto" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="#10162a"/>
-          <polygon points="11,26 25,26 23,30 13,30" fill="#eef0f4"/>
-          <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#eef0f4"/>
-          <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="#10162a" letter-spacing="2">ASTRUM</text>
-        </svg>
-        <div class="login-title">Acceso de consultores</div>
-      </div>
-      <div class="tab-switch">
-        <div class="tab-item" onclick="showScreen('s-intro')">← Portal clientes</div>
-        <div class="tab-item active">Consultor</div>
-      </div>
-      <div class="mb-22">
-        <div class="field-label">Usuario</div>
-        <input class="field-input" id="login-user" placeholder="consultor" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
-      <div style="margin-bottom:10px">
-        <div class="field-label">Contraseña</div>
-        <input class="field-input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
-      <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
-      <button class="btn-full" onclick="doLogin()">Ingresar</button>
-      <div class="login-hint">¿Eres cliente? <span style="color:#10162a;font-weight:600;cursor:pointer" onclick="showScreen('s-intro')">Ir al portal →</span></div>
+<div id="s-login" class="screen" style="background:#eef0f4;min-height:100vh;align-items:center;justify-content:center;padding:40px">
+  <div class="card login-card">
+    <div class="login-logo-wrap">
+      <svg style="height:36px;width:auto" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="#10162a"/>
+        <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="#10162a" letter-spacing="2">ASTRUM</text>
+      </svg>
+      <div class="login-title">Acceso de consultores</div>
+    </div>
+
+    <div class="tab-switch">
+      <div class="tab-item" onclick="showScreen('s-intro')">← Portal clientes</div>
+      <div class="tab-item active">Consultor</div>
+    </div>
+
+    <div class="mb-22">
+      <div class="field-label">Usuario</div>
+      <input class="field-input" id="login-user" placeholder="consultor" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+
+    <div style="margin-bottom:10px">
+      <div class="field-label">Contraseña</div>
+      <input class="field-input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+
+    <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
+    <button class="btn-full" onclick="doLogin()">Ingresar</button>
+
+    <div class="login-hint">
+      ¿Eres cliente?
+      <span style="color:#10162a;font-weight:600;cursor:pointer" onclick="showScreen('s-intro')">Ir al portal →</span>
     </div>
   </div>
 </div>
@@ -431,8 +907,6 @@ textarea.field-input{resize:vertical;line-height:1.5}
     <div class="nav-brand">
       <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
-        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
-        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
         <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
       </svg>
       <div class="nav-brand-text">
@@ -442,16 +916,28 @@ textarea.field-input{resize:vertical;line-height:1.5}
     </div>
     <button class="nav-btn" onclick="doLogout()">Cerrar sesión</button>
   </nav>
+
   <div class="dash-wrap">
     <div class="dash-header">
       <h1 class="dash-title">Clientes</h1>
       <div class="dash-count" id="dash-count">Cargando...</div>
     </div>
+
     <div class="card" style="overflow:hidden">
       <table class="client-table">
-        <thead><tr><th>Empresa</th><th>Industria</th><th>Fecha</th><th>Estado</th><th style="text-align:right">Acción</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>Industria</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th style="text-align:right">Acción</th>
+          </tr>
+        </thead>
         <tbody id="clients-tbody">
-          <tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4">Cargando clientes...</td></tr>
+          <tr>
+            <td colspan="5" style="padding:32px;text-align:center;color:#8890a4">Cargando clientes...</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -464,8 +950,6 @@ textarea.field-input{resize:vertical;line-height:1.5}
     <div class="nav-brand">
       <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
-        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
-        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
         <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
       </svg>
       <div class="nav-brand-text">
@@ -475,34 +959,48 @@ textarea.field-input{resize:vertical;line-height:1.5}
     </div>
     <button class="nav-btn" onclick="showScreen('s-dashboard')">← Volver</button>
   </nav>
+
   <div class="detail-wrap">
     <div class="card detail-section">
       <div class="section-badge">Datos de la empresa</div>
       <div class="detail-grid-4" id="d-empresa-grid"></div>
-      <div style="margin-top:16px"><div class="detail-label">Qué hace la empresa</div><div class="detail-val" id="d-descripcion"></div></div>
+      <div style="margin-top:16px">
+        <div class="detail-label">Qué hace la empresa</div>
+        <div class="detail-val" id="d-descripcion"></div>
+      </div>
     </div>
+
     <div class="card detail-section">
       <div class="section-badge">Procesos</div>
       <div class="detail-grid-2" id="d-procesos-grid"></div>
     </div>
+
     <div class="card detail-section">
       <div class="section-badge">Tecnología y dolores</div>
       <div id="d-tech-content"></div>
     </div>
+
     <div class="card detail-section">
       <div class="section-badge">Inversión y objetivos</div>
       <div id="d-inversion-content"></div>
     </div>
+
     <div class="analyst-card">
       <div class="analyst-title">Informe de IA</div>
       <div class="analyst-sub" id="report-subtitle">Genera el análisis automático de este cliente.</div>
+
       <div class="report-toolbar">
         <button class="btn-action primary" id="btn-gen-report" onclick="generarInforme()">Generar informe con IA →</button>
         <button class="btn-action" id="btn-edit-report" onclick="toggleEdit()" style="display:none">Editar</button>
         <button class="btn-action" id="btn-pdf" onclick="exportPDF()" style="display:none">Descargar PDF</button>
       </div>
-      <div id="report-view"><div class="report-not-generated">El informe aún no ha sido generado.</div></div>
+
+      <div id="report-view">
+        <div class="report-not-generated">El informe aún no ha sido generado.</div>
+      </div>
+
       <textarea id="report-edit" class="report-area" style="display:none"></textarea>
+
       <div style="margin-top:16px">
         <div class="field-label" style="margin-bottom:8px">Enviar informe al cliente</div>
         <div class="send-row">
@@ -518,92 +1016,236 @@ textarea.field-input{resize:vertical;line-height:1.5}
 <script>
 var VERCEL_API = 'https://diagnosticpro.vercel.app/api/diagnostico';
 var VERCEL_CLIENTES = 'https://diagnosticpro.vercel.app/api/clientes';
-var USERS = { 'sebas': 'agencia2024', 'consultor': 'astrum2026' };
-var paso = 1, totalPasos = 6;
-var herramientasSeleccionadas = [], prioridadesSeleccionadas = [];
-var clienteActual = null, reporteTexto = '';
+
+var USERS = {
+  'sebas': 'agencia2024',
+  'consultor': 'astrum2026'
+};
+
+var paso = 1;
+var totalPasos = 6;
+var herramientasSeleccionadas = [];
+var prioridadesSeleccionadas = [];
+var clienteActual = null;
+var reporteTexto = '';
 
 (function() {
-  emailjs.init({ publicKey: 'SLAVvDh-aDomMebrV' });
-  if (localStorage.getItem('consultor_ok') === '1') { showScreen('s-dashboard'); cargarClientes(); }
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init({
+      publicKey: 'SLAVvDh-aDomMebrV'
+    });
+  }
+
+  if (localStorage.getItem('consultor_ok') === '1') {
+    showScreen('s-dashboard');
+    cargarClientes();
+  }
 })();
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.screen').forEach(function(screen) {
+    screen.classList.remove('active');
+  });
+
+  var target = document.getElementById(id);
+
+  if (target) {
+    target.classList.add('active');
+  }
+
   window.scrollTo(0, 0);
 }
-function irALogin() { showScreen('s-login'); }
-function iniciarFormulario() { paso = 1; showScreen('s-wizard'); mostrarPaso(); }
+
+function irALogin() {
+  showScreen('s-login');
+}
+
+function iniciarFormulario() {
+  paso = 1;
+  showScreen('s-wizard');
+  mostrarPaso();
+}
 
 function mostrarPaso() {
-  for (var i = 1; i <= totalPasos; i++) document.getElementById('step-'+i).style.display = i===paso?'block':'none';
-  document.getElementById('step-counter').textContent = 'Paso '+paso+' de '+totalPasos;
-  document.getElementById('btn-back').style.visibility = paso===1?'hidden':'visible';
-  document.getElementById('btn-next').textContent = paso===totalPasos?'Obtener diagnóstico':'Continuar →';
-  renderDots(); window.scrollTo(0,0);
+  for (var i = 1; i <= totalPasos; i++) {
+    var step = document.getElementById('step-' + i);
+
+    if (step) {
+      step.style.display = i === paso ? 'block' : 'none';
+    }
+  }
+
+  document.getElementById('step-counter').textContent = 'Paso ' + paso + ' de ' + totalPasos;
+  document.getElementById('btn-back').style.visibility = paso === 1 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = paso === totalPasos ? 'Obtener diagnóstico' : 'Continuar →';
+
+  renderDots();
 }
+
 function renderDots() {
-  var h=''; for(var i=1;i<=totalPasos;i++){var c=i<paso?'done':i===paso?'active':'pending';h+='<div class="dot '+c+'"></div>';}
-  document.getElementById('step-dots').innerHTML=h;
+  var html = '';
+
+  for (var i = 1; i <= totalPasos; i++) {
+    var estado = i < paso ? 'done' : i === paso ? 'active' : 'pending';
+    html += '<div class="dot ' + estado + '"></div>';
+  }
+
+  document.getElementById('step-dots').innerHTML = html;
 }
-function pasoSiguiente() { if(!validarPaso())return; if(paso<totalPasos){paso++;mostrarPaso();}else{enviarFormulario();} }
-function pasoAnterior() { if(paso>1){paso--;mostrarPaso();}else{showScreen('s-intro');} }
+
+function pasoSiguiente() {
+  if (!validarPaso()) return;
+
+  if (paso < totalPasos) {
+    paso++;
+    mostrarPaso();
+  } else {
+    enviarFormulario();
+  }
+}
+
+function pasoAnterior() {
+  if (paso > 1) {
+    paso--;
+    mostrarPaso();
+  } else {
+    showScreen('s-intro');
+  }
+}
+
 function validarPaso() {
-  if(paso===1&&(!v('f-empresa')||!v('f-nombre')||!v('f-industria'))){alert('Completa empresa, nombre e industria.');return false;}
+  if (paso === 1 && (!v('f-empresa') || !v('f-nombre') || !v('f-industria'))) {
+    alert('Completa empresa, nombre e industria.');
+    return false;
+  }
+
   return true;
 }
-function v(id){return document.getElementById(id)?.value?.trim();}
 
-document.querySelectorAll('#herramientas-grid .tool-item').forEach(el=>{
-  el.addEventListener('click',function(){
-    var t=this.dataset.tool; this.classList.toggle('selected');
-    herramientasSeleccionadas=this.classList.contains('selected')?[...herramientasSeleccionadas,t]:herramientasSeleccionadas.filter(x=>x!==t);
+function v(id) {
+  var el = document.getElementById(id);
+  return el && el.value ? el.value.trim() : '';
+}
+
+document.querySelectorAll('#herramientas-grid .tool-item').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var tool = this.dataset.tool;
+
+    this.classList.toggle('selected');
+
+    if (this.classList.contains('selected')) {
+      if (!herramientasSeleccionadas.includes(tool)) {
+        herramientasSeleccionadas.push(tool);
+      }
+    } else {
+      herramientasSeleccionadas = herramientasSeleccionadas.filter(function(x) {
+        return x !== tool;
+      });
+    }
   });
 });
-document.querySelectorAll('#prioridades-grid .tool-item').forEach(el=>{
-  el.addEventListener('click',function(){
-    var p=this.dataset.prio; this.classList.toggle('selected');
-    prioridadesSeleccionadas=this.classList.contains('selected')?[...prioridadesSeleccionadas,p]:prioridadesSeleccionadas.filter(x=>x!==p);
+
+document.querySelectorAll('#prioridades-grid .tool-item').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var prio = this.dataset.prio;
+
+    this.classList.toggle('selected');
+
+    if (this.classList.contains('selected')) {
+      if (!prioridadesSeleccionadas.includes(prio)) {
+        prioridadesSeleccionadas.push(prio);
+      }
+    } else {
+      prioridadesSeleccionadas = prioridadesSeleccionadas.filter(function(x) {
+        return x !== prio;
+      });
+    }
   });
 });
 
 async function enviarFormulario() {
   showScreen('s-loading');
+
   var data = {
-    empresa:v('f-empresa'),nombre:v('f-nombre'),industria:v('f-industria'),pais:v('f-pais'),empleados:v('f-empleados'),anios:v('f-anios'),
-    modelo:v('f-descripcion'),vcanal:v('f-comoConsiguen'),vtiempo:v('f-tiempoCierre'),vdolor:v('f-procesoLento'),
-    acanal:v('f-canalesAtencion'),avol:v('f-consultasDia'),adolar:v('f-preguntasRepiten'),
-    otareas:v('f-tareasManuales'),ohoras:v('f-horasPerdidas'),
-    nivel_tech:document.getElementById('f-nivelTecnologico').value,
-    resistencia:document.getElementById('f-resistenciaCambio').value,
-    d1:v('f-problemaOperativo'),d2:v('f-dondeSePierden'),d3:v('f-tareaOdiada'),
-    urgencia:document.getElementById('f-urgencia').value,
-    decisor:v('f-quienDecide'),presupuesto:v('f-presupuesto'),
-    disposicion:document.getElementById('f-disposicionInvertir').value,
-    intentos:v('f-solucionesIntentadas'),objetivo:v('f-objetivos12meses'),
-    adicional:JSON.stringify({herramientas:herramientasSeleccionadas,prioridades:prioridadesSeleccionadas,contexto:v('f-contextoAdicional')})
+    empresa: v('f-empresa'),
+    nombre: v('f-nombre'),
+    industria: v('f-industria'),
+    pais: v('f-pais'),
+    empleados: v('f-empleados'),
+    anios: v('f-anios'),
+    modelo: v('f-descripcion'),
+
+    vcanal: v('f-comoConsiguen'),
+    vtiempo: v('f-tiempoCierre'),
+    vdolor: v('f-procesoLento'),
+
+    acanal: v('f-canalesAtencion'),
+    avol: v('f-consultasDia'),
+    adolar: v('f-preguntasRepiten'),
+
+    otareas: v('f-tareasManuales'),
+    ohoras: v('f-horasPerdidas'),
+
+    nivel_tech: document.getElementById('f-nivelTecnologico').value,
+    resistencia: document.getElementById('f-resistenciaCambio').value,
+
+    d1: v('f-problemaOperativo'),
+    d2: v('f-dondeSePierden'),
+    d3: v('f-tareaOdiada'),
+    urgencia: document.getElementById('f-urgencia').value,
+
+    decisor: v('f-quienDecide'),
+    presupuesto: v('f-presupuesto'),
+    disposicion: document.getElementById('f-disposicionInvertir').value,
+    intentos: v('f-solucionesIntentadas'),
+
+    objetivo: v('f-objetivos12meses'),
+
+    adicional: JSON.stringify({
+      herramientas: herramientasSeleccionadas,
+      prioridades: prioridadesSeleccionadas,
+      contexto: v('f-contextoAdicional')
+    })
   };
+
   try {
-    var res=await fetch(VERCEL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:buildPrompt(data),...data})});
-    var json=await res.json();
-    mostrarPreview(data,json.content||json.result||json.texto||'Error generando el diagnóstico.');
-  } catch(e){mostrarPreview(data,'Error al conectar con el servidor.');}
+    var res = await fetch(VERCEL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        prompt: buildPrompt(data),
+        ...data
+      })
+    });
+
+    var json = await res.json();
+
+    mostrarPreview(
+      data,
+      json.content || json.result || json.texto || 'Error generando el diagnóstico.'
+    );
+
+  } catch (error) {
+    console.error(error);
+    mostrarPreview(data, 'Error al conectar con el servidor.');
+  }
 }
 
-function buildPrompt(d){
+function buildPrompt(d) {
   return `Eres un consultor experto en inteligencia artificial aplicada a negocios. Analiza esta empresa y genera un diagnóstico profesional en español.
 
-EMPRESA: ${d.empresa||'—'} | Industria: ${d.industria||'—'} | País: ${d.pais||'—'} | Empleados: ${d.empleados||'—'} | Años: ${d.anios||'—'}
-QUÉ HACE: ${d.modelo||'—'}
-VENTAS: Canal: ${d.vcanal||'—'} | Tiempo cierre: ${d.vtiempo||'—'} | Proceso lento: ${d.vdolor||'—'}
-ATENCIÓN: Canales: ${d.acanal||'—'} | Consultas/día: ${d.avol||'—'} | Repetitivo: ${d.adolar||'—'}
-OPERACIONES: Tareas manuales: ${d.otareas||'—'} | Horas perdidas/semana: ${d.ohoras||'—'}
-TECNOLOGÍA: Nivel tech: ${d.nivel_tech||50}% | Resistencia al cambio: ${d.resistencia||50}%
-DOLORES: Problema operativo: ${d.d1||'—'} | Dónde pierden clientes: ${d.d2||'—'} | Tarea odiada: ${d.d3||'—'} | Urgencia: ${d.urgencia||50}%
-INVERSIÓN: Decisor: ${d.decisor||'—'} | Presupuesto: ${d.presupuesto||'—'} | Disposición: ${d.disposicion||50}%
-OBJETIVOS: ${d.objetivo||'—'} | Intentos previos: ${d.intentos||'—'}
-ADICIONAL: ${d.adicional||'—'}
+EMPRESA: ${d.empresa || '—'} | Industria: ${d.industria || '—'} | País: ${d.pais || '—'} | Empleados: ${d.empleados || '—'} | Años: ${d.anios || '—'}
+QUÉ HACE: ${d.modelo || '—'}
+VENTAS: Canal: ${d.vcanal || '—'} | Tiempo cierre: ${d.vtiempo || '—'} | Proceso lento: ${d.vdolor || '—'}
+ATENCIÓN: Canales: ${d.acanal || '—'} | Consultas/día: ${d.avol || '—'} | Repetitivo: ${d.adolar || '—'}
+OPERACIONES: Tareas manuales: ${d.otareas || '—'} | Horas perdidas/semana: ${d.ohoras || '—'}
+TECNOLOGÍA: Nivel tech: ${d.nivel_tech || 50}% | Resistencia al cambio: ${d.resistencia || 50}%
+DOLORES: Problema operativo: ${d.d1 || '—'} | Dónde pierden clientes: ${d.d2 || '—'} | Tarea odiada: ${d.d3 || '—'} | Urgencia: ${d.urgencia || 50}%
+INVERSIÓN: Decisor: ${d.decisor || '—'} | Presupuesto: ${d.presupuesto || '—'} | Disposición: ${d.disposicion || 50}%
+OBJETIVOS: ${d.objetivo || '—'} | Intentos previos: ${d.intentos || '—'}
+ADICIONAL: ${d.adicional || '—'}
 
 Genera el diagnóstico con estas secciones en markdown:
 ## Resumen ejecutivo
@@ -618,56 +1260,399 @@ Genera el diagnóstico con estas secciones en markdown:
 Sé específico, usa los datos de la empresa. Máximo 600 palabras.`;
 }
 
-function mostrarPreview(data,texto){
-  reporteTexto=texto;
-  document.getElementById('preview-empresa').textContent=data.empresa||'Tu empresa';
-  document.getElementById('preview-empresa-nav').textContent=data.empresa||'';
-  var scores=extractScores(texto);
-  document.getElementById('scores-grid').innerHTML=[
-    {label:'Potencial de automatización',val:scores[0]},
-    {label:'Madurez digital',val:scores[1]},
-    {label:'Urgencia de implementación',val:scores[2]}
-  ].map(function(s){
-    var b=s.val>=70?'badge-alto':s.val>=40?'badge-medio':'badge-bajo';
-    var l=s.val>=70?'Alto':s.val>=40?'Medio':'Bajo';
-    return '<div class="card score-card"><div class="score-num">'+s.val+'</div><div class="score-label">'+s.label+'</div><span class="score-badge '+b+'">'+l+'</span></div>';
+function mostrarPreview(data, texto) {
+  reporteTexto = texto;
+
+  document.getElementById('preview-empresa').textContent = data.empresa || 'Tu empresa';
+  document.getElementById('preview-empresa-nav').textContent = data.empresa || 'Diagnóstico IA';
+
+  var scores = extractScores(texto);
+
+  document.getElementById('scores-grid').innerHTML = [
+    {
+      label: 'Potencial de automatización',
+      val: scores[0]
+    },
+    {
+      label: 'Madurez digital',
+      val: scores[1]
+    },
+    {
+      label: 'Urgencia de implementación',
+      val: scores[2]
+    }
+  ].map(function(score) {
+    var badgeClass = score.val >= 70 ? 'badge-alto' : score.val >= 40 ? 'badge-medio' : 'badge-bajo';
+    var badgeText = score.val >= 70 ? 'Alto' : score.val >= 40 ? 'Medio' : 'Bajo';
+
+    return `
+      <div class="card score-card">
+        <div class="score-num">${score.val}</div>
+        <div class="score-label">${score.label}</div>
+        <span class="score-badge ${badgeClass}">${badgeText}</span>
+      </div>
+    `;
   }).join('');
-  var summary=extractSection(texto,'Resumen ejecutivo')||texto.substring(0,500);
-  document.getElementById('preview-summary').innerHTML=marked.parse(summary);
+
+  var summary = extractSection(texto, 'Resumen ejecutivo') || texto.substring(0, 500);
+
+  document.getElementById('preview-summary').innerHTML = marked.parse(summary);
+
   showScreen('s-preview');
 }
-function extractScores(text){
-  var nums=[],m=text.match(/:\s*(\d{1,3})\/100/g)||[];
-  m.forEach(function(x){var n=parseInt(x.match(/\d+/)[0]);if(n>=0&&n<=100)nums.push(n);});
-  while(nums.length<3)nums.push(50); return nums.slice(0,3);
-}
-function extractSection(text,section){
-  var m=text.match(new RegExp('##\\s*'+section+'\\s*\\n([\\s\\S]*?)(?=\\n##|$)','i'));
-  return m?m[1].trim():null;
+
+function extractScores(text) {
+  var nums = [];
+  var matches = text.match(/:\s*(\d{1,3})\/100/g) || [];
+
+  matches.forEach(function(item) {
+    var n = parseInt(item.match(/\d+/)[0]);
+
+    if (n >= 0 && n <= 100) {
+      nums.push(n);
+    }
+  });
+
+  while (nums.length < 3) {
+    nums.push(50);
+  }
+
+  return nums.slice(0, 3);
 }
 
-function doLogin(){
-  var u=document.getElementById('login-user').value.trim(),p=document.getElementById('login-pass').value;
-  var err=document.getElementById('login-error');
-  if(USERS[u]&&USERS[u]===p){err.style.display='none';localStorage.setItem('consultor_ok','1');showScreen('s-dashboard');cargarClientes();}
-  else{err.style.display='block';}
-}
-function doLogout(){localStorage.removeItem('consultor_ok');showScreen('s-login');}
+function extractSection(text, section) {
+  var regex = new RegExp('##\\s*' + section + '\\s*\\n([\\s\\S]*?)(?=\\n##|$)', 'i');
+  var match = text.match(regex);
 
-async function cargarClientes(){
-  try{
-    var res=await fetch(VERCEL_CLIENTES),clientes=await res.json();
-    document.getElementById('dash-count').textContent=clientes.length+' diagnóstico'+(clientes.length!==1?'s':'')+' recibido'+(clientes.length!==1?'s':'');
-    if(!clientes.length){document.getElementById('clients-tbody').innerHTML='<tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4">No hay clientes aún.</td></tr>';return;}
-    document.getElementById('clients-tbody').innerHTML=clientes.filter(c=>c.empresa).map(function(c){
-      var fecha=c.created_at?new Date(c.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'}):'—';
-      var estado=c.estado||'Nuevo';
-      var ec=estado==='Informe enviado'?'estado-enviado':estado==='En análisis'?'estado-analisis':'estado-nuevo';
-      return '<tr onclick="seleccionarCliente(\''+c.id+'\')" style="cursor:pointer"><td><div class="client-empresa">'+(c.empresa||'—')+'</div><div class="client-nombre">'+(c.nombre||'')+'</div></td><td class="client-text">'+(c.industria||'—')+'</td><td class="client-text">'+fecha+'</td><td><span class="estado-badge '+ec+'">'+estado+'</span></td><td style="text-align:right"><button class="btn-ver" onclick="event.stopPropagation();seleccionarCliente(\''+c.id+'\')">Ver diagnóstico</button></td></tr>';
+  return match ? match[1].trim() : null;
+}
+
+function doLogin() {
+  var user = document.getElementById('login-user').value.trim();
+  var pass = document.getElementById('login-pass').value;
+  var err = document.getElementById('login-error');
+
+  if (USERS[user] && USERS[user] === pass) {
+    err.style.display = 'none';
+    localStorage.setItem('consultor_ok', '1');
+    showScreen('s-dashboard');
+    cargarClientes();
+  } else {
+    err.style.display = 'block';
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('consultor_ok');
+  showScreen('s-login');
+}
+
+async function cargarClientes() {
+  try {
+    var res = await fetch(VERCEL_CLIENTES);
+    var clientes = await res.json();
+
+    if (!Array.isArray(clientes)) {
+      clientes = [];
+    }
+
+    document.getElementById('dash-count').textContent =
+      clientes.length + ' diagnóstico' + (clientes.length !== 1 ? 's' : '') + ' recibido' + (clientes.length !== 1 ? 's' : '');
+
+    if (!clientes.length) {
+      document.getElementById('clients-tbody').innerHTML =
+        '<tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4">No hay clientes aún.</td></tr>';
+      return;
+    }
+
+    document.getElementById('clients-tbody').innerHTML = clientes.filter(function(c) {
+      return c.empresa;
+    }).map(function(c) {
+      var fecha = c.created_at
+        ? new Date(c.created_at).toLocaleDateString('es-BO', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+          })
+        : '—';
+
+      var estado = c.estado || 'Nuevo';
+      var estadoClass = estado === 'Informe enviado'
+        ? 'estado-enviado'
+        : estado === 'En análisis'
+          ? 'estado-analisis'
+          : 'estado-nuevo';
+
+      return `
+        <tr onclick="seleccionarCliente('${c.id}')" style="cursor:pointer">
+          <td>
+            <div class="client-empresa">${escapeHtml(c.empresa || '—')}</div>
+            <div class="client-nombre">${escapeHtml(c.nombre || '')}</div>
+          </td>
+          <td class="client-text">${escapeHtml(c.industria || '—')}</td>
+          <td class="client-text">${fecha}</td>
+          <td><span class="estado-badge ${estadoClass}">${escapeHtml(estado)}</span></td>
+          <td style="text-align:right">
+            <button class="btn-ver" onclick="event.stopPropagation();seleccionarCliente('${c.id}')">Ver diagnóstico</button>
+          </td>
+        </tr>
+      `;
     }).join('');
-  }catch(e){document.getElementById('clients-tbody').innerHTML='<tr><td colspan="5" style="padding:24px;text-align:center;color:#a03b3b">Error cargando clientes.</td></tr>';}
+
+  } catch (error) {
+    console.error(error);
+
+    document.getElementById('clients-tbody').innerHTML =
+      '<tr><td colspan="5" style="padding:24px;text-align:center;color:#a03b3b">Error cargando clientes.</td></tr>';
+  }
 }
 
-async function seleccionarCliente(id){
-  try{
-    var res=
+async function seleccionarCliente(id) {
+  try {
+    var res = await fetch(VERCEL_CLIENTES + '?id=' + encodeURIComponent(id));
+    var data = await res.json();
+
+    clienteActual = Array.isArray(data) ? data[0] : data;
+
+    if (!clienteActual) {
+      alert('No se pudo cargar este cliente.');
+      return;
+    }
+
+    renderDetalle(clienteActual);
+    showScreen('s-detail');
+
+  } catch (error) {
+    console.error(error);
+    alert('Error cargando el detalle del cliente.');
+  }
+}
+
+function renderDetalle(c) {
+  document.getElementById('detail-nav-empresa').textContent = c.empresa || 'Cliente';
+  document.getElementById('detail-nav-nombre').textContent = c.nombre || 'Diagnóstico';
+
+  document.getElementById('d-empresa-grid').innerHTML = `
+    <div>
+      <div class="detail-label">Empresa</div>
+      <div class="detail-val">${escapeHtml(c.empresa || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Nombre</div>
+      <div class="detail-val">${escapeHtml(c.nombre || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Industria</div>
+      <div class="detail-val">${escapeHtml(c.industria || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">País</div>
+      <div class="detail-val">${escapeHtml(c.pais || '—')}</div>
+    </div>
+  `;
+
+  document.getElementById('d-descripcion').textContent = c.modelo || c.descripcion || '—';
+
+  document.getElementById('d-procesos-grid').innerHTML = `
+    <div>
+      <div class="detail-label">Cómo consiguen clientes</div>
+      <div class="detail-val">${escapeHtml(c.vcanal || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Tiempo de cierre</div>
+      <div class="detail-val">${escapeHtml(c.vtiempo || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Proceso lento</div>
+      <div class="detail-val">${escapeHtml(c.vdolor || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Canales de atención</div>
+      <div class="detail-val">${escapeHtml(c.acanal || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Consultas por día</div>
+      <div class="detail-val">${escapeHtml(c.avol || '—')}</div>
+    </div>
+    <div>
+      <div class="detail-label">Tareas repetitivas</div>
+      <div class="detail-val">${escapeHtml(c.adolar || '—')}</div>
+    </div>
+  `;
+
+  document.getElementById('d-tech-content').innerHTML = `
+    <div class="detail-grid-2">
+      <div>
+        <div class="detail-label">Nivel tecnológico</div>
+        <div class="detail-val">${escapeHtml(c.nivel_tech || '—')}%</div>
+      </div>
+      <div>
+        <div class="detail-label">Resistencia al cambio</div>
+        <div class="detail-val">${escapeHtml(c.resistencia || '—')}%</div>
+      </div>
+      <div>
+        <div class="detail-label">Problema operativo</div>
+        <div class="detail-val">${escapeHtml(c.d1 || '—')}</div>
+      </div>
+      <div>
+        <div class="detail-label">Dónde pierden clientes</div>
+        <div class="detail-val">${escapeHtml(c.d2 || '—')}</div>
+      </div>
+      <div>
+        <div class="detail-label">Tarea odiada</div>
+        <div class="detail-val">${escapeHtml(c.d3 || '—')}</div>
+      </div>
+      <div>
+        <div class="detail-label">Urgencia</div>
+        <div class="detail-val">${escapeHtml(c.urgencia || '—')}%</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('d-inversion-content').innerHTML = `
+    <div class="detail-grid-2">
+      <div>
+        <div class="detail-label">Decisor</div>
+        <div class="detail-val">${escapeHtml(c.decisor || '—')}</div>
+      </div>
+      <div>
+        <div class="detail-label">Presupuesto</div>
+        <div class="detail-val">${escapeHtml(c.presupuesto || '—')}</div>
+      </div>
+      <div>
+        <div class="detail-label">Disposición</div>
+        <div class="detail-val">${escapeHtml(c.disposicion || '—')}%</div>
+      </div>
+      <div>
+        <div class="detail-label">Objetivo</div>
+        <div class="detail-val">${escapeHtml(c.objetivo || '—')}</div>
+      </div>
+    </div>
+  `;
+
+  reporteTexto = c.reporte || c.informe || '';
+
+  if (reporteTexto) {
+    document.getElementById('report-view').innerHTML =
+      '<div class="report-html">' + marked.parse(reporteTexto) + '</div>';
+
+    document.getElementById('btn-edit-report').style.display = 'inline-block';
+    document.getElementById('btn-pdf').style.display = 'inline-block';
+  } else {
+    document.getElementById('report-view').innerHTML =
+      '<div class="report-not-generated">El informe aún no ha sido generado.</div>';
+
+    document.getElementById('btn-edit-report').style.display = 'none';
+    document.getElementById('btn-pdf').style.display = 'none';
+  }
+}
+
+async function generarInforme() {
+  if (!clienteActual) return;
+
+  var btn = document.getElementById('btn-gen-report');
+  btn.textContent = 'Generando...';
+
+  try {
+    var res = await fetch(VERCEL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        prompt: buildPrompt(clienteActual),
+        ...clienteActual
+      })
+    });
+
+    var json = await res.json();
+
+    reporteTexto = json.content || json.result || json.texto || 'No se pudo generar el informe.';
+
+    document.getElementById('report-view').innerHTML =
+      '<div class="report-html">' + marked.parse(reporteTexto) + '</div>';
+
+    document.getElementById('btn-edit-report').style.display = 'inline-block';
+    document.getElementById('btn-pdf').style.display = 'inline-block';
+
+  } catch (error) {
+    console.error(error);
+    alert('Error generando el informe.');
+  }
+
+  btn.textContent = 'Generar informe con IA →';
+}
+
+function toggleEdit() {
+  var view = document.getElementById('report-view');
+  var edit = document.getElementById('report-edit');
+  var btn = document.getElementById('btn-edit-report');
+
+  if (edit.style.display === 'none') {
+    edit.value = reporteTexto;
+    view.style.display = 'none';
+    edit.style.display = 'block';
+    btn.textContent = 'Guardar cambios';
+  } else {
+    reporteTexto = edit.value;
+
+    view.innerHTML =
+      '<div class="report-html">' + marked.parse(reporteTexto) + '</div>';
+
+    view.style.display = 'block';
+    edit.style.display = 'none';
+    btn.textContent = 'Editar';
+  }
+}
+
+function exportPDF() {
+  var element = document.getElementById('report-view');
+
+  var opt = {
+    margin: 0.5,
+    filename: 'informe-astrum.pdf',
+    image: {
+      type: 'jpeg',
+      quality: 0.98
+    },
+    html2canvas: {
+      scale: 2
+    },
+    jsPDF: {
+      unit: 'in',
+      format: 'a4',
+      orientation: 'portrait'
+    }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+
+function enviarInforme() {
+  var email = document.getElementById('send-email').value.trim();
+  var status = document.getElementById('send-status');
+
+  if (!email) {
+    status.className = 'status-msg status-err';
+    status.style.display = 'block';
+    status.textContent = 'Ingresa un correo válido.';
+    return;
+  }
+
+  status.className = 'status-msg status-ok';
+  status.style.display = 'block';
+  status.textContent = 'Función lista. Falta conectar Service ID y Template ID de EmailJS para enviar correos reales.';
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+</script>
+
+</body>
+</html>
