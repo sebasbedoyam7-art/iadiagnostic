@@ -1,969 +1,998 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Diagnostic Pro</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico IA — Astrum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f0f4ff;--surface:#ffffff;--surface2:#e8eeff;
-  --border:#c7d4f0;--border2:#a0b4e0;
-  --accent:#1a56db;--accent2:#3b82f6;
-  --green:#059669;--yellow:#d97706;--red:#dc2626;
-  --text:#0f1a3d;--text2:#3d5280;--text3:#7a90c0;
-}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
-.screen{display:none}.screen.active{display:block}
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(135deg,#e8eeff 0%,#f0f4ff 60%,#dbeafe 100%)}
-.login-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(26,86,219,0.08)}
-.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:2rem}
-.login-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
-.login-brand{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--text)}
-.login-brand span{display:block;font-size:12px;font-weight:400;color:var(--text3)}
-.login-tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.login-tab{flex:1;padding:9px;font-size:13px;border:none;background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
-.login-tab.active{background:var(--accent);color:white}
-.lf{margin-bottom:14px}
-.lf label{display:block;font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
-.lf input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
-.lf input:focus{border-color:var(--accent)}
-.login-err{font-size:12px;color:var(--red);margin-bottom:12px;display:none;padding:8px 12px;background:rgba(220,38,38,0.08);border-radius:6px}
-.btn-login{width:100%;padding:12px;font-size:14px;font-weight:600;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.15s;margin-top:4px}
-.btn-login:hover{opacity:0.9;transform:translateY(-1px)}
-.login-note{font-size:11px;color:var(--text3);text-align:center;margin-top:1rem}
-.header{background:linear-gradient(135deg,#1a56db,#1e40af);padding:1.25rem 2rem;border-bottom:1px solid #1e40af;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:34px;height:34px;background:rgba(255,255,255,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:white}
-.logo-sub{font-size:11px;color:rgba(255,255,255,0.6)}
-.header-right{display:flex;align-items:center;gap:10px}
-.prog-steps{display:flex;gap:5px}
-.pd{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);transition:all 0.3s}
-.pd.active{background:white;box-shadow:0 0 8px rgba(255,255,255,0.5)}
-.pd.done{background:#34d399}
-.btn-out{font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:rgba(255,255,255,0.7);cursor:pointer}
-.btn-out:hover{color:white;border-color:white}
-.main{padding:1.5rem 2rem;max-width:820px;margin:0 auto}
-.step{display:none}.step.active{display:block}
-.slabel{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
-.snum{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Space Grotesk',sans-serif;flex-shrink:0;color:white}
-.sinfo strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:var(--text)}
-.sinfo span{font-size:12px;color:var(--text3)}
-.fg{display:grid;gap:12px;margin-bottom:12px}
-.fg2{grid-template-columns:1fr 1fr}
-.fg3{grid-template-columns:1fr 1fr 1fr}
-.fg1{grid-template-columns:1fr}
-.field label{display:block;font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
-.field textarea{resize:vertical;min-height:75px;line-height:1.5}
-.field select option{background:white}
-.pc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(26,86,219,0.05)}
-.pc-head{margin-bottom:10px}
-.pc-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px}
-.sf{margin-bottom:14px}
-.sf-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-.sf-row label{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
-.sf-val{font-size:13px;font-weight:600;color:var(--accent);font-family:'Space Grotesk',sans-serif}
-input[type=range]{width:100%;height:4px;background:var(--border);border-radius:2px;outline:none;-webkit-appearance:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
-.cg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.ci{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:13px;color:var(--text2);user-select:none}
-.ci:hover{border-color:var(--accent2)}
-.ci.on{border-color:var(--accent);background:#eff6ff;color:var(--text)}
-.cdot{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;transition:all 0.15s}
-.ci.on .cdot{background:var(--accent);border-color:var(--accent);color:white}
-.divlbl{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin:14px 0 8px}
-.nav{display:flex;gap:10px;margin-top:1.5rem}
-.btn-back{padding:10px 18px;font-size:13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
-.btn-back:hover{border-color:var(--accent);color:var(--accent)}
-.btn-next{flex:1;padding:11px;font-size:13px;font-weight:500;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
-.btn-next:hover{opacity:0.9;transform:translateY(-1px)}
-.btn-gen{flex:1;padding:12px;font-size:14px;font-weight:600;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#10b981);color:white;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.15s}
-.btn-gen:hover{opacity:0.9;transform:translateY(-1px)}
-/* GRACIAS */
-.gracias-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:2rem}
-.gracias-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;max-width:480px;box-shadow:0 4px 24px rgba(26,86,219,0.08)}
-.gracias-icon{font-size:48px;margin-bottom:1rem}
-.gracias-card h2{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin-bottom:0.75rem;color:var(--text)}
-.gracias-card p{font-size:14px;color:var(--text2);line-height:1.6}
-/* SCORE / METRICS */
-.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
-.sc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 4px rgba(26,86,219,0.05);position:relative;overflow:visible}
-.sc-v{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700}
-.sc-l{font-size:11px;color:var(--text3);margin-top:4px}
-.sc-icon{font-size:18px;margin-bottom:4px}
-.sc-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f1a3d;color:white;font-size:11px;padding:7px 10px;border-radius:6px;width:190px;text-align:center;line-height:1.4;z-index:20;white-space:normal}
-.sc-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#0f1a3d}
-.sc:hover .sc-tooltip{display:block}
-/* PROGRESS RING */
-.sc-ring-wrap{position:relative;display:inline-block;width:80px;height:80px}
-.progress-ring{transform:rotate(-90deg)}
-.ring-bg{fill:none;stroke:var(--border);stroke-width:6}
-.ring-fg{fill:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:201;stroke-dashoffset:201;transition:stroke-dashoffset 1.2s ease}
-.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.ring-val{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;line-height:1}
-.ring-lbl{font-size:9px;color:var(--text3);margin-top:1px}
-/* BADGES */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif}
-.badge-red{background:rgba(220,38,38,0.1);color:#dc2626}
-.badge-yellow{background:rgba(217,119,6,0.1);color:#d97706}
-.badge-green{background:rgba(5,150,105,0.1);color:#059669}
-.badge-blue{background:rgba(26,86,219,0.1);color:#1a56db}
-/* RESULT BOX */
-.result-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;min-height:180px;box-shadow:0 1px 4px rgba(26,86,219,0.05)}
-.loading{display:flex;align-items:center;gap:10px;padding:1.5rem 0}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:bounce 1.2s infinite}
-.dot:nth-child(2){animation-delay:0.2s}.dot:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-6px);opacity:1}}
-.result-text{font-size:13px;color:var(--text2);line-height:1.8;display:none}
-.result-actions{margin-top:1rem;display:none;gap:10px;flex-wrap:wrap}
-.btn-pdf{padding:10px 20px;font-size:13px;font-weight:500;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;cursor:pointer;font-family:'Inter',sans-serif}
-.btn-pdf:hover{opacity:0.9}
-.btn-sec{padding:10px 18px;font-size:13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif}
-.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
-.btn-edit-mode{padding:10px 18px;font-size:13px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif}
-.btn-edit-mode:hover{border-color:var(--yellow);color:var(--yellow)}
-.edit-area{width:100%;min-height:320px;background:var(--surface2);border:1px solid var(--accent);border-radius:8px;padding:14px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;line-height:1.7;resize:vertical;display:none;margin-top:4px}
-/* MARKDOWN */
-.md-content h1{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin:1.2rem 0 0.6rem;border-bottom:2px solid var(--accent);padding-bottom:6px}
-.md-content h2{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--accent);margin:1.2rem 0 0.5rem;border-bottom:1px solid var(--border);padding-bottom:5px}
-.md-content h3{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--text);margin:0.9rem 0 0.3rem}
-.md-content p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:0.6rem}
-.md-content ul,.md-content ol{padding-left:1.4rem;margin-bottom:0.6rem}
-.md-content li{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:3px}
-.md-content strong{color:var(--text);font-weight:600}
-.md-content em{color:var(--text2);font-style:italic}
-.md-content table{width:100%;border-collapse:collapse;font-size:12px;margin:0.7rem 0;overflow-x:auto;display:block}
-.md-content th{background:var(--surface2);color:var(--text);font-weight:600;padding:8px 10px;text-align:left;border:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.04em}
-.md-content td{padding:7px 10px;border:1px solid var(--border);color:var(--text2);font-size:12px}
-.md-content tr:nth-child(even) td{background:var(--surface2)}
-.md-content code{background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:12px;font-family:monospace;color:var(--accent)}
-.md-content blockquote{border-left:3px solid var(--accent);padding:8px 14px;background:var(--surface2);margin:0.7rem 0;border-radius:0 8px 8px 0}
-.md-content blockquote p{margin:0;color:var(--text2);font-style:italic}
-.md-content hr{border:none;border-top:1px solid var(--border);margin:1rem 0}
-/* CTA */
-.cta-block{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;padding:1.75rem;margin-top:1.5rem;text-align:center;color:white}
-.cta-block h3{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:0.5rem}
-.cta-block p{font-size:13px;opacity:0.9;margin-bottom:1.1rem;line-height:1.5}
-.btn-cta{background:white;color:var(--accent);border:none;padding:11px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all 0.15s}
-.btn-cta:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-/* DISCLAIMER */
-.disclaimer{font-size:11px;color:var(--text3);line-height:1.6;padding:12px 14px;background:var(--surface2);border-radius:8px;margin-top:1rem;border:1px solid var(--border)}
-/* LISTA CLIENTES */
-.client-list{display:grid;gap:10px;margin-top:1rem}
-.client-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.15s;display:flex;justify-content:space-between;align-items:center}
-.client-card:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(26,86,219,0.1)}
-.client-info strong{display:block;font-size:14px;font-weight:600;color:var(--text)}
-.client-info span{font-size:12px;color:var(--text3)}
-.client-badge{font-size:11px;padding:3px 10px;border-radius:20px;background:#fef3c7;color:#d97706;font-weight:500}
-.client-badge.listo{background:#d1fae5;color:#059669}
-.empty-state{text-align:center;padding:3rem;color:var(--text3);font-size:14px}
-/* PDF */
-#pdf-template{display:none;font-family:'Inter',sans-serif;color:#1a1a2e;background:white;padding:40px;max-width:800px}
-#pdf-template h1{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;border-bottom:3px solid #1a56db;padding-bottom:12px;margin-bottom:8px}
-#pdf-template .pdf-meta{font-size:13px;color:#666;margin-bottom:24px}
-#pdf-template .pdf-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-#pdf-template .pdf-sc{border:2px solid #e8eeff;border-radius:8px;padding:12px;text-align:center}
-#pdf-template .pdf-sc-v{font-size:22px;font-weight:700;color:#1a56db;font-family:'Space Grotesk',sans-serif}
-#pdf-template .pdf-sc-l{font-size:11px;color:#999;margin-top:3px}
-#pdf-template .pdf-content{font-size:13px;line-height:1.8;color:#333;white-space:pre-wrap}
-#pdf-template .pdf-footer{margin-top:32px;padding-top:16px;border-top:1px solid #e8eeff;font-size:11px;color:#999;text-align:center}
-/* MOBILE */
-@media(max-width:600px){
-  .main{padding:1rem}
-  .fg2,.fg3{grid-template-columns:1fr}
-  .score-grid{grid-template-columns:1fr}
-  .cg{grid-template-columns:1fr}
-  .header{padding:1rem}
-  .login-card{padding:1.5rem}
-  .result-actions{flex-direction:column}
-  .btn-pdf,.btn-sec,.btn-edit-mode{width:100%;text-align:center}
-  .nav{flex-direction:column}
-  .btn-back{order:2}
-  .btn-next,.btn-gen{order:1}
-  #gracias-preview{padding:1rem}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Public Sans',system-ui,sans-serif;background:#eef0f4;-webkit-font-smoothing:antialiased;color:#10162a}
+a{color:#10162a}
+input,textarea,select{font-family:'Public Sans',sans-serif;box-sizing:border-box}
+input::placeholder,textarea::placeholder{color:#a6acba}
+input[type="range"]{accent-color:#10162a;width:100%}
+.screen{display:none!important}
+.screen.active{display:block!important}
+#s-intro.active,#s-login.active,#s-loading.active{display:flex!important}
+
+/* ---- LOGO SVG ---- */
+.logo-svg{height:30px;width:auto;display:block}
+
+/* ---- NAV ---- */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:76px;background:#10162a;color:#fff;position:sticky;top:0;z-index:10}
+.nav-brand{display:flex;align-items:center;gap:14px}
+.nav-brand-text{display:flex;flex-direction:column;line-height:1.25;border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
+.nav-brand-title{font:700 13.5px 'Public Sans',sans-serif;color:#fff}
+.nav-brand-sub{font:400 11px 'Public Sans',sans-serif;color:#8890a4}
+.nav-btn{border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font:600 12.5px 'Public Sans',sans-serif;padding:9px 18px;border-radius:3px;cursor:pointer;transition:border-color .2s}
+.nav-btn:hover{border-color:rgba(255,255,255,.7)}
+.nav-dots{display:flex;align-items:center;gap:9px}
+.dot{height:8px;border-radius:4px;transition:all .3s}
+.dot.active{width:28px;background:#fff}
+.dot.done{width:8px;border-radius:50%;background:rgba(255,255,255,.5)}
+.dot.pending{width:8px;border-radius:50%;background:rgba(255,255,255,.2)}
+
+/* ---- CARD ---- */
+.card{background:#fff;border:1px solid #e2e4ea;border-radius:6px;box-shadow:0 1px 3px rgba(16,22,42,.08)}
+
+/* ---- WIZARD CONTENT ---- */
+.wizard-wrap{max-width:900px;margin:0 auto;padding:56px 56px 100px}
+.step-header{display:flex;align-items:center;gap:16px;margin-bottom:36px}
+.step-num{width:34px;height:34px;flex:none;border-radius:50%;background:#10162a;color:#fff;display:flex;align-items:center;justify-content:center;font:700 14px 'Public Sans',sans-serif}
+.step-title{font:700 22px 'Public Sans',sans-serif;color:#10162a}
+.step-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
+
+/* ---- FORM FIELDS ---- */
+.field-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:8px}
+.field-input{width:100%;padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font-size:14.5px;color:#10162a;background:#fff;outline:none;transition:border-color .2s}
+.field-input:focus{border-color:#10162a}
+textarea.field-input{resize:vertical;line-height:1.5}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.mb-22{margin-bottom:22px}
+.mb-28{margin-bottom:28px}
+.mb-32{margin-bottom:32px}
+
+/* ---- SECTION CARD ---- */
+.section-card{border:1px solid #e2e4ea;border-radius:6px;padding:28px;margin-bottom:20px}
+.section-badge{display:inline-block;font:600 12px 'Public Sans',sans-serif;color:#10162a;background:#eef0f4;padding:5px 12px;border-radius:3px;margin-bottom:20px}
+
+/* ---- HERRAMIENTAS CHECKBOXES ---- */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
+.tool-item{padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font:500 13.5px 'Public Sans',sans-serif;color:#47516e;cursor:pointer;transition:all .2s;user-select:none}
+.tool-item.selected{border-color:#10162a;background:#f5f6f8;color:#10162a;font-weight:600}
+
+/* ---- RANGE SLIDER ROW ---- */
+.range-row{margin-bottom:28px}
+.range-header{display:flex;justify-content:space-between;margin-bottom:10px}
+.range-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase}
+.range-val{font:600 13px 'Public Sans',sans-serif;color:#10162a}
+
+/* ---- PRIORIDADES CHECKBOXES ---- */
+.prio-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px}
+
+/* ---- WIZARD FOOTER ---- */
+.wizard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:28px;border-top:1px solid #e2e4ea}
+.btn-back{border:1px solid #dfe2e8;background:#fff;color:#47516e;font:600 14px 'Public Sans',sans-serif;padding:14px 24px;border-radius:4px;cursor:pointer;transition:all .2s}
+.btn-back:hover{border-color:#10162a;color:#10162a}
+.btn-next{border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;transition:opacity .2s}
+.btn-next:hover{opacity:.85}
+.btn-next:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---- LOADING ---- */
+#s-loading{min-height:100vh;display:none;align-items:center;justify-content:center}
+#s-loading.active{display:flex}
+.loading-card{text-align:center;padding:60px 48px}
+.loader{width:44px;height:44px;border:3px solid #e2e4ea;border-top-color:#10162a;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-title{font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px}
+.loading-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
+
+/* ---- PREVIEW (client result) ---- */
+.preview-wrap{max-width:780px;margin:0 auto;padding:56px 24px 100px}
+.preview-tag{font:600 11px 'Public Sans',sans-serif;letter-spacing:.14em;color:#8890a4;text-transform:uppercase;margin-bottom:10px}
+.preview-title{font:700 28px 'Public Sans',sans-serif;color:#10162a;margin:0 0 6px}
+.preview-sub{font:400 14px 'Public Sans',sans-serif;color:#8890a4;margin:0 0 36px}
+.scores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px}
+.score-card{padding:24px;text-align:center}
+.score-num{font:800 36px 'Public Sans',sans-serif;color:#10162a;line-height:1}
+.score-label{font:500 12px 'Public Sans',sans-serif;color:#8890a4;margin-top:6px;text-transform:uppercase;letter-spacing:.06em}
+.score-badge{display:inline-block;font:600 10px 'Public Sans',sans-serif;padding:3px 9px;border-radius:10px;margin-top:8px}
+.badge-alto{background:#dcfce7;color:#166534}
+.badge-medio{background:#fef9c3;color:#854d0e}
+.badge-bajo{background:#fee2e2;color:#991b1b}
+.executive-card{margin-bottom:28px}
+.executive-card h3{font:700 15px 'Public Sans',sans-serif;color:#10162a;margin-bottom:12px}
+.executive-body{font:400 14.5px/1.7 'Public Sans',sans-serif;color:#34394a}
+.cta-block{background:#10162a;border-radius:6px;padding:36px;color:#fff;text-align:center}
+.cta-block h3{font:700 20px 'Public Sans',sans-serif;margin:0 0 10px}
+.cta-block p{font:400 14px 'Public Sans',sans-serif;color:#8890a4;margin:0 0 22px}
+.btn-cta-white{display:inline-block;background:#fff;color:#10162a;font:600 14px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;text-decoration:none;border:none;cursor:pointer}
+
+/* ---- LOGIN ---- */
+#s-login{min-height:100vh;display:none;align-items:center;justify-content:center;padding:40px}
+#s-login.active{display:flex}
+.login-card{width:420px;max-width:100%;padding:44px}
+.login-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:30px}
+.login-title{font:700 15px 'Public Sans',sans-serif;color:#10162a}
+.tab-switch{display:flex;background:#eef0f4;border-radius:4px;padding:4px;margin-bottom:28px}
+.tab-item{flex:1;text-align:center;padding:11px 0;border-radius:3px;font:600 13.5px 'Public Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;color:#47516e}
+.tab-item.active{background:#10162a;color:#fff}
+.login-error{font:500 12.5px 'Public Sans',sans-serif;color:#a03b3b;margin-bottom:14px;display:none}
+.login-hint{text-align:center;margin-top:16px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4}
+.btn-full{width:100%;border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 0;border-radius:4px;margin-top:8px;transition:opacity .2s}
+.btn-full:hover{opacity:.85}
+
+/* ---- DASHBOARD ---- */
+.dash-wrap{max-width:1180px;margin:0 auto;padding:48px 56px 100px}
+.dash-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
+.dash-title{font:700 24px 'Public Sans',sans-serif;color:#10162a;margin:0}
+.dash-count{font:400 13px 'Public Sans',sans-serif;color:#8890a4}
+.client-table{width:100%;border-collapse:collapse}
+.client-table th{text-align:left;padding:16px 24px;font:600 11px 'Public Sans',sans-serif;letter-spacing:.06em;color:#8890a4;text-transform:uppercase;border-bottom:1px solid #e2e4ea;background:#f5f6f8}
+.client-table td{padding:18px 24px;border-bottom:1px solid #eef0f4}
+.client-table tr:hover td{background:#f9fafb}
+.client-empresa{font:600 14px 'Public Sans',sans-serif;color:#10162a}
+.client-nombre{font:400 12.5px 'Public Sans',sans-serif;color:#8890a4}
+.client-text{font:400 13.5px 'Public Sans',sans-serif;color:#47516e}
+.estado-badge{display:inline-block;font:600 11.5px 'Public Sans',sans-serif;padding:5px 12px;border-radius:12px}
+.estado-nuevo{background:#eef0f4;color:#47516e}
+.estado-analisis{background:#dfe2e8;color:#10162a}
+.estado-enviado{background:#10162a;color:#fff}
+.btn-ver{border:1px solid #dfe2e8;background:#fff;color:#10162a;font:600 12.5px 'Public Sans',sans-serif;padding:9px 16px;border-radius:4px;cursor:pointer;transition:all .2s}
+.btn-ver:hover{border-color:#10162a}
+
+/* ---- DETAIL / REPORT ---- */
+.detail-wrap{max-width:1020px;margin:0 auto;padding:48px 56px 100px}
+.detail-section{padding:28px;margin-bottom:22px}
+.detail-label{font:600 10.5px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:5px}
+.detail-val{font:400 14px 'Public Sans',sans-serif;color:#10162a;line-height:1.5}
+.detail-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.detail-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}
+.analyst-card{border:1.5px solid #10162a;border-radius:6px;padding:28px;background:#fff}
+.analyst-title{font:700 16px 'Public Sans',sans-serif;color:#10162a;margin-bottom:6px}
+.analyst-sub{font:400 13px 'Public Sans',sans-serif;color:#8890a4;margin-bottom:18px}
+.report-area{width:100%;padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font:400 14px 'Public Sans',sans-serif;color:#10162a;resize:vertical;min-height:140px;line-height:1.6}
+.report-toolbar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.btn-action{border:1px solid #dfe2e8;background:#fff;color:#10162a;font:600 12.5px 'Public Sans',sans-serif;padding:10px 18px;border-radius:4px;cursor:pointer;transition:all .2s}
+.btn-action:hover{border-color:#10162a}
+.btn-action.primary{background:#10162a;color:#fff;border-color:#10162a}
+.btn-action.primary:hover{opacity:.85}
+.report-html{font:400 14.5px/1.7 'Public Sans',sans-serif;color:#34394a}
+.report-html h1,.report-html h2,.report-html h3{font-family:'Public Sans',sans-serif;color:#10162a;margin:20px 0 10px}
+.report-html h2{font-size:18px;border-bottom:1.5px solid #e2e4ea;padding-bottom:8px}
+.report-html h3{font-size:15px}
+.report-html p{margin:0 0 12px}
+.report-html ul,.report-html ol{padding-left:20px;margin:0 0 12px}
+.report-html li{margin-bottom:5px}
+.report-html strong{color:#10162a}
+.report-not-generated{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4;padding:32px;text-align:center;background:#f9fafb;border:1px dashed #dfe2e8;border-radius:4px}
+.send-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:flex-start;margin-top:14px}
+
+/* ---- STATUS MSG ---- */
+.status-msg{font:400 13px 'Public Sans',sans-serif;padding:10px 14px;border-radius:4px;display:none;margin-top:10px}
+.status-ok{background:rgba(5,150,105,.1);color:#065f46;border:1px solid rgba(5,150,105,.2)}
+.status-err{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.15)}
+
+/* ---- MOBILE ---- */
+@media(max-width:700px){
+  .nav{padding:0 20px;height:64px}
+  .nav-brand-text{display:none}
+  .wizard-wrap,.detail-wrap,.dash-wrap{padding:32px 16px 80px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .scores-grid{grid-template-columns:1fr}
+  .prio-grid{grid-template-columns:1fr 1fr}
+  .detail-grid-4{grid-template-columns:1fr 1fr}
+  .detail-grid-2{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="screen active" id="screen-login">
-  <div class="login-wrap">
-    <div class="login-card">
-      <div class="login-logo">
-        <div class="login-icon">⚡</div>
-        <div><div class="login-brand">AI Diagnostic Pro<span>Consultoria IA Empresarial</span></div></div>
-      </div>
-      <div class="login-tabs">
-        <button class="login-tab active" onclick="setMode('cliente',this)">Soy cliente</button>
-        <button class="login-tab" onclick="setMode('consultor',this)">Consultor</button>
-      </div>
-      <div id="tab-cliente">
-        <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem">Completa el formulario de diagnostico para recibir tu analisis IA personalizado.</p>
-        <button class="btn-login" onclick="enterAsCliente()">Comenzar diagnostico</button>
-        <div class="login-note">Sin registro necesario · Proceso de 5 minutos</div>
-      </div>
-      <div id="tab-consultor" style="display:none">
-        <div class="login-err" id="login-err">Usuario o contrasena incorrectos</div>
-        <div class="lf"><label>Usuario</label><input type="text" id="lu" placeholder="usuario" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <div class="lf"><label>Contrasena</label><input type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <button class="btn-login" onclick="doLogin()">Entrar</button>
+<!-- =================== SCREEN: INTRO =================== -->
+<div id="s-intro" class="screen active" style="min-height:100vh;align-items:center;justify-content:center;padding:40px">
+  <div class="card" style="width:560px;max-width:100%;padding:44px 44px 36px">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:34px">
+      <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="#10162a"/>
+        <polygon points="11,26 25,26 23,30 13,30" fill="#eef0f4"/>
+        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#eef0f4"/>
+        <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="#10162a" letter-spacing="2">ASTRUM</text>
+      </svg>
+      <div style="display:flex;flex-direction:column;line-height:1.3">
+        <span style="font:700 15px 'Public Sans',sans-serif;color:#10162a">Diagnóstico IA</span>
+        <span style="font:400 12px 'Public Sans',sans-serif;color:#8890a4">Consultoría IA empresarial</span>
       </div>
     </div>
+
+    <div class="tab-switch" style="margin-bottom:28px">
+      <div class="tab-item active">Soy cliente</div>
+      <div class="tab-item" onclick="irALogin()">Consultor</div>
+    </div>
+
+    <p style="font:400 14.5px/1.6 'Public Sans',sans-serif;color:#47516e;margin:0 0 26px">Completa el formulario de diagnóstico para recibir tu análisis de IA personalizado. Sin registro necesario.</p>
+
+    <button onclick="iniciarFormulario()" class="btn-full">Comenzar diagnóstico</button>
+    <div style="text-align:center;margin-top:14px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4">Sin registro necesario · Proceso de 5 minutos</div>
   </div>
 </div>
 
-<!-- CLIENTE: FORMULARIO -->
-<div class="screen" id="screen-cliente">
-  <div class="header">
-    <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Diagnostico empresarial</div></div></div>
-    <div class="header-right">
-      <div class="prog-steps" id="cprog">
-        <div class="pd active" id="cpd1"></div><div class="pd" id="cpd2"></div><div class="pd" id="cpd3"></div>
-        <div class="pd" id="cpd4"></div><div class="pd" id="cpd5"></div><div class="pd" id="cpd6"></div>
+<!-- =================== SCREEN: WIZARD =================== -->
+<div id="s-wizard" class="screen">
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
+        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
+        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
+        <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-title">Diagnóstico IA</span>
+        <span class="nav-brand-sub">Diagnóstico empresarial</span>
       </div>
     </div>
-  </div>
-  <div class="main">
-    <div class="step active" id="cs1">
-      <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Tu empresa</strong><span>Cuentanos quienes son</span></div></div>
-      <div class="fg fg2">
-        <div class="field"><label>Nombre de la empresa</label><input type="text" id="c_empresa" placeholder="Ej. Distribuidora Los Andes"></div>
-        <div class="field"><label>Tu nombre</label><input type="text" id="c_nombre" placeholder="Ej. Carlos Mamani"></div>
+    <div class="nav-dots" id="step-dots"></div>
+  </nav>
+
+  <div class="wizard-wrap">
+
+    <!-- STEP 1 -->
+    <div id="step-1" style="display:none">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div><div class="step-title">Tu empresa</div><div class="step-sub">Cuéntanos quiénes son</div></div>
       </div>
-      <div class="fg fg1">
-        <div class="field"><label>Industria / Sector</label>
-          <select id="c_industria">
-            <option value="">Seleccionar...</option>
-            <option>Comercio / Retail</option><option>Servicios profesionales</option>
-            <option>Salud / Clinicas</option><option>Educacion</option><option>Inmobiliaria</option>
-            <option>Logistica / Transporte</option><option>Manufactura</option>
-            <option>Finanzas / Contabilidad</option><option>Restaurantes / Gastronomia</option>
-            <option>Construccion</option><option>Tecnologia</option><option>Otro</option>
+      <div class="grid-2 mb-22">
+        <div><div class="field-label">Nombre de la empresa</div><input class="field-input" id="f-empresa" placeholder="Ej. Distribuidora Los Andes"></div>
+        <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Carlos Mamani"></div>
+      </div>
+      <div class="mb-22">
+        <div class="field-label">Industria / Sector</div>
+        <select class="field-input" id="f-industria">
+          <option value="">Seleccionar...</option>
+          <option>Comercio / Retail</option><option>Manufactura</option><option>Servicios profesionales</option>
+          <option>Tecnología</option><option>Salud</option><option>Construcción</option>
+          <option>Alimentos y bebidas</option><option>Educación</option><option>Logística y transporte</option><option>Otro</option>
+        </select>
+      </div>
+      <div class="grid-3 mb-22">
+        <div><div class="field-label">N° de empleados</div>
+          <select class="field-input" id="f-empleados">
+            <option value="">Seleccionar...</option><option>1-10</option><option>11-50</option><option>51-200</option><option>201-500</option><option>Más de 500</option>
+          </select>
+        </div>
+        <div><div class="field-label">Años en el mercado</div>
+          <select class="field-input" id="f-anios">
+            <option value="">Seleccionar...</option><option>Menos de 1 año</option><option>1-3 años</option><option>4-10 años</option><option>Más de 10 años</option>
+          </select>
+        </div>
+        <div><div class="field-label">País</div>
+          <select class="field-input" id="f-pais">
+            <option value="">Seleccionar...</option><option>Bolivia</option><option>Perú</option><option>Chile</option><option>Colombia</option><option>Argentina</option><option>México</option><option>Otro</option>
           </select>
         </div>
       </div>
-      <div class="fg fg3">
-        <div class="field"><label>N de empleados</label>
-          <select id="c_emp"><option value="">Seleccionar...</option><option>1-5</option><option>6-20</option><option>21-50</option><option>51-200</option><option>200+</option></select>
-        </div>
-        <div class="field"><label>Anos en el mercado</label>
-          <select id="c_anios"><option value="">Seleccionar...</option><option>Menos de 1 ano</option><option>1-3 anos</option><option>4-10 anos</option><option>Mas de 10 anos</option></select>
-        </div>
-        <div class="field"><label>Pais</label>
-          <select id="c_pais"><option value="">Seleccionar...</option><option>Bolivia</option><option>Colombia</option><option>Mexico</option><option>Peru</option><option>Argentina</option><option>Chile</option><option>Venezuela</option><option>Ecuador</option><option>Otro LATAM</option><option>EE.UU. (hispano)</option><option>Espana</option></select>
-        </div>
+      <div>
+        <div class="field-label">¿Qué hace tu empresa?</div>
+        <textarea class="field-input" id="f-descripcion" rows="3" placeholder="Ej. Vendemos materiales de construcción al por mayor..."></textarea>
       </div>
-      <div class="fg fg1">
-        <div class="field"><label>Que hace tu empresa?</label>
-          <textarea id="c_modelo" placeholder="Ej. Vendemos materiales de construccion al por mayor..."></textarea>
-        </div>
-      </div>
-      <div class="nav"><button class="btn-next" onclick="cgo(2)">Siguiente</button></div>
     </div>
 
-    <div class="step" id="cs2">
-      <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Tus procesos</strong><span>Como funciona el dia a dia</span></div></div>
-      <div class="pc">
-        <div class="pc-head"><span class="pc-badge" style="background:rgba(220,38,38,0.1);color:#dc2626">Ventas</span></div>
-        <div class="fg fg2">
-          <div class="field"><label>Como consiguen clientes?</label><input type="text" id="c_vcanal" placeholder="Ej. WhatsApp, referidos, redes"></div>
-          <div class="field"><label>Cuanto tarda cerrar una venta?</label><input type="text" id="c_vtiempo" placeholder="Ej. 3-7 dias"></div>
-        </div>
-        <div class="field"><label>Que parte del proceso de ventas es mas lenta?</label>
-          <textarea id="c_vdolor" style="min-height:60px" placeholder="Ej. Cotizar manualmente toma 30 min..."></textarea>
-        </div>
+    <!-- STEP 2 -->
+    <div id="step-2" style="display:none">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div><div class="step-title">Tus procesos</div><div class="step-sub">Cómo funciona el día a día</div></div>
       </div>
-      <div class="pc">
-        <div class="pc-head"><span class="pc-badge" style="background:rgba(217,119,6,0.1);color:#d97706">Atencion al cliente</span></div>
-        <div class="fg fg2">
-          <div class="field"><label>Canales de atencion</label><input type="text" id="c_acanal" placeholder="Ej. WhatsApp, telefono, presencial"></div>
-          <div class="field"><label>Consultas por dia aprox.</label>
-            <select id="c_avol"><option value="">Seleccionar...</option><option>Menos de 10</option><option>10-30</option><option>30-100</option><option>Mas de 100</option></select>
+      <div class="section-card">
+        <div class="section-badge">Ventas</div>
+        <div class="grid-2 mb-22">
+          <div><div class="field-label">¿Cómo consiguen clientes?</div><input class="field-input" id="f-comoConsiguen" placeholder="Ej. WhatsApp, referidos, redes"></div>
+          <div><div class="field-label">¿Cuánto tarda cerrar una venta?</div><input class="field-input" id="f-tiempoCierre" placeholder="Ej. 3-7 días"></div>
+        </div>
+        <div><div class="field-label">¿Qué parte del proceso de ventas es más lenta?</div><textarea class="field-input" id="f-procesoLento" rows="2" placeholder="Ej. Cotizar manualmente toma 30 min..."></textarea></div>
+      </div>
+      <div class="section-card">
+        <div class="section-badge">Atención al cliente</div>
+        <div class="grid-2 mb-22">
+          <div><div class="field-label">Canales de atención</div><input class="field-input" id="f-canalesAtencion" placeholder="Ej. WhatsApp, teléfono, presencial"></div>
+          <div><div class="field-label">Consultas por día aprox.</div>
+            <select class="field-input" id="f-consultasDia">
+              <option value="">Seleccionar...</option><option>Menos de 10</option><option>10-30</option><option>30-100</option><option>Más de 100</option>
+            </select>
           </div>
         </div>
-        <div class="field"><label>Que preguntas o tareas se repiten mas?</label>
-          <textarea id="c_adolor" style="min-height:60px" placeholder="Ej. Horarios, precios, estado de pedidos..."></textarea>
-        </div>
+        <div><div class="field-label">¿Qué preguntas o tareas se repiten más?</div><textarea class="field-input" id="f-preguntasRepiten" rows="2" placeholder="Ej. Horarios, precios, estado de pedidos..."></textarea></div>
       </div>
-      <div class="pc">
-        <div class="pc-head"><span class="pc-badge" style="background:rgba(26,86,219,0.1);color:#1a56db">Operaciones</span></div>
-        <div class="field" style="margin-bottom:8px"><label>Que tareas manuales hace tu equipo?</label>
-          <textarea id="c_otareas" placeholder="Ej. Actualizar inventario en Excel..."></textarea>
-        </div>
-        <div class="field"><label>Horas semanales perdidas en tareas manuales</label>
-          <select id="c_ohoras"><option value="">Seleccionar...</option><option>Menos de 5 hrs</option><option>5-15 hrs</option><option>15-40 hrs</option><option>Mas de 40 hrs</option></select>
-        </div>
-      </div>
-      <div class="nav"><button class="btn-back" onclick="cgo(1)">Atras</button><button class="btn-next" onclick="cgo(3)">Siguiente</button></div>
-    </div>
-
-    <div class="step" id="cs3">
-      <div class="slabel"><div class="snum">3</div><div class="sinfo"><strong>Tecnologia actual</strong><span>Que herramientas usan hoy</span></div></div>
-      <div class="divlbl">Herramientas que usan</div>
-      <div class="cg">
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>CRM (HubSpot, Salesforce)</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>ERP (SAP, Odoo)</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Hojas de calculo (Excel/Sheets)</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>WhatsApp Business</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Email marketing</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Redes sociales activas</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>E-commerce / tienda online</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Software de facturacion</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Ninguna / todo manual</div>
-      </div>
-      <div class="sf">
-        <div class="sf-row"><label>Nivel tecnologico del equipo</label><span class="sf-val" id="sv1">Intermedio</span></div>
-        <input type="range" min="1" max="5" value="3" id="sr1" oninput="updateSl('sr1','sv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto'])">
-      </div>
-      <div class="sf">
-        <div class="sf-row"><label>Resistencia al cambio del equipo</label><span class="sf-val" id="sv2">Media</span></div>
-        <input type="range" min="1" max="5" value="3" id="sr2" oninput="updateSl('sr2','sv2',['Muy alta','Alta','Media','Baja','Muy baja'])">
-      </div>
-      <div class="nav"><button class="btn-back" onclick="cgo(2)">Atras</button><button class="btn-next" onclick="cgo(4)">Siguiente</button></div>
-    </div>
-
-    <div class="step" id="cs4">
-      <div class="slabel"><div class="snum">4</div><div class="sinfo"><strong>Dolores del negocio</strong><span>Los problemas mas urgentes</span></div></div>
-      <div class="fg fg1"><div class="field"><label>Cual es el mayor problema operativo hoy?</label><textarea id="c_d1" placeholder="Ej. Perdemos leads porque no respondemos rapido..."></textarea></div></div>
-      <div class="fg fg1"><div class="field"><label>Donde se pierden mas clientes?</label><textarea id="c_d2" placeholder="Ej. Las cotizaciones tardan mucho..."></textarea></div></div>
-      <div class="fg fg1"><div class="field"><label>Que tarea odia mas hacer el equipo?</label><textarea id="c_d3" style="min-height:60px" placeholder="Ej. Hacer reportes manuales..."></textarea></div></div>
-      <div class="sf">
-        <div class="sf-row"><label>Urgencia de resolver estos problemas</label><span class="sf-val" id="sv3">Media</span></div>
-        <input type="range" min="1" max="5" value="3" id="sr3" oninput="updateSl('sr3','sv3',['Muy baja','Baja','Media','Alta','Muy alta'])">
-      </div>
-      <div class="nav"><button class="btn-back" onclick="cgo(3)">Atras</button><button class="btn-next" onclick="cgo(5)">Siguiente</button></div>
-    </div>
-
-    <div class="step" id="cs5">
-      <div class="slabel"><div class="snum">5</div><div class="sinfo"><strong>Capacidad de inversion</strong><span>Presupuesto y decisores</span></div></div>
-      <div class="fg fg2">
-        <div class="field"><label>Quien toma las decisiones tecnologicas?</label>
-          <select id="c_dec"><option value="">Seleccionar...</option><option>El dueno / CEO directamente</option><option>Gerente de operaciones</option><option>Gerente de TI / sistemas</option><option>Decision en comite</option><option>No esta claro</option></select>
-        </div>
-        <div class="field"><label>Presupuesto mensual para IA</label>
-          <select id="c_pres"><option value="">Seleccionar...</option><option>No definido aun</option><option>Menos de $100/mes</option><option>$100-300/mes</option><option>$300-800/mes</option><option>$800-2000/mes</option><option>Mas de $2000/mes</option></select>
-        </div>
-      </div>
-      <div class="sf">
-        <div class="sf-row"><label>Disposicion a invertir en IA ahora</label><span class="sf-val" id="sv4">Media</span></div>
-        <input type="range" min="1" max="5" value="3" id="sr4" oninput="updateSl('sr4','sv4',['Muy baja','Baja','Media','Alta','Muy alta'])">
-      </div>
-      <div class="fg fg1"><div class="field"><label>Han intentado alguna solucion tecnologica antes?</label><textarea id="c_int" style="min-height:60px" placeholder="Ej. Intentamos un CRM pero el equipo no lo adopto..."></textarea></div></div>
-      <div class="nav"><button class="btn-back" onclick="cgo(4)">Atras</button><button class="btn-next" onclick="cgo(6)">Siguiente</button></div>
-    </div>
-
-    <div class="step" id="cs6">
-      <div class="slabel"><div class="snum">6</div><div class="sinfo"><strong>Objetivos estrategicos</strong><span>Hacia donde van</span></div></div>
-      <div class="fg fg1"><div class="field"><label>Que quieren lograr en los proximos 12 meses?</label><textarea id="c_obj" placeholder="Ej. Doblar las ventas, abrir nueva sucursal..."></textarea></div></div>
-      <div class="divlbl">Que es mas importante ahora mismo?</div>
-      <div class="cg">
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Crecer en ventas</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Reducir costos</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Mejorar atencion al cliente</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Escalar sin contratar mas</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Automatizar tareas repetitivas</div>
-        <div class="ci" onclick="toggleCI(this)"><div class="cdot">v</div>Tener mas datos y reportes</div>
-      </div>
-      <div class="fg fg1"><div class="field"><label>Algo mas que debamos saber?</label><textarea id="c_add" style="min-height:60px" placeholder="Contexto adicional..."></textarea></div></div>
-      <div class="nav">
-        <button class="btn-back" onclick="cgo(5)">Atras</button>
-        <button class="btn-gen" onclick="submitForm()">Enviar diagnostico</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- GRACIAS -->
-<div class="screen" id="screen-gracias">
-  <div class="header"><div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div></div></div></div>
-  <!-- Estado: cargando -->
-  <div class="gracias-wrap" id="gracias-loading">
-    <div class="gracias-card">
-      <div class="loading" style="justify-content:center"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <h2 style="margin-top:1rem">Analizando tu empresa...</h2>
-      <p style="margin-top:0.5rem">La IA esta procesando los datos de tu empresa. Esto toma unos segundos.</p>
-    </div>
-  </div>
-  <!-- Estado: preview -->
-  <div id="gracias-preview" style="display:none;padding:1.5rem 2rem;max-width:820px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:1.5rem">
-      <div style="font-size:44px">✅</div>
-      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin:0.5rem 0;color:var(--text)">Tu diagnostico preliminar esta listo</h2>
-      <p style="font-size:13px;color:var(--text2);line-height:1.6">Un consultor revisara estos resultados y te enviara el reporte completo y personalizado en <strong>24-48 horas</strong>.</p>
-    </div>
-    <div class="score-grid" id="c_scores_preview" style="margin-bottom:1.5rem"></div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem">
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--accent);margin-bottom:0.75rem;padding-bottom:8px;border-bottom:1px solid var(--border)">Resumen ejecutivo preliminar</div>
-      <div class="md-content" id="c_preview_text"></div>
-    </div>
-    <div class="cta-block">
-      <h3>Listo para dar el siguiente paso?</h3>
-      <p>Agenda una llamada gratuita con nuestro equipo y disenemos juntos tu plan de implementacion de IA.</p>
-      <button class="btn-cta" onclick="window.open('https://wa.me/59170000000','_blank')">Agendar llamada gratuita →</button>
-    </div>
-    <div class="disclaimer">
-      <strong>Nota metodologica:</strong> Las estimaciones de ahorro y tiempo son proyecciones orientativas basadas en la informacion proporcionada y promedios del sector en LATAM. No constituyen garantias de resultado. Los resultados reales dependen de factores especificos de cada organizacion e implementacion.
-    </div>
-  </div>
-</div>
-
-<!-- CONSULTOR -->
-<div class="screen" id="screen-consultor">
-  <div class="header">
-    <div class="logo"><div class="logo-icon">⚡</div><div><div class="logo-text">AI Diagnostic Pro</div><div class="logo-sub">Panel consultor</div></div></div>
-    <div class="header-right">
-      <div class="prog-steps" id="kprog">
-        <div class="pd active" id="kpd1"></div><div class="pd" id="kpd2"></div><div class="pd" id="kpd3"></div>
-        <div class="pd" id="kpd4"></div><div class="pd" id="kpd5"></div><div class="pd" id="kpd6"></div>
-      </div>
-      <button class="btn-out" onclick="doLogout()">Salir</button>
-    </div>
-  </div>
-  <div class="main">
-
-    <div class="step active" id="ks0">
-      <div class="slabel"><div class="snum">📋</div><div class="sinfo"><strong>Clientes pendientes</strong><span>Selecciona uno para generar su diagnostico</span></div></div>
-      <div id="client-list-container">
-        <div class="empty-state">Cargando clientes...</div>
-      </div>
-      <div style="margin-top:1rem">
-        <button class="btn-next" onclick="kgo(1);limpiarFormK()">+ Nuevo diagnostico manual</button>
-      </div>
-    </div>
-
-    <div class="step" id="ks1">
-      <div class="slabel"><div class="snum">1</div><div class="sinfo"><strong>Datos de la empresa</strong><span>Completa o ajusta la informacion</span></div></div>
-      <div class="fg fg2">
-        <div class="field"><label>Nombre de la empresa</label><input type="text" id="k_empresa"></div>
-        <div class="field"><label>Industria</label>
-          <select id="k_industria">
-            <option value="">Seleccionar...</option>
-            <option>Comercio / Retail</option><option>Servicios profesionales</option>
-            <option>Salud / Clinicas</option><option>Educacion</option><option>Inmobiliaria</option>
-            <option>Logistica / Transporte</option><option>Manufactura</option>
-            <option>Finanzas / Contabilidad</option><option>Restaurantes / Gastronomia</option>
-            <option>Construccion</option><option>Tecnologia</option><option>Otro</option>
+      <div class="section-card">
+        <div class="section-badge">Operaciones</div>
+        <div class="mb-22"><div class="field-label">¿Qué tareas manuales hace tu equipo?</div><textarea class="field-input" id="f-tareasManuales" rows="2" placeholder="Ej. Actualizar inventario en Excel..."></textarea></div>
+        <div><div class="field-label">Horas semanales perdidas en tareas manuales</div>
+          <select class="field-input" id="f-horasPerdidas">
+            <option value="">Seleccionar...</option><option>Menos de 5h</option><option>5-15h</option><option>15-30h</option><option>Más de 30h</option>
           </select>
         </div>
       </div>
-      <div class="fg fg3">
-        <div class="field"><label>N de empleados</label>
-          <select id="k_emp"><option value="">Seleccionar...</option><option>1-5</option><option>6-20</option><option>21-50</option><option>51-200</option><option>200+</option></select>
-        </div>
-        <div class="field"><label>Anos en el mercado</label>
-          <select id="k_anios"><option value="">Seleccionar...</option><option>Menos de 1 ano</option><option>1-3 anos</option><option>4-10 anos</option><option>Mas de 10 anos</option></select>
-        </div>
-        <div class="field"><label>Pais</label>
-          <select id="k_pais"><option value="">Seleccionar...</option><option>Bolivia</option><option>Colombia</option><option>Mexico</option><option>Peru</option><option>Argentina</option><option>Chile</option><option>Venezuela</option><option>Ecuador</option><option>Otro LATAM</option><option>EE.UU. (hispano)</option><option>Espana</option></select>
-        </div>
-      </div>
-      <div class="fg fg1"><div class="field"><label>Modelo de negocio</label><textarea id="k_modelo"></textarea></div></div>
-      <div class="nav"><button class="btn-back" onclick="kgo(0)">Atras</button><button class="btn-next" onclick="kgo(2)">Siguiente</button></div>
     </div>
 
-    <div class="step" id="ks2">
-      <div class="slabel"><div class="snum">2</div><div class="sinfo"><strong>Procesos</strong></div></div>
-      <div class="pc">
-        <div class="pc-head"><span class="pc-badge" style="background:rgba(220,38,38,0.1);color:#dc2626">Ventas</span></div>
-        <div class="fg fg2">
-          <div class="field"><label>Canal de captacion</label><input type="text" id="k_vcanal"></div>
-          <div class="field"><label>Tiempo de cierre</label><input type="text" id="k_vtiempo"></div>
-        </div>
-        <div class="field"><label>Dolor en ventas</label><textarea id="k_vdolor" style="min-height:60px"></textarea></div>
+    <!-- STEP 3 -->
+    <div id="step-3" style="display:none">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div><div class="step-title">Tecnología actual</div><div class="step-sub">Qué herramientas usan hoy</div></div>
       </div>
-      <div class="pc">
-        <div class="pc-head"><span class="pc-badge" style="background:rgba(217,119,6,0.1);color:#d97706">Atencion</span></div>
-        <div class="fg fg2">
-          <div class="field"><label>Canales</label><input type="text" id="k_acanal"></div>
-          <div class="field"><label>Volumen/dia</label>
-            <select id="k_avol"><option value="">Seleccionar...</option><option>Menos de 10</option><option>10-30</option><option>30-100</option><option>Mas de 100</option></select>
-          </div>
-        </div>
-        <div class="field"><label>Tareas repetitivas</label><textarea id="k_adolor" style="min-height:60px"></textarea></div>
+      <div class="field-label mb-22" style="margin-bottom:12px">Herramientas que usan</div>
+      <div class="tool-grid" id="herramientas-grid">
+        <div class="tool-item" data-tool="crm">CRM</div>
+        <div class="tool-item" data-tool="erp">ERP</div>
+        <div class="tool-item" data-tool="hojas">Hojas de cálculo</div>
+        <div class="tool-item" data-tool="whatsapp">WhatsApp Business</div>
+        <div class="tool-item" data-tool="email">Email marketing</div>
+        <div class="tool-item" data-tool="redes">Redes sociales</div>
+        <div class="tool-item" data-tool="ecommerce">E-commerce</div>
+        <div class="tool-item" data-tool="facturacion">Software de facturación</div>
+        <div class="tool-item" data-tool="ninguna" style="grid-column:span 2">Ninguna / todo manual</div>
       </div>
-      <div class="pc">
-        <div class="pc-head"><span class="pc-badge" style="background:rgba(26,86,219,0.1);color:#1a56db">Operaciones</span></div>
-        <div class="field" style="margin-bottom:8px"><label>Tareas manuales internas</label><textarea id="k_otareas"></textarea></div>
-        <div class="field"><label>Horas perdidas/semana</label>
-          <select id="k_ohoras"><option value="">Seleccionar...</option><option>Menos de 5 hrs</option><option>5-15 hrs</option><option>15-40 hrs</option><option>Mas de 40 hrs</option></select>
-        </div>
+      <div class="range-row">
+        <div class="range-header"><span class="range-label">Nivel tecnológico del equipo</span><span class="range-val" id="nivel-label">50%</span></div>
+        <input type="range" min="0" max="100" value="50" id="f-nivelTecnologico" oninput="document.getElementById('nivel-label').textContent=this.value+'%'">
       </div>
-      <div class="nav"><button class="btn-back" onclick="kgo(1)">Atras</button><button class="btn-next" onclick="kgo(3)">Siguiente</button></div>
+      <div class="range-row">
+        <div class="range-header"><span class="range-label">Resistencia al cambio del equipo</span><span class="range-val" id="resistencia-label">50%</span></div>
+        <input type="range" min="0" max="100" value="50" id="f-resistenciaCambio" oninput="document.getElementById('resistencia-label').textContent=this.value+'%'">
+      </div>
     </div>
 
-    <div class="step" id="ks3">
-      <div class="slabel"><div class="snum">3</div><div class="sinfo"><strong>Tecnologia y resistencia</strong></div></div>
-      <div class="fg fg1"><div class="field"><label>Herramientas que usan</label><textarea id="k_tools"></textarea></div></div>
-      <div class="sf">
-        <div class="sf-row"><label>Nivel tecnologico</label><span class="sf-val" id="ksv1">Intermedio</span></div>
-        <input type="range" min="1" max="5" value="3" id="ksr1" oninput="updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto'])">
+    <!-- STEP 4 -->
+    <div id="step-4" style="display:none">
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div><div class="step-title">Dolores del negocio</div><div class="step-sub">Los problemas más urgentes</div></div>
       </div>
-      <div class="sf">
-        <div class="sf-row"><label>Resistencia al cambio</label><span class="sf-val" id="ksv2">Media</span></div>
-        <input type="range" min="1" max="5" value="3" id="ksr2" oninput="updateSl('ksr2','ksv2',['Muy alta','Alta','Media','Baja','Muy baja'])">
+      <div class="mb-22"><div class="field-label">¿Cuál es el mayor problema operativo hoy?</div><textarea class="field-input" id="f-problemaOperativo" rows="3" placeholder="Ej. Perdemos leads porque no respondemos rápido..."></textarea></div>
+      <div class="mb-22"><div class="field-label">¿Dónde se pierden más clientes?</div><textarea class="field-input" id="f-dondeSePierden" rows="3" placeholder="Ej. Las cotizaciones tardan mucho..."></textarea></div>
+      <div class="mb-28"><div class="field-label">¿Qué tarea odia más hacer el equipo?</div><textarea class="field-input" id="f-tareaOdiada" rows="3" placeholder="Ej. Hacer reportes manuales..."></textarea></div>
+      <div class="range-row">
+        <div class="range-header"><span class="range-label">Urgencia de resolver estos problemas</span><span class="range-val" id="urgencia-label">50%</span></div>
+        <input type="range" min="0" max="100" value="50" id="f-urgencia" oninput="document.getElementById('urgencia-label').textContent=this.value+'%'">
       </div>
-      <div class="nav"><button class="btn-back" onclick="kgo(2)">Atras</button><button class="btn-next" onclick="kgo(4)">Siguiente</button></div>
     </div>
 
-    <div class="step" id="ks4">
-      <div class="slabel"><div class="snum">4</div><div class="sinfo"><strong>Dolores y urgencia</strong></div></div>
-      <div class="fg fg1"><div class="field"><label>Problema operativo principal</label><textarea id="k_d1"></textarea></div></div>
-      <div class="fg fg1"><div class="field"><label>Donde se pierden clientes</label><textarea id="k_d2"></textarea></div></div>
-      <div class="fg fg1"><div class="field"><label>Tarea que mas odian</label><textarea id="k_d3" style="min-height:60px"></textarea></div></div>
-      <div class="sf">
-        <div class="sf-row"><label>Urgencia</label><span class="sf-val" id="ksv3">Media</span></div>
-        <input type="range" min="1" max="5" value="3" id="ksr3" oninput="updateSl('ksr3','ksv3',['Muy baja','Baja','Media','Alta','Muy alta'])">
+    <!-- STEP 5 -->
+    <div id="step-5" style="display:none">
+      <div class="step-header">
+        <div class="step-num">5</div>
+        <div><div class="step-title">Capacidad de inversión</div><div class="step-sub">Presupuesto y decisores</div></div>
       </div>
-      <div class="nav"><button class="btn-back" onclick="kgo(3)">Atras</button><button class="btn-next" onclick="kgo(5)">Siguiente</button></div>
+      <div class="grid-2 mb-22">
+        <div><div class="field-label">¿Quién toma la decisión de inversión?</div>
+          <select class="field-input" id="f-quienDecide">
+            <option value="">Seleccionar...</option><option>Dueño / Gerente general</option><option>Comité / Directorio</option><option>Área de TI</option><option>Área financiera</option><option>Yo mismo</option>
+          </select>
+        </div>
+        <div><div class="field-label">Presupuesto mensual disponible</div>
+          <select class="field-input" id="f-presupuesto">
+            <option value="">Seleccionar...</option><option>Menos de $200</option><option>$200 - $500</option><option>$500 - $2,000</option><option>$2,000 - $5,000</option><option>Más de $5,000</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-22"><div class="field-label">¿Han intentado soluciones similares antes?</div><textarea class="field-input" id="f-solucionesIntentadas" rows="3" placeholder="Ej. Intentamos un CRM pero el equipo no lo adoptó..."></textarea></div>
+      <div class="range-row">
+        <div class="range-header"><span class="range-label">Disposición a invertir en IA ahora mismo</span><span class="range-val" id="disposicion-label">50%</span></div>
+        <input type="range" min="0" max="100" value="50" id="f-disposicionInvertir" oninput="document.getElementById('disposicion-label').textContent=this.value+'%'">
+      </div>
     </div>
 
-    <div class="step" id="ks5">
-      <div class="slabel"><div class="snum">5</div><div class="sinfo"><strong>Capacidad e inversion</strong></div></div>
-      <div class="fg fg2">
-        <div class="field"><label>Decisor</label>
-          <select id="k_dec"><option value="">Seleccionar...</option><option>El dueno / CEO directamente</option><option>Gerente de operaciones</option><option>Gerente de TI</option><option>Comite</option><option>No esta claro</option></select>
-        </div>
-        <div class="field"><label>Presupuesto mensual</label>
-          <select id="k_pres"><option value="">Seleccionar...</option><option>No definido</option><option>Menos de $100/mes</option><option>$100-300/mes</option><option>$300-800/mes</option><option>$800-2000/mes</option><option>Mas de $2000/mes</option></select>
+    <!-- STEP 6 -->
+    <div id="step-6" style="display:none">
+      <div class="step-header">
+        <div class="step-num">6</div>
+        <div><div class="step-title">Objetivos y prioridades</div><div class="step-sub">Hacia dónde quiere ir tu empresa</div></div>
+      </div>
+      <div class="mb-22"><div class="field-label">Objetivo principal a 12 meses</div><textarea class="field-input" id="f-objetivos12meses" rows="3" placeholder="Ej. Doblar las ventas y abrir una nueva sucursal..."></textarea></div>
+      <div class="mb-22">
+        <div class="field-label" style="margin-bottom:12px">Prioridades del negocio (selecciona las que apliquen)</div>
+        <div class="prio-grid" id="prioridades-grid">
+          <div class="tool-item" data-prio="crecer">Crecer en ventas</div>
+          <div class="tool-item" data-prio="reducir">Reducir costos</div>
+          <div class="tool-item" data-prio="atencion">Mejorar atención al cliente</div>
+          <div class="tool-item" data-prio="escalar">Escalar sin contratar más</div>
+          <div class="tool-item" data-prio="automatizar">Automatizar tareas repetitivas</div>
+          <div class="tool-item" data-prio="datos">Más datos y reportes</div>
         </div>
       </div>
-      <div class="sf">
-        <div class="sf-row"><label>Disposicion a invertir</label><span class="sf-val" id="ksv4">Media</span></div>
-        <input type="range" min="1" max="5" value="3" id="ksr4" oninput="updateSl('ksr4','ksv4',['Muy baja','Baja','Media','Alta','Muy alta'])">
-      </div>
-      <div class="fg fg1"><div class="field"><label>Intentos previos</label><textarea id="k_int" style="min-height:60px"></textarea></div></div>
-      <div class="nav"><button class="btn-back" onclick="kgo(4)">Atras</button><button class="btn-next" onclick="kgo(6)">Siguiente</button></div>
+      <div><div class="field-label">¿Algo más que quieras agregar?</div><textarea class="field-input" id="f-contextoAdicional" rows="3" placeholder="Cualquier contexto adicional que pueda ser útil..."></textarea></div>
     </div>
 
-    <div class="step" id="ks6">
-      <div class="slabel"><div class="snum">6</div><div class="sinfo"><strong>Objetivos estrategicos</strong></div></div>
-      <div class="fg fg1"><div class="field"><label>Meta 12 meses</label><textarea id="k_obj"></textarea></div></div>
-      <div class="fg fg1"><div class="field"><label>Notas adicionales</label><textarea id="k_add" style="min-height:80px"></textarea></div></div>
-      <div class="nav"><button class="btn-back" onclick="kgo(5)">Atras</button><button class="btn-gen" onclick="genReport()">Generar diagnostico</button></div>
-    </div>
-
-    <div class="step" id="ks7">
-      <div class="slabel"><div class="snum">✓</div><div class="sinfo"><strong>Diagnostico generado</strong><span id="k_sub">Revisa antes de exportar</span></div></div>
-      <div class="score-grid" id="k_scores"></div>
-      <div class="result-box">
-        <div class="loading" id="k_loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span style="margin-left:8px;font-size:13px;color:var(--text3)">Generando diagnostico con IA...</span></div>
-        <div class="result-text md-content" id="k_text"></div>
-        <textarea class="edit-area" id="k_edit_area" placeholder="Edita el contenido del diagnostico aqui..."></textarea>
-      </div>
-      <div class="result-actions" id="k_actions">
-        <button class="btn-pdf" onclick="exportPDF()">Exportar PDF</button>
-        <button class="btn-edit-mode" id="btn_edit_mode" onclick="toggleEditMode()">Editar texto</button>
-        <button class="btn-sec" onclick="kgo(0)">Ver otros clientes</button>
-      </div>
-      <div id="k_cta" style="display:none">
-        <div class="cta-block">
-          <h3>El cliente esta listo para implementar?</h3>
-          <p>Comparte el diagnostico y agenda una llamada para presentar la propuesta de implementacion personalizada.</p>
-          <button class="btn-cta" onclick="window.open('https://wa.me/59170000000','_blank')">Agendar llamada con el cliente →</button>
-        </div>
-        <div class="disclaimer">
-          <strong>Nota metodologica para el consultor:</strong> Las estimaciones de ahorro y tiempo son proyecciones orientativas basadas en la informacion proporcionada por el cliente y promedios del sector en LATAM. No constituyen garantias de resultado. Se recomienda ajustar estas cifras segun el contexto especifico del cliente antes de compartir el reporte.
-        </div>
-      </div>
+    <!-- WIZARD FOOTER -->
+    <div class="wizard-footer">
+      <button class="btn-back" id="btn-back" onclick="pasoAnterior()">← Atrás</button>
+      <div style="font:400 12.5px 'Public Sans',sans-serif;color:#8890a4" id="step-counter">Paso 1 de 6</div>
+      <button class="btn-next" id="btn-next" onclick="pasoSiguiente()">Continuar →</button>
     </div>
   </div>
 </div>
 
-<div id="pdf-template">
-  <h1>Diagnostico IA Empresarial</h1>
-  <div class="pdf-meta" id="pdf-meta"></div>
-  <div class="pdf-scores" id="pdf-scores"></div>
-  <div class="pdf-content" id="pdf-content"></div>
-  <div class="pdf-footer">Generado por AI Diagnostic Pro · Consultoria IA Empresarial · Confidencial · Las estimaciones son proyecciones orientativas y no constituyen garantias de resultado.</div>
+<!-- =================== SCREEN: LOADING =================== -->
+<div id="s-loading" class="screen" style="background:#eef0f4">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center">
+    <div class="card" style="text-align:center;padding:60px 48px;width:460px;max-width:90vw">
+      <div class="loader"></div>
+      <div style="font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px">Generando tu diagnóstico</div>
+      <div style="font:400 13.5px 'Public Sans',sans-serif;color:#8890a4">La IA está analizando tu empresa. Esto puede tomar hasta 30 segundos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== SCREEN: PREVIEW (cliente) =================== -->
+<div id="s-preview" class="screen" style="background:#eef0f4">
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
+        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
+        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
+        <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-title">Tu diagnóstico</span>
+        <span class="nav-brand-sub" id="preview-empresa-nav">Diagnóstico IA</span>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="showScreen('s-intro')">← Nueva consulta</button>
+  </nav>
+  <div class="preview-wrap">
+    <div class="preview-tag">Diagnóstico IA · Astrum</div>
+    <div class="preview-title" id="preview-empresa">Tu empresa</div>
+    <div class="preview-sub">Resultados preliminares de tu diagnóstico de inteligencia artificial</div>
+    <div class="scores-grid" id="scores-grid"></div>
+    <div class="card executive-card" style="padding:28px">
+      <h3>Resumen ejecutivo</h3>
+      <div class="executive-body" id="preview-summary"></div>
+    </div>
+    <div class="cta-block" style="margin-top:24px">
+      <h3>¿Quieres el informe completo?</h3>
+      <p>Un consultor de Astrum revisará tu diagnóstico y te enviará un análisis detallado con recomendaciones.</p>
+      <a href="https://astrum-agency.com#contacto" class="btn-cta-white" target="_blank">Hablar con un consultor</a>
+    </div>
+    <div style="text-align:center;margin-top:20px;font:400 11.5px 'Public Sans',sans-serif;color:#8890a4">Este diagnóstico es una estimación preliminar. Las recomendaciones finales son elaboradas por un consultor especializado.</div>
+  </div>
+</div>
+
+<!-- =================== SCREEN: LOGIN =================== -->
+<div id="s-login" class="screen" style="background:#eef0f4">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px">
+    <div class="card login-card">
+      <div class="login-logo-wrap">
+        <svg style="height:36px;width:auto" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="#10162a"/>
+          <polygon points="11,26 25,26 23,30 13,30" fill="#eef0f4"/>
+          <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#eef0f4"/>
+          <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="#10162a" letter-spacing="2">ASTRUM</text>
+        </svg>
+        <div class="login-title">Acceso de consultores</div>
+      </div>
+      <div class="tab-switch" style="margin-bottom:28px">
+        <div class="tab-item" onclick="showScreen('s-intro')">← Portal clientes</div>
+        <div class="tab-item active">Consultor</div>
+      </div>
+      <div class="mb-22">
+        <div class="field-label">Usuario</div>
+        <input class="field-input" id="login-user" placeholder="consultor" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div style="margin-bottom:10px">
+        <div class="field-label">Contraseña</div>
+        <input class="field-input" type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
+      <button class="btn-full" onclick="doLogin()">Ingresar</button>
+      <div class="login-hint" style="margin-top:16px">¿Eres cliente? <span style="color:#10162a;font-weight:600;cursor:pointer" onclick="showScreen('s-intro')">Ir al portal →</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== SCREEN: DASHBOARD =================== -->
+<div id="s-dashboard" class="screen" style="background:#eef0f4">
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
+        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
+        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
+        <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-title">Panel de consultor</span>
+        <span class="nav-brand-sub">Diagnósticos recibidos</span>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="doLogout()">Cerrar sesión</button>
+  </nav>
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <h1 class="dash-title">Clientes</h1>
+      <div class="dash-count" id="dash-count">Cargando...</div>
+    </div>
+    <div class="card" style="overflow:hidden">
+      <table class="client-table">
+        <thead>
+          <tr>
+            <th>Empresa</th><th>Industria</th><th>Fecha</th><th>Estado</th><th style="text-align:right">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="clients-tbody">
+          <tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4;font:400 13.5px 'Public Sans',sans-serif">Cargando clientes...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- =================== SCREEN: DETAIL =================== -->
+<div id="s-detail" class="screen" style="background:#eef0f4">
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg class="logo-svg" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="18,3 30,33 24,33 18,18 12,33 6,33" fill="white"/>
+        <polygon points="11,26 25,26 23,30 13,30" fill="#10162a"/>
+        <polygon points="18,9 19.5,13.5 24,13.5 20.5,16.5 21.5,21 18,18.5 14.5,21 15.5,16.5 12,13.5 16.5,13.5" fill="#10162a"/>
+        <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-title" id="detail-nav-empresa">Cliente</span>
+        <span class="nav-brand-sub" id="detail-nav-nombre">Diagnóstico</span>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="showScreen('s-dashboard')">← Volver</button>
+  </nav>
+  <div class="detail-wrap">
+
+    <div class="card detail-section">
+      <div class="section-badge">Datos de la empresa</div>
+      <div class="detail-grid-4" id="d-empresa-grid"></div>
+      <div style="margin-top:16px">
+        <div class="detail-label">Qué hace la empresa</div>
+        <div class="detail-val" id="d-descripcion"></div>
+      </div>
+    </div>
+
+    <div class="card detail-section">
+      <div class="section-badge">Procesos</div>
+      <div class="detail-grid-2" id="d-procesos-grid"></div>
+    </div>
+
+    <div class="card detail-section">
+      <div class="section-badge">Tecnología y dolores</div>
+      <div id="d-tech-content"></div>
+    </div>
+
+    <div class="card detail-section">
+      <div class="section-badge">Inversión y objetivos</div>
+      <div id="d-inversion-content"></div>
+    </div>
+
+    <div class="analyst-card">
+      <div class="analyst-title">Informe de IA</div>
+      <div class="analyst-sub" id="report-subtitle">Genera el análisis automático de este cliente.</div>
+      <div class="report-toolbar">
+        <button class="btn-action primary" id="btn-gen-report" onclick="generarInforme()">Generar informe con IA →</button>
+        <button class="btn-action" id="btn-edit-report" onclick="toggleEdit()" style="display:none">Editar</button>
+        <button class="btn-action" id="btn-pdf" onclick="exportPDF()" style="display:none">Descargar PDF</button>
+      </div>
+      <div id="report-view"><div class="report-not-generated">El informe aún no ha sido generado. Haz clic en "Generar informe con IA" para comenzar.</div></div>
+      <textarea id="report-edit" class="report-area" style="display:none"></textarea>
+      <div style="margin-top:16px">
+        <div class="field-label" style="margin-bottom:8px">Enviar informe al cliente</div>
+        <div class="send-row">
+          <input class="field-input" id="send-email" placeholder="correo@cliente.com" type="email">
+          <button class="btn-action primary" onclick="enviarInforme()">Enviar →</button>
+        </div>
+        <div class="status-msg" id="send-status"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-var USERS = { 'sebas': 'agencia2024' };
-var VERCEL_API = 'https://diagnosticpro.vercel.app/api/diagnostico';
-var SUPABASE_URL = 'https://nucyjjywvguhelvzzaaj.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51Y3lqanl3dmd1aGVsdnp6YWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4NjE5NzQsImV4cCI6MjA5ODQzNzk3NH0.nh8TUedQhbVM6Sa_Mcqn7OFaPsXfGKn53HEKzI7N-Xc';
+// ===================== CONFIG =====================
+var VERCEL_API    = 'https://diagnosticpro.vercel.app/api/diagnostico';
+var VERCEL_CLIENTES = 'https://diagnosticpro.vercel.app/api/clientes';
+var USERS = { 'sebas': 'agencia2024', 'consultor': 'astrum2026' };
 
-var mode = 'cliente';
-var cStep = 1, kStep = 0;
-var rawReportText = '';
-var editMode = false;
+var paso = 1;
+var totalPasos = 6;
+var herramientasSeleccionadas = [];
+var prioridadesSeleccionadas = [];
+var clienteActual = null;
+var reporteTexto = '';
 
-if (window.marked) {
-  marked.setOptions({ breaks: true, gfm: true });
+// ===================== SESSION =====================
+(function() {
+  emailjs.init({ publicKey: 'SLAVvDh-aDomMebrV' });
+  if (localStorage.getItem('consultor_ok') === '1') {
+    showScreen('s-dashboard');
+    cargarClientes();
+  }
+})();
+
+// ===================== NAVEGACIÓN =====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
 }
 
-function setMode(m, btn) {
-  mode = m;
-  document.querySelectorAll('.login-tab').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  document.getElementById('tab-cliente').style.display = m === 'cliente' ? 'block' : 'none';
-  document.getElementById('tab-consultor').style.display = m === 'consultor' ? 'block' : 'none';
+function irALogin() { showScreen('s-login'); }
+
+function iniciarFormulario() {
+  paso = 1;
+  showScreen('s-wizard');
+  mostrarPaso();
 }
 
-function enterAsCliente() { showScreen('screen-cliente'); }
+// ===================== WIZARD =====================
+function mostrarPaso() {
+  for (var i = 1; i <= totalPasos; i++) {
+    document.getElementById('step-' + i).style.display = i === paso ? 'block' : 'none';
+  }
+  document.getElementById('step-counter').textContent = 'Paso ' + paso + ' de ' + totalPasos;
+  document.getElementById('btn-back').style.visibility = paso === 1 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = paso === totalPasos ? 'Obtener diagnóstico' : 'Continuar →';
+  renderDots();
+  window.scrollTo(0, 0);
+}
 
+function renderDots() {
+  var html = '';
+  for (var i = 1; i <= totalPasos; i++) {
+    var cls = i < paso ? 'done' : i === paso ? 'active' : 'pending';
+    html += '<div class="dot ' + cls + '"></div>';
+  }
+  document.getElementById('step-dots').innerHTML = html;
+}
+
+function pasoSiguiente() {
+  if (!validarPaso()) return;
+  if (paso < totalPasos) { paso++; mostrarPaso(); }
+  else { enviarFormulario(); }
+}
+
+function pasoAnterior() {
+  if (paso > 1) { paso--; mostrarPaso(); }
+  else { showScreen('s-intro'); }
+}
+
+function validarPaso() {
+  if (paso === 1) {
+    if (!v('f-empresa') || !v('f-nombre') || !v('f-industria')) {
+      alert('Por favor completa: empresa, nombre e industria.'); return false;
+    }
+  }
+  return true;
+}
+function v(id) { return document.getElementById(id)?.value?.trim(); }
+
+// Herramientas toggles
+document.querySelectorAll('#herramientas-grid .tool-item').forEach(el => {
+  el.addEventListener('click', function() {
+    var t = this.dataset.tool;
+    this.classList.toggle('selected');
+    if (herramientasSeleccionadas.includes(t)) {
+      herramientasSeleccionadas = herramientasSeleccionadas.filter(x => x !== t);
+    } else {
+      herramientasSeleccionadas.push(t);
+    }
+  });
+});
+
+// Prioridades toggles
+document.querySelectorAll('#prioridades-grid .tool-item').forEach(el => {
+  el.addEventListener('click', function() {
+    var p = this.dataset.prio;
+    this.classList.toggle('selected');
+    if (prioridadesSeleccionadas.includes(p)) {
+      prioridadesSeleccionadas = prioridadesSeleccionadas.filter(x => x !== p);
+    } else {
+      prioridadesSeleccionadas.push(p);
+    }
+  });
+});
+
+// ===================== ENVIAR FORMULARIO =====================
+async function enviarFormulario() {
+  showScreen('s-loading');
+
+  var data = {
+    empresa: v('f-empresa'), nombre: v('f-nombre'), industria: v('f-industria'),
+    pais: v('f-pais'), empleados: v('f-empleados'), anios: v('f-anios'),
+    modelo: v('f-descripcion'),
+    vcanal: v('f-comoConsiguen'), vtiempo: v('f-tiempoCierre'), vdolor: v('f-procesoLento'),
+    acanal: v('f-canalesAtencion'), avol: v('f-consultasDia'), adolar: v('f-preguntasRepiten'),
+    otareas: v('f-tareasManuales'), ohoras: v('f-horasPerdidas'),
+    nivel_tech: document.getElementById('f-nivelTecnologico').value,
+    resistencia: document.getElementById('f-resistenciaCambio').value,
+    d1: v('f-problemaOperativo'), d2: v('f-dondeSePierden'), d3: v('f-tareaOdiada'),
+    urgencia: document.getElementById('f-urgencia').value,
+    decisor: v('f-quienDecide'), presupuesto: v('f-presupuesto'),
+    disposicion: document.getElementById('f-disposicionInvertir').value,
+    intentos: v('f-solucionesIntentadas'), objetivo: v('f-objetivos12meses'),
+    adicional: JSON.stringify({ herramientas: herramientasSeleccionadas, prioridades: prioridadesSeleccionadas, contexto: v('f-contextoAdicional') })
+  };
+
+  var prompt = buildPrompt(data);
+
+  try {
+    var res = await fetch(VERCEL_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, ...data })
+    });
+    var json = await res.json();
+    mostrarPreview(data, json.content || json.result || json.texto || 'Error generando el diagnóstico.');
+  } catch(e) {
+    mostrarPreview(data, 'Error al conectar con el servidor. Por favor intenta de nuevo.');
+  }
+}
+
+function buildPrompt(d) {
+  return `Eres un consultor experto en inteligencia artificial aplicada a negocios. Analiza esta empresa y genera un diagnóstico profesional en español.
+
+EMPRESA: ${d.empresa || '—'} | Industria: ${d.industria || '—'} | País: ${d.pais || '—'} | Empleados: ${d.empleados || '—'} | Años: ${d.anios || '—'}
+QUÉ HACE: ${d.modelo || '—'}
+
+VENTAS: Canal: ${d.vcanal || '—'} | Tiempo cierre: ${d.vtiempo || '—'} | Proceso lento: ${d.vdolor || '—'}
+ATENCIÓN: Canales: ${d.acanal || '—'} | Consultas/día: ${d.avol || '—'} | Repetitivo: ${d.adolar || '—'}
+OPERACIONES: Tareas manuales: ${d.otareas || '—'} | Horas perdidas/semana: ${d.ohoras || '—'}
+TECNOLOGÍA: Nivel tech: ${d.nivel_tech || 50}% | Resistencia al cambio: ${d.resistencia || 50}%
+DOLORES: Problema operativo: ${d.d1 || '—'} | Dónde pierden clientes: ${d.d2 || '—'} | Tarea odiada: ${d.d3 || '—'} | Urgencia: ${d.urgencia || 50}%
+INVERSIÓN: Decisor: ${d.decisor || '—'} | Presupuesto: ${d.presupuesto || '—'} | Disposición: ${d.disposicion || 50}%
+OBJETIVOS: ${d.objetivo || '—'} | Intentos previos: ${d.intentos || '—'}
+ADICIONAL: ${d.adicional || '—'}
+
+Genera el diagnóstico con estas secciones en markdown:
+## Resumen ejecutivo
+(2-3 párrafos con diagnóstico general)
+
+## Puntuaciones
+- **Potencial de automatización**: X/100
+- **Madurez digital**: X/100
+- **Urgencia de implementación**: X/100
+
+## Oportunidades identificadas
+(3-5 oportunidades concretas de IA numeradas)
+
+## Recomendaciones prioritarias
+(3 recomendaciones específicas con impacto estimado)
+
+## Próximos pasos sugeridos
+(3-4 pasos concretos y accionables)
+
+Sé específico, usa los datos de la empresa. Máximo 600 palabras.`;
+}
+
+// ===================== PREVIEW =====================
+function mostrarPreview(data, texto) {
+  reporteTexto = texto;
+  document.getElementById('preview-empresa').textContent = data.empresa || 'Tu empresa';
+  document.getElementById('preview-empresa-nav').textContent = data.empresa || '';
+
+  // Extract scores
+  var scores = extractScores(texto);
+  var grid = document.getElementById('scores-grid');
+  grid.innerHTML = [
+    { label: 'Potencial de automatización', val: scores[0] },
+    { label: 'Madurez digital', val: scores[1] },
+    { label: 'Urgencia de implementación', val: scores[2] }
+  ].map(function(s) {
+    var badge = s.val >= 70 ? 'badge-alto' : s.val >= 40 ? 'badge-medio' : 'badge-bajo';
+    var label = s.val >= 70 ? 'Alto' : s.val >= 40 ? 'Medio' : 'Bajo';
+    return '<div class="card score-card"><div class="score-num">' + s.val + '</div><div class="score-label">' + s.label + '</div><span class="score-badge ' + badge + '">' + label + '</span></div>';
+  }).join('');
+
+  // Summary
+  var summary = extractSection(texto, 'Resumen ejecutivo') || texto.substring(0, 500);
+  document.getElementById('preview-summary').innerHTML = marked.parse(summary);
+
+  showScreen('s-preview');
+}
+
+function extractScores(text) {
+  var nums = [];
+  var matches = text.match(/:\s*(\d{1,3})\/100/g) || [];
+  matches.forEach(function(m) { var n = parseInt(m.match(/\d+/)[0]); if (n >= 0 && n <= 100) nums.push(n); });
+  while (nums.length < 3) nums.push(50);
+  return nums.slice(0, 3);
+}
+
+function extractSection(text, section) {
+  var re = new RegExp('##\\s*' + section + '\\s*\\n([\\s\\S]*?)(?=\\n##|$)', 'i');
+  var m = text.match(re);
+  return m ? m[1].trim() : null;
+}
+
+// ===================== LOGIN =====================
 function doLogin() {
-  var u = document.getElementById('lu').value.trim().toLowerCase();
-  var p = document.getElementById('lp').value;
+  var u = document.getElementById('login-user').value.trim();
+  var p = document.getElementById('login-pass').value;
+  var err = document.getElementById('login-error');
   if (USERS[u] && USERS[u] === p) {
-    document.getElementById('login-err').style.display = 'none';
-    showScreen('screen-consultor');
+    err.style.display = 'none';
+    localStorage.setItem('consultor_ok', '1');
+    showScreen('s-dashboard');
     cargarClientes();
   } else {
-    document.getElementById('login-err').style.display = 'block';
+    err.style.display = 'block';
   }
 }
 
 function doLogout() {
-  showScreen('screen-login');
-  document.getElementById('lu').value = '';
-  document.getElementById('lp').value = '';
+  localStorage.removeItem('consultor_ok');
+  showScreen('s-login');
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-}
-
-function toggleCI(el) { el.classList.toggle('on'); }
-
-function updateSl(sid, vid, labels) {
-  document.getElementById(vid).textContent = labels[parseInt(document.getElementById(sid).value) - 1];
-}
-
-function cgo(n) {
-  document.getElementById('cs' + cStep).classList.remove('active');
-  document.getElementById('cs' + n).classList.add('active');
-  cStep = n;
-  for (var i = 1; i <= 6; i++) {
-    var d = document.getElementById('cpd' + i);
-    if (!d) return;
-    if (i < n) d.className = 'pd done';
-    else if (i === n) d.className = 'pd active';
-    else d.className = 'pd';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function kgo(n) {
-  document.getElementById('ks' + kStep).classList.remove('active');
-  document.getElementById('ks' + n).classList.add('active');
-  kStep = n;
-  for (var i = 1; i <= 6; i++) {
-    var d = document.getElementById('kpd' + i);
-    if (!d) return;
-    if (i < n) d.className = 'pd done';
-    else if (i === n) d.className = 'pd active';
-    else d.className = 'pd';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function gv(id) {
-  try { return document.getElementById(id).value || 'No especificado'; } catch(e) { return 'No especificado'; }
-}
-
-function gs(id) {
-  try { return document.getElementById(id).value + '/5'; } catch(e) { return '3/5'; }
-}
-
-function buildPrompt(pre) {
-  var isK = (pre === 'k_');
-  var sr1 = gs(isK ? 'ksr1' : 'sr1');
-  var sr2 = gs(isK ? 'ksr2' : 'sr2');
-  var sr3 = gs(isK ? 'ksr3' : 'sr3');
-  var sr4 = gs(isK ? 'ksr4' : 'sr4');
-  var prompt = 'Eres un consultor senior de IA y automatizacion especializado en LATAM. Genera un diagnostico profesional y accionable.\n\n';
-  prompt += 'EMPRESA: ' + gv(pre+'empresa') + ' | Industria: ' + gv(pre+'industria') + ' | Empleados: ' + gv(pre+'emp') + ' | Pais: ' + gv(pre+'pais') + ' | Anos: ' + gv(pre+'anios') + '\n';
-  prompt += 'Modelo: ' + gv(pre+'modelo') + '\n\n';
-  prompt += 'VENTAS: Canal: ' + gv(pre+'vcanal') + ' | Cierre: ' + gv(pre+'vtiempo') + ' | Dolor: ' + gv(pre+'vdolor') + '\n';
-  prompt += 'ATENCION: Canales: ' + gv(pre+'acanal') + ' | Volumen: ' + gv(pre+'avol') + ' | Repetitivas: ' + gv(pre+'adolor') + '\n';
-  prompt += 'OPERACIONES: Tareas manuales: ' + gv(pre+'otareas') + ' | Horas perdidas: ' + gv(pre+'ohoras') + '\n';
-  prompt += 'TECNOLOGIA: Nivel: ' + sr1 + ' | Resistencia: ' + sr2 + '\n';
-  prompt += 'DOLORES: Principal: ' + gv(pre+'d1') + ' | Perdida clientes: ' + gv(pre+'d2') + ' | Tarea odiada: ' + gv(pre+'d3') + ' | Urgencia: ' + sr3 + '\n';
-  prompt += 'CAPACIDAD: Decisor: ' + gv(pre+'dec') + ' | Presupuesto: ' + gv(pre+'pres') + ' | Disposicion: ' + sr4 + ' | Intentos: ' + gv(pre+'int') + '\n';
-  prompt += 'OBJETIVOS: ' + gv(pre+'obj') + ' | Adicional: ' + gv(pre+'add') + '\n\n';
-  prompt += 'Genera el diagnostico con estas secciones en espanol usando formato Markdown (##, ###, negritas, tablas, listas):\n\n';
-  prompt += '## RESUMEN EJECUTIVO\n## TOP 3 OPORTUNIDADES DE IA\n## QUICK WINS - ACCION INMEDIATA\n## HOJA DE RUTA\n## RIESGOS Y CONSIDERACIONES\n## INVERSION Y ROI ESTIMADO\n\n';
-  prompt += 'Se especifico para la industria y pais. No uses WhatsApp Business ni Notion como herramientas de IA.';
-  return prompt;
-}
-
-function calcScores(pre) {
-  var isK = (pre === 'k_');
-  function si(id) { try { return parseInt(document.getElementById(id).value); } catch(e) { return 3; } }
-  var tech = si(isK ? 'ksr1' : 'sr1');
-  var cambio = si(isK ? 'ksr2' : 'sr2');
-  var disp = si(isK ? 'ksr4' : 'sr4');
-  var urg = si(isK ? 'ksr3' : 'sr3');
-  var horas = document.getElementById(pre + 'ohoras').value;
-  var readiness = Math.round((tech + (6 - cambio) + disp) / 3 * 20);
-  var impacto = urg >= 4 ? 'Alto' : urg >= 3 ? 'Medio' : 'Bajo';
-  var color = readiness >= 60 ? '#059669' : readiness >= 40 ? '#d97706' : '#dc2626';
-  var ahorro = 200;
-  if (horas === 'Mas de 40 hrs') ahorro = 2800;
-  else if (horas === '15-40 hrs') ahorro = 1400;
-  else if (horas === '5-15 hrs') ahorro = 600;
-  return { readiness: readiness, impacto: impacto, color: color, ahorro: ahorro };
-}
-
-function renderScoreCards(sc, ringId) {
-  var impactoBadge = sc.impacto === 'Alto' ? 'badge-green' : sc.impacto === 'Medio' ? 'badge-yellow' : 'badge-red';
-  var impactoIcon = sc.impacto === 'Alto' ? '🔥' : sc.impacto === 'Medio' ? '⚡' : '📊';
-  var circumference = 201;
-  var offset = circumference - (sc.readiness / 100 * circumference);
-  return (
-    '<div class="sc">' +
-      '<div class="sc-ring-wrap">' +
-        '<svg class="progress-ring" width="80" height="80" viewBox="0 0 80 80">' +
-          '<circle class="ring-bg" cx="40" cy="40" r="32"/>' +
-          '<circle class="ring-fg" id="' + ringId + '" cx="40" cy="40" r="32" style="stroke:' + sc.color + ';stroke-dashoffset:' + circumference + '"/>' +
-        '</svg>' +
-        '<div class="ring-center"><div class="ring-val" style="color:' + sc.color + '">' + sc.readiness + '%</div><div class="ring-lbl">IA</div></div>' +
-      '</div>' +
-      '<div class="sc-l" style="margin-top:6px">Preparacion IA</div>' +
-      '<div class="sc-tooltip">Calculado segun nivel tecnologico, disposicion a invertir y resistencia al cambio del equipo</div>' +
-    '</div>' +
-    '<div class="sc">' +
-      '<div class="sc-icon">💰</div>' +
-      '<div class="sc-v" style="color:#059669;font-size:20px">$' + sc.ahorro.toLocaleString() + '</div>' +
-      '<div class="sc-l">Ahorro est./mes</div>' +
-      '<div class="sc-tooltip">Proyeccion basada en horas manuales reportadas a tarifa promedio LATAM ($15/hr)</div>' +
-    '</div>' +
-    '<div class="sc">' +
-      '<div class="sc-icon">' + impactoIcon + '</div>' +
-      '<div class="sc-v" style="font-size:14px;padding-top:4px"><span class="badge ' + impactoBadge + '">' + sc.impacto + '</span></div>' +
-      '<div class="sc-l" style="margin-top:8px">Impacto potencial</div>' +
-      '<div class="sc-tooltip">Basado en la urgencia declarada por el cliente para resolver sus problemas principales</div>' +
-    '</div>'
-  );
-}
-
-function animateRing(ringId, readiness) {
-  setTimeout(function() {
-    var ring = document.getElementById(ringId);
-    if (!ring) return;
-    var circumference = 201;
-    ring.style.strokeDashoffset = circumference - (readiness / 100 * circumference);
-  }, 150);
-}
-
-function extractSection(text, sectionName) {
-  var lines = text.split('\n');
-  var inSection = false;
-  var result = [];
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    if (line.toUpperCase().includes(sectionName.toUpperCase()) && (line.startsWith('#') || line.trim() === line.trim().toUpperCase())) {
-      inSection = true;
-      continue;
-    }
-    if (inSection) {
-      if (result.length > 0 && line.startsWith('#')) break;
-      if (result.length > 0 && line.trim().length > 4 && line.trim() === line.trim().toUpperCase() && !line.startsWith('-') && !line.startsWith('*')) break;
-      result.push(line);
-    }
-  }
-  return result.join('\n').trim() || text.substring(0, 600);
-}
-
+// ===================== CLIENTES =====================
 async function cargarClientes() {
   try {
-    var res = await fetch('https://diagnosticpro.vercel.app/api/clientes');
-    var data = await res.json();
-    var container = document.getElementById('client-list-container');
-    if (!data || data.length === 0) {
-      container.innerHTML = '<div class="empty-state">No hay clientes aun. Cuando alguien llene el formulario aparecera aqui.</div>';
+    var res = await fetch(VERCEL_CLIENTES);
+    var clientes = await res.json();
+    var tbody = document.getElementById('clients-tbody');
+    document.getElementById('dash-count').textContent = clientes.length + ' diagnóstico' + (clientes.length !== 1 ? 's' : '') + ' recibido' + (clientes.length !== 1 ? 's' : '');
+    if (!clientes.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="padding:32px;text-align:center;color:#8890a4;font:400 13.5px \'Public Sans\',sans-serif">No hay clientes aún.</td></tr>';
       return;
     }
-    var html = '<div class="client-list">';
-    data.forEach(function(c) {
-      var fecha = new Date(c.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
-      var badge = c.estado === 'listo' ? '<span class="client-badge listo">Listo</span>' : '<span class="client-badge">Pendiente</span>';
-      html += '<div class="client-card" onclick="seleccionarCliente(\'' + c.id + '\')">';
-      html += '<div class="client-info"><strong>' + (c.empresa || 'Sin nombre') + '</strong>';
-      html += '<span>' + (c.industria || '') + ' · ' + (c.pais || '') + ' · ' + fecha + '</span></div>';
-      html += badge + '</div>';
-    });
-    html += '</div>';
-    container.innerHTML = html;
+    tbody.innerHTML = clientes.filter(c => c.empresa).map(function(c) {
+      var fecha = c.created_at ? new Date(c.created_at).toLocaleDateString('es-BO', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+      var estado = c.estado || 'Nuevo';
+      var estCls = estado === 'Informe enviado' ? 'estado-enviado' : estado === 'En análisis' ? 'estado-analisis' : 'estado-nuevo';
+      return '<tr onclick="seleccionarCliente(\'' + c.id + '\')" style="cursor:pointer"><td><div class="client-empresa">' + (c.empresa || '—') + '</div><div class="client-nombre">' + (c.nombre || '') + '</div></td><td class="client-text">' + (c.industria || '—') + '</td><td class="client-text">' + fecha + '</td><td><span class="estado-badge ' + estCls + '">' + estado + '</span></td><td style="text-align:right"><button class="btn-ver" onclick="event.stopPropagation();seleccionarCliente(\'' + c.id + '\')">Ver diagnóstico</button></td></tr>';
+    }).join('');
   } catch(e) {
-    document.getElementById('client-list-container').innerHTML = '<div class="empty-state">Error cargando clientes.</div>';
+    document.getElementById('clients-tbody').innerHTML = '<tr><td colspan="5" style="padding:24px;text-align:center;color:#a03b3b">Error cargando clientes.</td></tr>';
   }
 }
 
 async function seleccionarCliente(id) {
   try {
-    var res = await fetch('https://diagnosticpro.vercel.app/api/clientes?id=' + id);
+    var res = await fetch(VERCEL_CLIENTES + '?id=' + id);
     var data = await res.json();
-    var c = data[0];
-    if (!c) return;
-    function sv(elid, val) { try { document.getElementById(elid).value = val || ''; } catch(e){} }
-    sv('k_empresa', c.empresa); sv('k_industria', c.industria); sv('k_pais', c.pais);
-    sv('k_emp', c.empleados); sv('k_anios', c.anios); sv('k_modelo', c.modelo);
-    sv('k_vcanal', c.vcanal); sv('k_vtiempo', c.vtiempo); sv('k_vdolor', c.vdolor);
-    sv('k_acanal', c.acanal); sv('k_avol', c.avol); sv('k_adolor', c.adolor);
-    sv('k_otareas', c.otareas); sv('k_ohoras', c.ohoras);
-    sv('k_d1', c.d1); sv('k_d2', c.d2); sv('k_d3', c.d3);
-    sv('k_dec', c.decisor); sv('k_pres', c.presupuesto);
-    sv('k_int', c.intentos); sv('k_obj', c.objetivo); sv('k_add', c.adicional);
-    if (c.nivel_tech) { document.getElementById('ksr1').value = c.nivel_tech; updateSl('ksr1','ksv1',['Muy bajo','Bajo','Intermedio','Alto','Muy alto']); }
-    if (c.resistencia) { document.getElementById('ksr2').value = c.resistencia; updateSl('ksr2','ksv2',['Muy alta','Alta','Media','Baja','Muy baja']); }
-    if (c.urgencia) { document.getElementById('ksr3').value = c.urgencia; updateSl('ksr3','ksv3',['Muy baja','Baja','Media','Alta','Muy alta']); }
-    if (c.disposicion) { document.getElementById('ksr4').value = c.disposicion; updateSl('ksr4','ksv4',['Muy baja','Baja','Media','Alta','Muy alta']); }
-    kgo(1);
+    clienteActual = Array.isArray(data) ? data[0] : data;
+    if (!clienteActual) { alert('Error cargando el cliente.'); return; }
+    mostrarDetalle(clienteActual);
   } catch(e) {
     alert('Error cargando el cliente.');
   }
 }
 
-function limpiarFormK() {
-  var ids = ['k_empresa','k_industria','k_pais','k_emp','k_anios','k_modelo','k_vcanal','k_vtiempo','k_vdolor','k_acanal','k_avol','k_adolor','k_otareas','k_ohoras','k_d1','k_d2','k_d3','k_dec','k_pres','k_int','k_obj','k_add','k_tools'];
-  ids.forEach(function(id){ try{ document.getElementById(id).value=''; }catch(e){} });
-  ['ksr1','ksr2','ksr3','ksr4'].forEach(function(id){ try{ document.getElementById(id).value=3; }catch(e){} });
+function mostrarDetalle(c) {
+  document.getElementById('detail-nav-empresa').textContent = c.empresa || '—';
+  document.getElementById('detail-nav-nombre').textContent = 'Diagnóstico de ' + (c.nombre || '—');
+
+  // Empresa grid
+  var dg = [
+    { l: 'Industria', v: c.industria }, { l: 'Empleados', v: c.empleados },
+    { l: 'Años en el mercado', v: c.anios }, { l: 'País', v: c.pais }
+  ];
+  document.getElementById('d-empresa-grid').innerHTML = dg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
+  document.getElementById('d-descripcion').textContent = c.modelo || '—';
+
+  // Procesos
+  var pg = [
+    { l: 'Cómo consiguen clientes', v: c.vcanal }, { l: 'Tiempo en cerrar venta', v: c.vtiempo },
+    { l: 'Proceso más lento', v: c.vdolor }, { l: 'Canales de atención', v: c.acanal },
+    { l: 'Consultas por día', v: c.avol }, { l: 'Tareas que se repiten', v: c.adolar },
+    { l: 'Tareas manuales', v: c.otareas }, { l: 'Horas perdidas/semana', v: c.ohoras }
+  ];
+  document.getElementById('d-procesos-grid').innerHTML = pg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
+
+  // Tech & dolores
+  var adicional = {};
+  try { adicional = JSON.parse(c.adicional || '{}'); } catch(e) {}
+  document.getElementById('d-tech-content').innerHTML = '<div class="detail-grid-4" style="margin-bottom:16px"><div><div class="detail-label">Nivel tecnológico</div><div class="detail-val">' + (c.nivel_tech || '—') + '%</div></div><div><div class="detail-label">Resistencia al cambio</div><div class="detail-val">' + (c.resistencia || '—') + '%</div></div><div><div class="detail-label">Urgencia</div><div class="detail-val">' + (c.urgencia || '—') + '%</div></div><div><div class="detail-label">Disposición a invertir</div><div class="detail-val">' + (c.disposicion || '—') + '%</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Herramientas</div><div class="detail-val">' + ((adicional.herramientas || []).join(', ') || '—') + '</div></div><div><div class="detail-label">Problema operativo</div><div class="detail-val">' + (c.d1 || '—') + '</div></div><div><div class="detail-label">Dónde se pierden clientes</div><div class="detail-val">' + (c.d2 || '—') + '</div></div><div><div class="detail-label">Tarea más odiada</div><div class="detail-val">' + (c.d3 || '—') + '</div></div></div>';
+
+  // Inversión
+  document.getElementById('d-inversion-content').innerHTML = '<div class="detail-grid-2" style="margin-bottom:14px"><div><div class="detail-label">Quién decide</div><div class="detail-val">' + (c.decisor || '—') + '</div></div><div><div class="detail-label">Presupuesto</div><div class="detail-val">' + (c.presupuesto || '—') + '</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Soluciones previas intentadas</div><div class="detail-val">' + (c.intentos || '—') + '</div></div><div><div class="detail-label">Objetivo a 12 meses</div><div class="detail-val">' + (c.objetivo || '—') + '</div></div><div><div class="detail-label">Prioridades</div><div class="detail-val">' + ((adicional.prioridades || []).join(', ') || '—') + '</div></div></div>';
+
+  // Report state
+  document.getElementById('report-view').innerHTML = '<div class="report-not-generated">El informe aún no ha sido generado. Haz clic en "Generar informe con IA" para comenzar.</div>';
+  document.getElementById('report-edit').style.display = 'none';
+  document.getElementById('btn-edit-report').style.display = 'none';
+  document.getElementById('btn-pdf').style.display = 'none';
+  reporteTexto = '';
+
+  showScreen('s-detail');
 }
 
-function toggleEditMode() {
-  editMode = !editMode;
-  var rendered = document.getElementById('k_text');
-  var editArea = document.getElementById('k_edit_area');
-  var btn = document.getElementById('btn_edit_mode');
-  if (editMode) {
-    editArea.value = rawReportText;
-    editArea.style.display = 'block';
-    rendered.style.display = 'none';
-    btn.textContent = 'Ver resultado';
-    btn.style.borderColor = 'var(--accent)';
-    btn.style.color = 'var(--accent)';
-  } else {
-    rawReportText = editArea.value;
-    rendered.innerHTML = window.marked ? marked.parse(rawReportText) : rawReportText;
-    editArea.style.display = 'none';
-    rendered.style.display = 'block';
-    btn.textContent = 'Editar texto';
-    btn.style.borderColor = '';
-    btn.style.color = '';
-  }
-}
+// ===================== GENERAR INFORME =====================
+async function generarInforme() {
+  if (!clienteActual) return;
+  var btn = document.getElementById('btn-gen-report');
+  btn.textContent = 'Generando...';
+  btn.disabled = true;
 
-async function submitForm() {
-  var empresa = document.getElementById('c_empresa').value || 'Empresa';
-  var nombre = document.getElementById('c_nombre').value || 'Cliente';
-  showScreen('screen-gracias');
-  document.getElementById('gracias-loading').style.display = 'flex';
-  document.getElementById('gracias-preview').style.display = 'none';
-  try {
-    var fetchRes = await fetch(VERCEL_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prompt: buildPrompt('c_'),
-        empresa: empresa, nombre: nombre,
-        industria: document.getElementById('c_industria').value || '',
-        pais: document.getElementById('c_pais').value || '',
-        empleados: document.getElementById('c_emp').value || '',
-        anios: document.getElementById('c_anios').value || '',
-        modelo: document.getElementById('c_modelo').value || '',
-        vcanal: document.getElementById('c_vcanal').value || '',
-        vtiempo: document.getElementById('c_vtiempo').value || '',
-        vdolor: document.getElementById('c_vdolor').value || '',
-        acanal: document.getElementById('c_acanal').value || '',
-        avol: document.getElementById('c_avol').value || '',
-        adolar: document.getElementById('c_adolor').value || '',
-        otareas: document.getElementById('c_otareas').value || '',
-        ohoras: document.getElementById('c_ohoras').value || '',
-        nivel_tech: document.getElementById('sr1').value || '3',
-        resistencia: document.getElementById('sr2').value || '3',
-        d1: document.getElementById('c_d1').value || '',
-        d2: document.getElementById('c_d2').value || '',
-        d3: document.getElementById('c_d3').value || '',
-        urgencia: document.getElementById('sr3').value || '3',
-        decisor: document.getElementById('c_dec').value || '',
-        presupuesto: document.getElementById('c_pres').value || '',
-        disposicion: document.getElementById('sr4').value || '3',
-        intentos: document.getElementById('c_int').value || '',
-        objetivo: document.getElementById('c_obj').value || '',
-        adicional: document.getElementById('c_add').value || ''
-      })
-    });
-    var data = await fetchRes.json();
-    var text = data.result || '';
-    var summary = extractSection(text, 'RESUMEN EJECUTIVO');
-    var sc = calcScores('c_');
-    document.getElementById('c_scores_preview').innerHTML = renderScoreCards(sc, 'c_ring_fg');
-    document.getElementById('c_preview_text').innerHTML = window.marked ? marked.parse(summary) : summary;
-    document.getElementById('gracias-loading').style.display = 'none';
-    document.getElementById('gracias-preview').style.display = 'block';
-    animateRing('c_ring_fg', sc.readiness);
-  } catch(e) {
-    document.getElementById('gracias-loading').innerHTML =
-      '<div class="gracias-card"><div class="gracias-icon">✅</div>' +
-      '<h2>Formulario enviado!</h2>' +
-      '<p>Recibimos la informacion de tu empresa. Nuestro equipo analizara tus procesos y oportunidades de IA.<br><br>' +
-      'Recibiras tu diagnostico personalizado en las proximas <strong>24-48 horas</strong>.</p></div>';
-    console.error('Error:', e);
-  }
-}
-
-async function genReport() {
-  kgo(7);
-  editMode = false;
-  rawReportText = '';
-  document.getElementById('k_text').style.display = 'none';
-  document.getElementById('k_edit_area').style.display = 'none';
-  document.getElementById('k_loading').style.display = 'flex';
-  document.getElementById('k_actions').style.display = 'none';
-  document.getElementById('k_cta').style.display = 'none';
-  var empresa = document.getElementById('k_empresa').value || 'Empresa';
-  document.getElementById('k_sub').textContent = empresa + ' - ' + (document.getElementById('k_industria').value || '') + ' - ' + (document.getElementById('k_pais').value || '');
-  var sc = calcScores('k_');
-  document.getElementById('k_scores').innerHTML = renderScoreCards(sc, 'k_ring_fg');
-  animateRing('k_ring_fg', sc.readiness);
+  var prompt = buildPrompt(clienteActual);
   try {
     var res = await fetch(VERCEL_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: buildPrompt('k_') })
+      body: JSON.stringify({ prompt })
     });
-    var data = await res.json();
-    var text = data.result || 'Error generando el informe.';
-    rawReportText = text;
-    document.getElementById('k_loading').style.display = 'none';
-    document.getElementById('k_text').innerHTML = window.marked ? marked.parse(text) : text;
-    document.getElementById('k_text').style.display = 'block';
-    document.getElementById('k_actions').style.display = 'flex';
-    document.getElementById('k_cta').style.display = 'block';
+    var json = await res.json();
+    reporteTexto = json.content || json.result || json.texto || 'Error generando el informe.';
+    mostrarReporte(reporteTexto);
   } catch(e) {
-    document.getElementById('k_loading').style.display = 'none';
-    document.getElementById('k_text').textContent = 'Error al conectar con la IA.';
-    document.getElementById('k_text').style.display = 'block';
+    document.getElementById('report-view').innerHTML = '<div class="report-not-generated" style="color:#a03b3b">Error al conectar con el servidor.</div>';
+  }
+
+  btn.textContent = 'Regenerar informe';
+  btn.disabled = false;
+  document.getElementById('btn-edit-report').style.display = 'inline-block';
+  document.getElementById('btn-pdf').style.display = 'inline-block';
+}
+
+function mostrarReporte(texto) {
+  document.getElementById('report-view').innerHTML = '<div class="report-html">' + marked.parse(texto) + '</div>';
+  document.getElementById('report-edit').value = texto;
+  document.getElementById('report-subtitle').textContent = 'Informe generado · puedes editarlo antes de enviar.';
+}
+
+function toggleEdit() {
+  var view = document.getElementById('report-view');
+  var edit = document.getElementById('report-edit');
+  var btn = document.getElementById('btn-edit-report');
+  if (edit.style.display === 'none') {
+    edit.style.display = 'block';
+    view.style.display = 'none';
+    btn.textContent = 'Guardar';
+  } else {
+    reporteTexto = edit.value;
+    mostrarReporte(reporteTexto);
+    edit.style.display = 'none';
+    view.style.display = 'block';
+    btn.textContent = 'Editar';
   }
 }
 
 function exportPDF() {
-  var empresa = document.getElementById('k_empresa').value || 'Empresa';
-  var sc = calcScores('k_');
-  var text = rawReportText || document.getElementById('k_text').textContent;
-  var fecha = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-  document.getElementById('pdf-meta').textContent = empresa + ' - ' + (document.getElementById('k_pais').value || '') + ' - ' + (document.getElementById('k_industria').value || '') + ' - ' + fecha;
-  document.getElementById('pdf-scores').innerHTML =
-    '<div class="pdf-sc"><div class="pdf-sc-v" style="color:' + sc.color + '">' + sc.readiness + '%</div><div class="pdf-sc-l">Preparacion IA</div></div>' +
-    '<div class="pdf-sc"><div class="pdf-sc-v">$' + sc.ahorro.toLocaleString() + '</div><div class="pdf-sc-l">Ahorro est./mes</div></div>' +
-    '<div class="pdf-sc"><div class="pdf-sc-v" style="color:#d97706">' + sc.impacto + '</div><div class="pdf-sc-l">Impacto potencial</div></div>';
-  document.getElementById('pdf-content').textContent = text;
-  html2pdf().set({
-    margin: 10, filename: 'Diagnostico_IA_' + empresa.replace(/\s+/g, '_') + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(document.getElementById('pdf-template')).save();
+  if (!reporteTexto) return;
+  var c = clienteActual || {};
+  var fecha = new Date().toLocaleDateString('es-BO', { day: '2-digit', month: 'long', year: 'numeric' });
+  var html = '<div style="font-family:\'Public Sans\',sans-serif;max-width:700px;margin:0 auto;padding:40px">' +
+    '<div style="margin-bottom:40px"><div style="font:600 11px sans-serif;letter-spacing:.16em;color:#8890a4;text-transform:uppercase;margin-bottom:12px">INFORME DE DIAGNÓSTICO EMPRESARIAL</div>' +
+    '<div style="font:500 32px serif;font-style:italic;color:#10162a;margin-bottom:24px">' + (c.empresa || '—') + '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid #dfe2e8;padding-top:20px">' +
+    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Preparado para</div><div style="font:600 13px sans-serif;color:#10162a">' + (c.nombre || '—') + '</div></div>' +
+    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Fecha</div><div style="font:600 13px sans-serif;color:#10162a">' + fecha + '</div></div>' +
+    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Industria</div><div style="font:600 13px sans-serif;color:#10162a">' + (c.industria || '—') + '</div></div>' +
+    '<div><div style="font:600 10px sans-serif;color:#8890a4;text-transform:uppercase">Elaborado por</div><div style="font:600 13px sans-serif;color:#10162a">ASTRUM — Agencia de IA</div></div></div></div>' +
+    '<div style="font:400 14px/1.8 sans-serif;color:#34394a">' + marked.parse(reporteTexto) + '</div>' +
+    '<div style="margin-top:48px;padding-top:16px;border-top:1px solid #dfe2e8;font:400 11px sans-serif;color:#8890a4">Documento confidencial · astrum-agency.com · sebasbedoyam7@gmail.com</div></div>';
+  html2pdf().set({ margin: 0, filename: 'diagnostico-' + (c.empresa || 'astrum').toLowerCase().replace(/\s+/g, '-') + '.pdf', jsPDF: { unit: 'mm', format: 'a4' } }).from(html).save();
+}
+
+async function enviarInforme() {
+  var email = document.getElementById('send-email').value.trim();
+  var status = document.getElementById('send-status');
+  if (!email || !reporteTexto) { status.textContent = 'Agrega un email y genera el informe primero.'; status.className = 'status-msg status-err'; status.style.display = 'block'; return; }
+  var c = clienteActual || {};
+  try {
+    await emailjs.send('service_sebasmail', 'template_9syfhvp', {
+      to_email: email, empresa: c.empresa || '—', nombre: c.nombre || '—',
+      message: reporteTexto.substring(0, 3000)
+    });
+    status.textContent = 'Informe enviado correctamente a ' + email;
+    status.className = 'status-msg status-ok';
+  } catch(e) {
+    status.textContent = 'Error al enviar. Intenta de nuevo.';
+    status.className = 'status-msg status-err';
+  }
+  status.style.display = 'block';
 }
 </script>
 </body>
