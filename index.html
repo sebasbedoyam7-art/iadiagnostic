@@ -251,7 +251,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
       </div>
       <div class="grid-2 mb-22">
         <div><div class="field-label">Nombre de la empresa</div><input class="field-input" id="f-empresa" placeholder="Ej. Distribuidora Los Andes"></div>
-        <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Carlos Mamani"></div>
+        <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Carlos Fernández"></div>
       </div>
       <div class="mb-22">
         <div class="field-label">Industria / Sector</div>
@@ -1099,8 +1099,7 @@ function exportPDF() {
 
   var reportBody = marked.parse(reporteTexto);
 
-  var html = '<div style="font-family:Arial,sans-serif;width:100%;padding:20px 30px">' +
-    '<style>h1,h2,h3{page-break-after:avoid}p,li,td,tr,table{page-break-inside:avoid}h2{font-size:17px;color:#10162a;border-bottom:1.5px solid #e2e4ea;padding-bottom:6px;margin:22px 0 10px}h3{font-size:14px;color:#10162a;margin:16px 0 8px}p{margin:0 0 10px;line-height:1.7}ul,ol{margin:0 0 10px;padding-left:20px}li{margin-bottom:4px;line-height:1.6}strong{color:#10162a}</style>' +
+  var html = '<div style="font-family:Arial,sans-serif">' +
     '<div style="margin-bottom:36px"><div style="font:600 11px sans-serif;letter-spacing:.16em;color:#8890a4;text-transform:uppercase;margin-bottom:12px">INFORME DE DIAGNÓSTICO EMPRESARIAL</div>' +
     '<div style="font:500 30px serif;font-style:italic;color:#10162a;margin-bottom:22px">' + (c.empresa || '—') + '</div>' +
     '<table style="width:100%;border-collapse:collapse;border-top:1px solid #dfe2e8"><tr>' +
@@ -1118,7 +1117,10 @@ function exportPDF() {
   win.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Diagnóstico ' + (c.empresa || 'Astrum') + '</title>' +
     '<style>' +
     '@page{size:A4;margin:18mm 16mm}' +
-    'body{font-family:Arial,Helvetica,sans-serif;color:#34394a;margin:0}' +
+    '*{box-sizing:border-box}' +
+    'body{font-family:Arial,Helvetica,sans-serif;color:#34394a;margin:0;overflow-wrap:break-word}' +
+    'img{max-width:100%;height:auto}' +
+    'table{width:100%;table-layout:fixed}' +
     'h1,h2,h3{color:#10162a;page-break-after:avoid}' +
     'h2{font-size:17px;border-bottom:1.5px solid #e2e4ea;padding-bottom:6px;margin:24px 0 10px}' +
     'h3{font-size:14px;margin:16px 0 8px}' +
