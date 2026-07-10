@@ -20,7 +20,11 @@ input[type="range"]{accent-color:#10162a;width:100%}
 .screen{display:none!important}
 .screen.active{display:block!important}
 #s-intro.active,#s-login.active,#s-loading.active{display:flex!important}
+
+/* ---- LOGO SVG ---- */
 .logo-svg{height:30px;width:auto;display:block}
+
+/* ---- NAV ---- */
 .nav{display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:76px;background:#10162a;color:#fff;position:sticky;top:0;z-index:10}
 .nav-brand{display:flex;align-items:center;gap:14px}
 .nav-brand-text{display:flex;flex-direction:column;line-height:1.25;border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
@@ -33,12 +37,18 @@ input[type="range"]{accent-color:#10162a;width:100%}
 .dot.active{width:28px;background:#fff}
 .dot.done{width:8px;border-radius:50%;background:rgba(255,255,255,.5)}
 .dot.pending{width:8px;border-radius:50%;background:rgba(255,255,255,.2)}
+
+/* ---- CARD ---- */
 .card{background:#fff;border:1px solid #e2e4ea;border-radius:6px;box-shadow:0 1px 3px rgba(16,22,42,.08)}
+
+/* ---- WIZARD CONTENT ---- */
 .wizard-wrap{max-width:900px;margin:0 auto;padding:56px 56px 100px}
 .step-header{display:flex;align-items:center;gap:16px;margin-bottom:36px}
 .step-num{width:34px;height:34px;flex:none;border-radius:50%;background:#10162a;color:#fff;display:flex;align-items:center;justify-content:center;font:700 14px 'Public Sans',sans-serif}
 .step-title{font:700 22px 'Public Sans',sans-serif;color:#10162a}
 .step-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
+
+/* ---- FORM FIELDS ---- */
 .field-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:8px}
 .field-input{width:100%;padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font-size:14.5px;color:#10162a;background:#fff;outline:none;transition:border-color .2s}
 .field-input:focus{border-color:#10162a}
@@ -48,22 +58,34 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .mb-22{margin-bottom:22px}
 .mb-28{margin-bottom:28px}
 .mb-32{margin-bottom:32px}
+
+/* ---- SECTION CARD ---- */
 .section-card{border:1px solid #e2e4ea;border-radius:6px;padding:28px;margin-bottom:20px}
 .section-badge{display:inline-block;font:600 12px 'Public Sans',sans-serif;color:#10162a;background:#eef0f4;padding:5px 12px;border-radius:3px;margin-bottom:20px}
+
+/* ---- HERRAMIENTAS CHECKBOXES ---- */
 .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
 .tool-item{padding:14px 16px;border:1px solid #dfe2e8;border-radius:4px;font:500 13.5px 'Public Sans',sans-serif;color:#47516e;cursor:pointer;transition:all .2s;user-select:none}
 .tool-item.selected{border-color:#10162a;background:#f5f6f8;color:#10162a;font-weight:600}
+
+/* ---- RANGE SLIDER ROW ---- */
 .range-row{margin-bottom:28px}
 .range-header{display:flex;justify-content:space-between;margin-bottom:10px}
 .range-label{font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase}
 .range-val{font:600 13px 'Public Sans',sans-serif;color:#10162a}
+
+/* ---- PRIORIDADES CHECKBOXES ---- */
 .prio-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px}
+
+/* ---- WIZARD FOOTER ---- */
 .wizard-footer{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:28px;border-top:1px solid #e2e4ea}
 .btn-back{border:1px solid #dfe2e8;background:#fff;color:#47516e;font:600 14px 'Public Sans',sans-serif;padding:14px 24px;border-radius:4px;cursor:pointer;transition:all .2s}
 .btn-back:hover{border-color:#10162a;color:#10162a}
 .btn-next{border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;transition:opacity .2s}
 .btn-next:hover{opacity:.85}
 .btn-next:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---- LOADING ---- */
 #s-loading{min-height:100vh;display:none;align-items:center;justify-content:center}
 #s-loading.active{display:flex}
 .loading-card{text-align:center;padding:60px 48px}
@@ -71,6 +93,8 @@ textarea.field-input{resize:vertical;line-height:1.5}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-title{font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px}
 .loading-sub{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4}
+
+/* ---- PREVIEW (client result) ---- */
 .preview-wrap{max-width:780px;margin:0 auto;padding:56px 24px 100px}
 .preview-tag{font:600 11px 'Public Sans',sans-serif;letter-spacing:.14em;color:#8890a4;text-transform:uppercase;margin-bottom:10px}
 .preview-title{font:700 28px 'Public Sans',sans-serif;color:#10162a;margin:0 0 6px}
@@ -90,6 +114,8 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .cta-block h3{font:700 20px 'Public Sans',sans-serif;margin:0 0 10px}
 .cta-block p{font:400 14px 'Public Sans',sans-serif;color:#8890a4;margin:0 0 22px}
 .btn-cta-white{display:inline-block;background:#fff;color:#10162a;font:600 14px 'Public Sans',sans-serif;padding:14px 28px;border-radius:4px;text-decoration:none;border:none;cursor:pointer}
+
+/* ---- LOGIN ---- */
 #s-login{min-height:100vh;display:none;align-items:center;justify-content:center;padding:40px}
 #s-login.active{display:flex}
 .login-card{width:420px;max-width:100%;padding:44px}
@@ -102,6 +128,8 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .login-hint{text-align:center;margin-top:16px;font:400 12.5px 'Public Sans',sans-serif;color:#8890a4}
 .btn-full{width:100%;border:none;cursor:pointer;background:#10162a;color:#fff;font:600 14.5px 'Public Sans',sans-serif;padding:14px 0;border-radius:4px;margin-top:8px;transition:opacity .2s}
 .btn-full:hover{opacity:.85}
+
+/* ---- DASHBOARD ---- */
 .dash-wrap{max-width:1180px;margin:0 auto;padding:48px 56px 100px}
 .dash-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
 .dash-title{font:700 24px 'Public Sans',sans-serif;color:#10162a;margin:0}
@@ -119,6 +147,8 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .estado-enviado{background:#10162a;color:#fff}
 .btn-ver{border:1px solid #dfe2e8;background:#fff;color:#10162a;font:600 12.5px 'Public Sans',sans-serif;padding:9px 16px;border-radius:4px;cursor:pointer;transition:all .2s}
 .btn-ver:hover{border-color:#10162a}
+
+/* ---- DETAIL / REPORT ---- */
 .detail-wrap{max-width:1020px;margin:0 auto;padding:48px 56px 100px}
 .detail-section{padding:28px;margin-bottom:22px}
 .detail-label{font:600 10.5px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:5px}
@@ -144,9 +174,13 @@ textarea.field-input{resize:vertical;line-height:1.5}
 .report-html strong{color:#10162a}
 .report-not-generated{font:400 13.5px 'Public Sans',sans-serif;color:#8890a4;padding:32px;text-align:center;background:#f9fafb;border:1px dashed #dfe2e8;border-radius:4px}
 .send-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:flex-start;margin-top:14px}
+
+/* ---- STATUS MSG ---- */
 .status-msg{font:400 13px 'Public Sans',sans-serif;padding:10px 14px;border-radius:4px;display:none;margin-top:10px}
 .status-ok{background:rgba(5,150,105,.1);color:#065f46;border:1px solid rgba(5,150,105,.2)}
 .status-err{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.15)}
+
+/* ---- MOBILE ---- */
 @media(max-width:700px){
   .nav{padding:0 20px;height:64px}
   .nav-brand-text{display:none}
@@ -217,7 +251,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
       </div>
       <div class="grid-2 mb-22">
         <div><div class="field-label">Nombre de la empresa</div><input class="field-input" id="f-empresa" placeholder="Ej. Distribuidora Los Andes"></div>
-        <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Juan Perez"></div>
+        <div><div class="field-label">Tu nombre</div><input class="field-input" id="f-nombre" placeholder="Ej. Carlos Mamani"></div>
       </div>
       <div class="mb-22">
         <div class="field-label">Industria / Sector</div>
@@ -391,13 +425,13 @@ textarea.field-input{resize:vertical;line-height:1.5}
   <div style="min-height:100vh;display:flex;align-items:center;justify-content:center">
     <div class="card" style="text-align:center;padding:60px 48px;width:460px;max-width:90vw">
       <div class="loader"></div>
-      <div style="font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px">Enviando tu información</div>
-      <div style="font:400 13.5px 'Public Sans',sans-serif;color:#8890a4">Estamos registrando los datos de tu empresa. Un momento por favor.</div>
+      <div style="font:700 18px 'Public Sans',sans-serif;color:#10162a;margin-bottom:8px">Generando tu diagnóstico</div>
+      <div style="font:400 13.5px 'Public Sans',sans-serif;color:#8890a4">La IA está analizando tu empresa. Esto puede tomar hasta 30 segundos.</div>
     </div>
   </div>
 </div>
 
-<!-- =================== SCREEN: CONFIRMACIÓN (cliente) =================== -->
+<!-- =================== SCREEN: PREVIEW (cliente) =================== -->
 <div id="s-preview" class="screen" style="background:#eef0f4">
   <nav class="nav">
     <div class="nav-brand">
@@ -408,8 +442,8 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <text x="36" y="25" font-family="'Public Sans',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="2">ASTRUM</text>
       </svg>
       <div class="nav-brand-text">
-        <span class="nav-brand-title">Diagnóstico enviado</span>
-        <span class="nav-brand-sub">Diagnóstico IA</span>
+        <span class="nav-brand-title">Tu diagnóstico</span>
+        <span class="nav-brand-sub" id="preview-empresa-nav">Diagnóstico IA</span>
       </div>
     </div>
     <button class="nav-btn" onclick="showScreen('s-intro')">← Nueva consulta</button>
@@ -420,7 +454,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="preview-tag" style="margin-bottom:12px">Diagnóstico IA · Astrum</div>
-      <div class="preview-title" style="margin-bottom:14px">¡Información recibida!</div>
+      <div class="preview-title" id="preview-empresa" style="margin-bottom:14px">¡Información recibida!</div>
       <p style="font:400 15px/1.7 'Public Sans',sans-serif;color:#47516e;margin:0 0 8px">Gracias por completar el diagnóstico. Nuestro equipo de consultores ya recibió la información de tu empresa.</p>
       <p style="font:400 15px/1.7 'Public Sans',sans-serif;color:#47516e;margin:0 0 32px">En las próximas <strong style="color:#10162a">24-48 horas</strong> te enviaremos tu informe personalizado con el análisis completo, recomendaciones de herramientas y plan de implementación.</p>
       <a href="https://astrum-agency.com" class="btn-cta-white" style="background:#10162a;color:#fff">Volver a astrum-agency.com</a>
@@ -564,6 +598,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
 </div>
 
 <script>
+// ===================== CONFIG =====================
 var VERCEL_API    = 'https://diagnosticpro.vercel.app/api/diagnostico';
 var VERCEL_CLIENTES = 'https://diagnosticpro.vercel.app/api/clientes';
 var USERS = { 'sebas': 'agencia2024', 'consultor': 'astrum2026' };
@@ -575,6 +610,7 @@ var prioridadesSeleccionadas = [];
 var clienteActual = null;
 var reporteTexto = '';
 
+// ===================== SESSION =====================
 (function() {
   emailjs.init({ publicKey: 'SLAVvDh-aDomMebrV' });
   if (localStorage.getItem('consultor_ok') === '1') {
@@ -583,6 +619,7 @@ var reporteTexto = '';
   }
 })();
 
+// ===================== NAVEGACIÓN =====================
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -597,13 +634,14 @@ function iniciarFormulario() {
   mostrarPaso();
 }
 
+// ===================== WIZARD =====================
 function mostrarPaso() {
   for (var i = 1; i <= totalPasos; i++) {
     document.getElementById('step-' + i).style.display = i === paso ? 'block' : 'none';
   }
   document.getElementById('step-counter').textContent = 'Paso ' + paso + ' de ' + totalPasos;
   document.getElementById('btn-back').style.visibility = paso === 1 ? 'hidden' : 'visible';
-  document.getElementById('btn-next').textContent = paso === totalPasos ? 'Enviar diagnóstico' : 'Continuar →';
+  document.getElementById('btn-next').textContent = paso === totalPasos ? 'Obtener diagnóstico' : 'Continuar →';
   renderDots();
   window.scrollTo(0, 0);
 }
@@ -638,6 +676,7 @@ function validarPaso() {
 }
 function v(id) { return document.getElementById(id)?.value?.trim(); }
 
+// Herramientas toggles
 document.querySelectorAll('#herramientas-grid .tool-item').forEach(el => {
   el.addEventListener('click', function() {
     var t = this.dataset.tool;
@@ -650,6 +689,7 @@ document.querySelectorAll('#herramientas-grid .tool-item').forEach(el => {
   });
 });
 
+// Prioridades toggles
 document.querySelectorAll('#prioridades-grid .tool-item').forEach(el => {
   el.addEventListener('click', function() {
     var p = this.dataset.prio;
@@ -662,6 +702,7 @@ document.querySelectorAll('#prioridades-grid .tool-item').forEach(el => {
   });
 });
 
+// ===================== ENVIAR FORMULARIO =====================
 async function enviarFormulario() {
   showScreen('s-loading');
 
@@ -801,6 +842,7 @@ function buildPrompt(d) {
   return p;
 }
 
+// ===================== PREVIEW =====================
 function extractScores(text) {
   var nums = [];
   var matches = text.match(/\[?(\d{1,3})\]?\/100/g) || [];
@@ -815,6 +857,7 @@ function extractSection(text, section) {
   return m ? m[1].trim() : null;
 }
 
+// ===================== LOGIN =====================
 function doLogin() {
   var u = document.getElementById('login-user').value.trim();
   var p = document.getElementById('login-pass').value;
@@ -834,6 +877,7 @@ function doLogout() {
   showScreen('s-login');
 }
 
+// ===================== CLIENTES =====================
 async function cargarClientes() {
   try {
     var res = await fetch(VERCEL_CLIENTES);
@@ -871,6 +915,7 @@ function mostrarDetalle(c) {
   document.getElementById('detail-nav-empresa').textContent = c.empresa || '—';
   document.getElementById('detail-nav-nombre').textContent = 'Diagnóstico de ' + (c.nombre || '—');
 
+  // Empresa grid
   var dg = [
     { l: 'Industria', v: c.industria }, { l: 'Empleados', v: c.empleados },
     { l: 'Años en el mercado', v: c.anios }, { l: 'País', v: c.pais }
@@ -878,6 +923,7 @@ function mostrarDetalle(c) {
   document.getElementById('d-empresa-grid').innerHTML = dg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
   document.getElementById('d-descripcion').textContent = c.modelo || '—';
 
+  // Procesos
   var pg = [
     { l: 'Cómo consiguen clientes', v: c.vcanal }, { l: 'Tiempo en cerrar venta', v: c.vtiempo },
     { l: 'Proceso más lento', v: c.vdolor }, { l: 'Canales de atención', v: c.acanal },
@@ -886,12 +932,15 @@ function mostrarDetalle(c) {
   ];
   document.getElementById('d-procesos-grid').innerHTML = pg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
 
+  // Tech & dolores
   var adicional = {};
   try { adicional = JSON.parse(c.adicional || '{}'); } catch(e) {}
   document.getElementById('d-tech-content').innerHTML = '<div class="detail-grid-4" style="margin-bottom:16px"><div><div class="detail-label">Nivel tecnológico</div><div class="detail-val">' + (c.nivel_tech || '—') + '%</div></div><div><div class="detail-label">Resistencia al cambio</div><div class="detail-val">' + (c.resistencia || '—') + '%</div></div><div><div class="detail-label">Urgencia</div><div class="detail-val">' + (c.urgencia || '—') + '%</div></div><div><div class="detail-label">Disposición a invertir</div><div class="detail-val">' + (c.disposicion || '—') + '%</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Herramientas</div><div class="detail-val">' + ((adicional.herramientas || []).join(', ') || '—') + '</div></div><div><div class="detail-label">Problema operativo</div><div class="detail-val">' + (c.d1 || '—') + '</div></div><div><div class="detail-label">Dónde se pierden clientes</div><div class="detail-val">' + (c.d2 || '—') + '</div></div><div><div class="detail-label">Tarea más odiada</div><div class="detail-val">' + (c.d3 || '—') + '</div></div></div>';
 
+  // Inversión
   document.getElementById('d-inversion-content').innerHTML = '<div class="detail-grid-2" style="margin-bottom:14px"><div><div class="detail-label">Quién decide</div><div class="detail-val">' + (c.decisor || '—') + '</div></div><div><div class="detail-label">Presupuesto</div><div class="detail-val">' + (c.presupuesto || '—') + '</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Soluciones previas intentadas</div><div class="detail-val">' + (c.intentos || '—') + '</div></div><div><div class="detail-label">Objetivo a 12 meses</div><div class="detail-val">' + (c.objetivo || '—') + '</div></div><div><div class="detail-label">Prioridades</div><div class="detail-val">' + ((adicional.prioridades || []).join(', ') || '—') + '</div></div></div>';
 
+  // Report state
   document.getElementById('report-view').innerHTML = '<div class="report-not-generated">El informe aún no ha sido generado. Haz clic en "Generar informe con IA" para comenzar.</div>';
   document.getElementById('report-edit').style.display = 'none';
   document.getElementById('btn-edit-report').style.display = 'none';
@@ -901,6 +950,7 @@ function mostrarDetalle(c) {
   showScreen('s-detail');
 }
 
+// ===================== GENERAR INFORME =====================
 async function generarInforme() {
   if (!clienteActual) return;
   var btn = document.getElementById('btn-gen-report');
@@ -929,6 +979,8 @@ async function generarInforme() {
 
 function mostrarReporte(texto) {
   var c = clienteActual || {};
+  var adicional = {}; try { adicional = JSON.parse(c.adicional || '{}'); } catch(e) {}
+
   var scores = extractScores(texto);
   var vals = [
     scores[0] || 50,
@@ -938,17 +990,37 @@ function mostrarReporte(texto) {
     scores[3] || Math.round(parseInt(c.disposicion || 50) * 0.9)
   ];
 
-  var chartsHtml = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:0 0 24px">' +
-    '<div class="card" style="padding:24px"><div style="font:600 11px \'Public Sans\',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:16px">Radar de madurez IA</div><canvas id="radarChart" height="220"></canvas></div>' +
-    '<div class="card" style="padding:24px"><div style="font:600 11px \'Public Sans\',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:16px">Puntuaciones por dimensión</div><canvas id="barChart" height="220"></canvas></div>' +
-    '</div>' +
-    '<div class="card" style="padding:24px;margin-bottom:28px">' +
-    '<div style="font:600 11px \'Public Sans\',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:20px">Hoja de ruta de implementación</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">' +
-    '<div style="background:#f5f6f8;border-radius:6px;padding:18px;border-left:3px solid #10162a"><div style="font:700 11px \'Public Sans\',sans-serif;color:#8890a4;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fase 1 · Sem. 1-4</div><div style="font:600 14px \'Public Sans\',sans-serif;color:#10162a;margin-bottom:6px">Quick Wins</div><div style="font:400 12px \'Public Sans\',sans-serif;color:#47516e">Automatizaciones inmediatas de bajo costo y alto impacto visible</div></div>' +
-    '<div style="background:#f5f6f8;border-radius:6px;padding:18px;border-left:3px solid #47516e"><div style="font:700 11px \'Public Sans\',sans-serif;color:#8890a4;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fase 2 · Mes 2-3</div><div style="font:600 14px \'Public Sans\',sans-serif;color:#10162a;margin-bottom:6px">Automatización Core</div><div style="font:400 12px \'Public Sans\',sans-serif;color:#47516e">Integración de procesos principales y flujos de trabajo</div></div>' +
-    '<div style="background:#f5f6f8;border-radius:6px;padding:18px;border-left:3px solid #8890a4"><div style="font:700 11px \'Public Sans\',sans-serif;color:#8890a4;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fase 3 · Mes 4-6</div><div style="font:600 14px \'Public Sans\',sans-serif;color:#10162a;margin-bottom:6px">Optimización avanzada</div><div style="font:400 12px \'Public Sans\',sans-serif;color:#47516e">IA generativa, dashboards, análisis predictivo</div></div>' +
-    '</div></div>';
+  var chartsHtml = `
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:0 0 24px">
+    <div class="card" style="padding:24px">
+      <div style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:16px">Radar de madurez IA</div>
+      <canvas id="radarChart" height="220"></canvas>
+    </div>
+    <div class="card" style="padding:24px">
+      <div style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:16px">Puntuaciones por dimensión</div>
+      <canvas id="barChart" height="220"></canvas>
+    </div>
+  </div>
+  <div class="card" style="padding:24px;margin-bottom:28px">
+    <div style="font:600 11px 'Public Sans',sans-serif;letter-spacing:.08em;color:#8890a4;text-transform:uppercase;margin-bottom:20px">Hoja de ruta de implementación</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <div style="background:#f5f6f8;border-radius:6px;padding:18px;border-left:3px solid #10162a">
+        <div style="font:700 11px 'Public Sans',sans-serif;color:#8890a4;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fase 1 · Sem. 1-4</div>
+        <div style="font:600 14px 'Public Sans',sans-serif;color:#10162a;margin-bottom:6px">Quick Wins</div>
+        <div style="font:400 12px 'Public Sans',sans-serif;color:#47516e">Automatizaciones inmediatas de bajo costo y alto impacto visible</div>
+      </div>
+      <div style="background:#f5f6f8;border-radius:6px;padding:18px;border-left:3px solid #47516e">
+        <div style="font:700 11px 'Public Sans',sans-serif;color:#8890a4;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fase 2 · Mes 2-3</div>
+        <div style="font:600 14px 'Public Sans',sans-serif;color:#10162a;margin-bottom:6px">Automatización Core</div>
+        <div style="font:400 12px 'Public Sans',sans-serif;color:#47516e">Integración de procesos principales y flujos de trabajo</div>
+      </div>
+      <div style="background:#f5f6f8;border-radius:6px;padding:18px;border-left:3px solid #8890a4">
+        <div style="font:700 11px 'Public Sans',sans-serif;color:#8890a4;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Fase 3 · Mes 4-6</div>
+        <div style="font:600 14px 'Public Sans',sans-serif;color:#10162a;margin-bottom:6px">Optimización avanzada</div>
+        <div style="font:400 12px 'Public Sans',sans-serif;color:#47516e">IA generativa, dashboards, análisis predictivo</div>
+      </div>
+    </div>
+  </div>`;
 
   document.getElementById('report-view').innerHTML = chartsHtml + '<div class="report-html">' + marked.parse(texto) + '</div>';
   document.getElementById('report-edit').value = texto;
@@ -964,7 +1036,7 @@ function mostrarReporte(texto) {
           labels: ['Automatización', 'Madurez digital', 'Urgencia', 'Facilidad adopción', 'ROI potencial'],
           datasets: [{ label: 'Diagnóstico', data: vals, backgroundColor: 'rgba(16,22,42,0.1)', borderColor: '#10162a', borderWidth: 2, pointBackgroundColor: '#10162a', pointRadius: 4 }]
         },
-        options: { responsive: true, animation: false, plugins: { legend: { display: false } }, scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 9 } }, pointLabels: { font: { size: 10 }, color: '#47516e' } } } }
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 9 } }, pointLabels: { font: { size: 10 }, color: '#47516e' } } } }
       });
     }
     var bCtx = document.getElementById('barChart');
@@ -976,7 +1048,7 @@ function mostrarReporte(texto) {
           labels: ['Automatización', 'Madurez', 'Urgencia', 'Adopción', 'ROI'],
           datasets: [{ data: vals, backgroundColor: vals.map(v => v >= 70 ? 'rgba(16,22,42,0.85)' : v >= 40 ? 'rgba(71,81,110,0.65)' : 'rgba(136,144,164,0.45)'), borderRadius: 4 }]
         },
-        options: { responsive: true, animation: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { ticks: { font: { size: 10 } }, grid: { display: false } } } }
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { ticks: { font: { size: 10 } }, grid: { display: false } } } }
       });
     }
   }, 300);
@@ -1004,6 +1076,7 @@ function exportPDF() {
   var c = clienteActual || {};
   var fecha = new Date().toLocaleDateString('es-BO', { day: '2-digit', month: 'long', year: 'numeric' });
 
+  // Capturar los gráficos como imágenes
   var radarImg = '', barImg = '';
   var rCanvas = document.getElementById('radarChart');
   var bCanvas = document.getElementById('barChart');
@@ -1024,6 +1097,8 @@ function exportPDF() {
     '<td style="width:33%;background:#f5f6f8;border-left:3px solid #8890a4;padding:12px;vertical-align:top"><div style="font:700 9px sans-serif;color:#8890a4;text-transform:uppercase">Fase 3 · Mes 4-6</div><div style="font:600 12px sans-serif;color:#10162a;margin:4px 0">Optimización avanzada</div><div style="font:400 10px sans-serif;color:#47516e">Dashboards y análisis predictivo</div></td>' +
     '</tr></table>';
 
+  var reportBody = marked.parse(reporteTexto);
+
   var html = '<div style="font-family:Arial,sans-serif;width:100%;padding:20px 30px">' +
     '<style>h1,h2,h3{page-break-after:avoid}p,li,td,tr,table{page-break-inside:avoid}h2{font-size:17px;color:#10162a;border-bottom:1.5px solid #e2e4ea;padding-bottom:6px;margin:22px 0 10px}h3{font-size:14px;color:#10162a;margin:16px 0 8px}p{margin:0 0 10px;line-height:1.7}ul,ol{margin:0 0 10px;padding-left:20px}li{margin-bottom:4px;line-height:1.6}strong{color:#10162a}</style>' +
     '<div style="margin-bottom:36px"><div style="font:600 11px sans-serif;letter-spacing:.16em;color:#8890a4;text-transform:uppercase;margin-bottom:12px">INFORME DE DIAGNÓSTICO EMPRESARIAL</div>' +
@@ -1035,19 +1110,33 @@ function exportPDF() {
     '<td style="padding:14px 0 0"><div style="font:600 9px sans-serif;color:#8890a4;text-transform:uppercase">Elaborado por</div><div style="font:600 12px sans-serif;color:#10162a">ASTRUM — Agencia de IA</div></td>' +
     '</tr></table></div>' +
     chartsBlock + fasesBlock +
-    '<div style="font-size:12.5px;line-height:1.7;color:#34394a">' + marked.parse(reporteTexto) + '</div>' +
+    '<div style="font-size:12.5px;line-height:1.7;color:#34394a">' + reportBody + '</div>' +
     '<div style="margin-top:40px;padding-top:14px;border-top:1px solid #dfe2e8;font:400 10px sans-serif;color:#8890a4">Documento confidencial · astrum-agency.com</div></div>';
 
-  var wrapper = document.createElement('div');
-  wrapper.innerHTML = html;
-
-  html2pdf().set({
-    margin: [12, 14, 14, 14],
-    filename: 'diagnostico-' + (c.empresa || 'astrum').toLowerCase().replace(/\s+/g, '-') + '.pdf',
-    html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['css', 'legacy'] }
-  }).from(wrapper).save();
+  var win = window.open('', '_blank');
+  if (!win) { alert('Permite las ventanas emergentes para descargar el PDF.'); return; }
+  win.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Diagnóstico ' + (c.empresa || 'Astrum') + '</title>' +
+    '<style>' +
+    '@page{size:A4;margin:18mm 16mm}' +
+    'body{font-family:Arial,Helvetica,sans-serif;color:#34394a;margin:0}' +
+    'h1,h2,h3{color:#10162a;page-break-after:avoid}' +
+    'h2{font-size:17px;border-bottom:1.5px solid #e2e4ea;padding-bottom:6px;margin:24px 0 10px}' +
+    'h3{font-size:14px;margin:16px 0 8px}' +
+    'p{margin:0 0 10px;line-height:1.7;font-size:12.5px}' +
+    'ul,ol{margin:0 0 10px;padding-left:20px}' +
+    'li{margin-bottom:4px;line-height:1.6;font-size:12.5px;page-break-inside:avoid}' +
+    'strong{color:#10162a}' +
+    'table{page-break-inside:avoid}' +
+    '.no-print{position:fixed;top:0;left:0;right:0;background:#10162a;color:#fff;padding:14px;text-align:center;font-size:14px}' +
+    '.no-print button{background:#fff;color:#10162a;border:none;padding:8px 20px;border-radius:4px;font-weight:700;cursor:pointer;margin-left:12px}' +
+    '@media print{.no-print{display:none}}' +
+    '@media screen{body{padding-top:60px;max-width:750px;margin:0 auto}}' +
+    '</style></head><body>' +
+    '<div class="no-print">Usa Guardar como PDF en el diálogo de impresión <button onclick="window.print()">Descargar PDF</button></div>' +
+    html +
+    '</body></html>');
+  win.document.close();
+  setTimeout(function() { win.print(); }, 600);
 }
 
 async function enviarInforme() {
