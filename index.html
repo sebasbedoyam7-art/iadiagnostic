@@ -601,6 +601,7 @@ textarea.field-input{resize:vertical;line-height:1.5}
 </div>
 
 <script>
+// ===================== CONFIG =====================
 var VERCEL_API    = 'https://diagnosticpro.vercel.app/api/diagnostico';
 var VERCEL_CLIENTES = 'https://diagnosticpro.vercel.app/api/clientes';
 var USERS = { 'sebas': 'agencia2024', 'consultor': 'astrum2026' };
@@ -612,6 +613,7 @@ var prioridadesSeleccionadas = [];
 var clienteActual = null;
 var reporteTexto = '';
 
+// ===================== SESSION =====================
 (function() {
   emailjs.init({ publicKey: 'SLAVvDh-aDomMebrV' });
   if (localStorage.getItem('consultor_ok') === '1') {
@@ -620,6 +622,7 @@ var reporteTexto = '';
   }
 })();
 
+// ===================== NAVEGACIÓN =====================
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -634,6 +637,7 @@ function iniciarFormulario() {
   mostrarPaso();
 }
 
+// ===================== WIZARD =====================
 function mostrarPaso() {
   for (var i = 1; i <= totalPasos; i++) {
     document.getElementById('step-' + i).style.display = i === paso ? 'block' : 'none';
@@ -675,6 +679,7 @@ function validarPaso() {
 }
 function v(id) { return document.getElementById(id)?.value?.trim(); }
 
+// Herramientas toggles
 document.querySelectorAll('#herramientas-grid .tool-item').forEach(el => {
   el.addEventListener('click', function() {
     var t = this.dataset.tool;
@@ -687,6 +692,7 @@ document.querySelectorAll('#herramientas-grid .tool-item').forEach(el => {
   });
 });
 
+// Prioridades toggles
 document.querySelectorAll('#prioridades-grid .tool-item').forEach(el => {
   el.addEventListener('click', function() {
     var p = this.dataset.prio;
@@ -699,8 +705,10 @@ document.querySelectorAll('#prioridades-grid .tool-item').forEach(el => {
   });
 });
 
+// ===================== ENVIAR FORMULARIO =====================
 async function enviarFormulario() {
   showScreen('s-loading');
+
   var data = {
     empresa: v('f-empresa'), nombre: v('f-nombre'), industria: v('f-industria'),
     pais: v('f-pais'), empleados: v('f-empleados'), anios: v('f-anios'),
@@ -717,7 +725,9 @@ async function enviarFormulario() {
     intentos: v('f-solucionesIntentadas'), objetivo: v('f-objetivos12meses'),
     adicional: JSON.stringify({ herramientas: herramientasSeleccionadas, prioridades: prioridadesSeleccionadas, contexto: v('f-contextoAdicional') })
   };
+
   var prompt = buildPrompt(data);
+
   try {
     var res = await fetch(VERCEL_API, {
       method: 'POST',
@@ -736,122 +746,109 @@ function buildPrompt(d) {
   try { adicional = JSON.parse(d.adicional || '{}'); } catch(e) {}
   var herramientas = (adicional.herramientas || []).join(', ') || 'ninguna mencionada';
   var prioridades = (adicional.prioridades || []).join(', ') || 'no especificadas';
-  return `Eres un consultor senior en inteligencia artificial aplicada a negocios con 15 años de experiencia. Estás generando un INFORME DE DIAGNÓSTICO IA PROFESIONAL por el que el cliente está pagando. Debe ser ESPECÍFICO, TÉCNICO, ACCIONABLE y basado en los datos reales de esta empresa. NO uses frases genéricas. CADA afirmación debe referenciar los datos concretos del formulario.
-
-════════════════════════════════════════
-DATOS DE LA EMPRESA
-════════════════════════════════════════
-Empresa: ${d.empresa || '—'} | Industria: ${d.industria || '—'} | País: ${d.pais || '—'}
-Empleados: ${d.empleados || '—'} | Años en el mercado: ${d.anios || '—'}
-Qué hace: ${d.modelo || '—'}
-
-VENTAS:
-- Cómo consiguen clientes: ${d.vcanal || '—'}
-- Tiempo de cierre: ${d.vtiempo || '—'}
-- Cuello de botella en ventas: ${d.vdolor || '—'}
-
-ATENCIÓN AL CLIENTE:
-- Canales: ${d.acanal || '—'}
-- Volumen: ${d.avol || '—'} consultas/día
-- Tareas repetitivas: ${d.adolar || '—'}
-
-OPERACIONES:
-- Tareas manuales: ${d.otareas || '—'}
-- Horas perdidas/semana: ${d.ohoras || '—'}
-
-TECNOLOGÍA:
-- Herramientas actuales: ${herramientas}
-- Nivel tecnológico del equipo: ${d.nivel_tech || 50}/100
-- Resistencia al cambio: ${d.resistencia || 50}/100
-
-DOLORES:
-- Problema operativo crítico: ${d.d1 || '—'}
-- Dónde se pierden clientes: ${d.d2 || '—'}
-- Tarea más odiada: ${d.d3 || '—'}
-- Urgencia: ${d.urgencia || 50}/100
-
-INVERSIÓN:
-- Decisor: ${d.decisor || '—'}
-- Presupuesto mensual disponible: ${d.presupuesto || '—'}
-- Disposición a invertir: ${d.disposicion || 50}/100
-- Intentos previos: ${d.intentos || '—'}
-
-OBJETIVOS:
-- Meta a 12 meses: ${d.objetivo || '—'}
-- Prioridades: ${prioridades}
-- Contexto adicional: ${adicional.contexto || '—'}
-════════════════════════════════════════
-
-Genera el informe completo con EXACTAMENTE estas secciones en markdown:
-
-## Resumen ejecutivo
-Mínimo 4 párrafos. Menciona la empresa por su nombre. Analiza su situación actual, por qué está dejando dinero en la mesa, qué oportunidades concretas de IA existen y cuál sería el impacto real. Sé directo y específico con los datos del formulario.
-
-## Puntuaciones
-- **Potencial de automatización**: [X]/100 — [justificación de 1 línea con datos específicos]
-- **Madurez digital**: [X]/100 — [justificación]
-- **Urgencia de implementación**: [X]/100 — [justificación]
-- **Facilidad de adopción**: [X]/100 — [justificación considerando resistencia al cambio]
-- **ROI proyectado**: [X]/100 — [justificación]
-
-## Diagnóstico por área
-
-### Ventas
-Analiza el proceso actual. Si el cierre tarda ${d.vtiempo || 'varios días'}, calcula cuántos leads se pierden por esa demora. Identifica qué parte del proceso (${d.vdolor || 'el cuello de botella'}) puede automatizarse. Propón solución concreta con impacto estimado en % de mejora.
-
-### Atención al cliente
-Con ${d.avol || 'X'} consultas/día y tareas repetitivas como "${d.adolar || '—'}", calcula el tiempo total perdido en atención manual por semana. Propón automatizaciones específicas (chatbot, respuestas automáticas, etc.) con impacto cuantificado.
-
-### Operaciones
-Con ${d.ohoras || 'X'} horas semanales perdidas en tareas como "${d.otareas || '—'}", calcula el costo anual de esa ineficiencia (horas × costo/hora estimado para ${d.pais || 'la región'}). Identifica qué se puede automatizar primero.
-
-## Herramientas de IA recomendadas
-Recomienda exactamente 5 herramientas REALES existentes hoy, ordenadas por impacto. Para cada una usa este formato:
-
-### 1. [Nombre de la herramienta]
-- **Qué resuelve en ${d.empresa || 'esta empresa'}**: [problema específico]
-- **Costo**: [precio real en USD/mes o rango]
-- **Tiempo de implementación**: [estimado real]
-- **ROI esperado**: [impacto concreto y medible]
-- **Nivel de dificultad**: [Bajo / Medio / Alto]
-
-(Repite para las 5 herramientas. Usa herramientas reales como: n8n, Make.com, ChatGPT API, HubSpot AI, Tidio, Zapier, Manychat, Notion AI, Voiceflow, Bland AI, Google Looker Studio, etc. según lo que corresponda al caso)
-
-## Plan de implementación
-
-### Fase 1 — Quick wins (Semanas 1-4)
-[2-3 acciones inmediatas, bajo costo, alto impacto. Especifica la herramienta, el proceso a automatizar y el resultado esperado]
-
-### Fase 2 — Automatización core (Meses 2-3)
-[3-4 automatizaciones más complejas que conecten los procesos principales]
-
-### Fase 3 — Optimización e inteligencia (Meses 4-6)
-[2-3 implementaciones avanzadas, dashboards, análisis predictivo]
-
-## Análisis de ROI estimado
-Calcula con números reales:
-- Horas ahorradas/semana: X horas × $Y/hora estimado = $Z/mes
-- Mejora en conversión de ventas: X% estimado = $Y adicionales/mes
-- Reducción en carga de atención: X% de ${d.avol || 'X'} consultas/día automatizadas
-- **Ahorro estimado a 6 meses**: $X — $Y
-- **Ahorro estimado a 12 meses**: $X — $Y
-- **Inversión recomendada**: $X/mes en herramientas
-- **Payback estimado**: X semanas/meses
-
-## Riesgos y plan de mitigación
-Con resistencia al cambio de ${d.resistencia || 50}/100, identifica los 3-4 riesgos más reales para esta implementación y un plan concreto para cada uno.
-
-## Próximos 30 días — Plan de acción
-Lista numerada de exactamente 5 acciones concretas con: qué hacer, quién lo hace, qué herramienta usar y resultado esperado.
-
----
-IMPORTANTE: Mínimo 1000 palabras. Todo basado en los datos reales de ${d.empresa || 'esta empresa'}. Números específicos, herramientas reales, precios reales.`;
+  var p = '';
+  p += 'Eres un consultor senior en inteligencia artificial aplicada a negocios con 15 años de experiencia. ';
+  p += 'Estas generando un INFORME DE DIAGNOSTICO IA PROFESIONAL por el que el cliente esta pagando. ';
+  p += 'Debe ser ESPECIFICO, TECNICO, ACCIONABLE y basado en los datos reales de esta empresa. ';
+  p += 'NO uses frases genericas. CADA afirmacion debe referenciar los datos concretos del formulario.\n\n';
+  p += '=== DATOS DE LA EMPRESA ===\n';
+  p += 'Empresa: ' + (d.empresa || '-') + ' | Industria: ' + (d.industria || '-') + ' | Pais: ' + (d.pais || '-') + '\n';
+  p += 'Empleados: ' + (d.empleados || '-') + ' | Anos en el mercado: ' + (d.anios || '-') + '\n';
+  p += 'Que hace: ' + (d.modelo || '-') + '\n\n';
+  p += 'VENTAS:\n';
+  p += '- Como consiguen clientes: ' + (d.vcanal || '-') + '\n';
+  p += '- Tiempo de cierre: ' + (d.vtiempo || '-') + '\n';
+  p += '- Cuello de botella en ventas: ' + (d.vdolor || '-') + '\n\n';
+  p += 'ATENCION AL CLIENTE:\n';
+  p += '- Canales: ' + (d.acanal || '-') + '\n';
+  p += '- Volumen: ' + (d.avol || '-') + ' consultas/dia\n';
+  p += '- Tareas repetitivas: ' + (d.adolar || '-') + '\n\n';
+  p += 'OPERACIONES:\n';
+  p += '- Tareas manuales: ' + (d.otareas || '-') + '\n';
+  p += '- Horas perdidas/semana: ' + (d.ohoras || '-') + '\n\n';
+  p += 'TECNOLOGIA:\n';
+  p += '- Herramientas actuales: ' + herramientas + '\n';
+  p += '- Nivel tecnologico del equipo: ' + (d.nivel_tech || 50) + '/100\n';
+  p += '- Resistencia al cambio: ' + (d.resistencia || 50) + '/100\n\n';
+  p += 'DOLORES:\n';
+  p += '- Problema operativo critico: ' + (d.d1 || '-') + '\n';
+  p += '- Donde se pierden clientes: ' + (d.d2 || '-') + '\n';
+  p += '- Tarea mas odiada: ' + (d.d3 || '-') + '\n';
+  p += '- Urgencia: ' + (d.urgencia || 50) + '/100\n\n';
+  p += 'INVERSION:\n';
+  p += '- Decisor: ' + (d.decisor || '-') + '\n';
+  p += '- Presupuesto mensual: ' + (d.presupuesto || '-') + '\n';
+  p += '- Disposicion a invertir: ' + (d.disposicion || 50) + '/100\n';
+  p += '- Intentos previos: ' + (d.intentos || '-') + '\n\n';
+  p += 'OBJETIVOS:\n';
+  p += '- Meta a 12 meses: ' + (d.objetivo || '-') + '\n';
+  p += '- Prioridades: ' + prioridades + '\n';
+  p += '- Contexto adicional: ' + (adicional.contexto || '-') + '\n\n';
+  p += '=== INFORME REQUERIDO ===\n\n';
+  p += 'Genera el informe completo con EXACTAMENTE estas secciones en markdown:\n\n';
+  p += '## Resumen ejecutivo\n';
+  p += 'Minimo 4 parrafos. Menciona la empresa por su nombre (' + (d.empresa || 'la empresa') + '). ';
+  p += 'Analiza su situacion actual, por que esta dejando dinero en la mesa, que oportunidades concretas de IA existen y cual seria el impacto real. Se directo y especifico con los datos del formulario.\n\n';
+  p += '## Puntuaciones\n';
+  p += '- **Potencial de automatizacion**: [X]/100 - [justificacion de 1 linea con datos especificos]\n';
+  p += '- **Madurez digital**: [X]/100 - [justificacion]\n';
+  p += '- **Urgencia de implementacion**: [X]/100 - [justificacion]\n';
+  p += '- **Facilidad de adopcion**: [X]/100 - [justificacion considerando resistencia al cambio de ' + (d.resistencia || 50) + '/100]\n';
+  p += '- **ROI proyectado**: [X]/100 - [justificacion]\n\n';
+  p += '## Diagnostico por area\n\n';
+  p += '### Ventas\n';
+  p += 'Analiza el proceso actual. El cierre tarda ' + (d.vtiempo || 'varios dias') + '. ';
+  p += 'Calcula cuantos leads se pierden por esa demora. El cuello de botella es: ' + (d.vdolor || '-') + '. ';
+  p += 'Propone solucion concreta con impacto estimado en porcentaje de mejora.\n\n';
+  p += '### Atencion al cliente\n';
+  p += 'Con ' + (d.avol || 'X') + ' consultas/dia y tareas repetitivas como "' + (d.adolar || '-') + '", ';
+  p += 'calcula el tiempo total perdido en atencion manual por semana. ';
+  p += 'Propone automatizaciones especificas con impacto cuantificado.\n\n';
+  p += '### Operaciones\n';
+  p += 'Con ' + (d.ohoras || 'X') + ' horas semanales perdidas en tareas como "' + (d.otareas || '-') + '", ';
+  p += 'calcula el costo anual de esa ineficiencia (horas x costo/hora estimado para ' + (d.pais || 'la region') + '). ';
+  p += 'Identifica que se puede automatizar primero.\n\n';
+  p += '## Herramientas de IA recomendadas\n';
+  p += 'Recomienda exactamente 5 herramientas REALES, ordenadas por impacto. Para cada una:\n\n';
+  p += '### 1. [Nombre]\n';
+  p += '- **Que resuelve en ' + (d.empresa || 'esta empresa') + '**: [problema especifico]\n';
+  p += '- **Costo**: [precio real USD/mes]\n';
+  p += '- **Tiempo de implementacion**: [estimado real]\n';
+  p += '- **ROI esperado**: [impacto concreto y medible]\n';
+  p += '- **Nivel de dificultad**: [Bajo / Medio / Alto]\n\n';
+  p += '(Usa herramientas reales: n8n, Make.com, ChatGPT API, HubSpot AI, Tidio, Zapier, Manychat, Notion AI, Voiceflow, Bland AI, Google Looker Studio, etc.)\n\n';
+  p += '## Plan de implementacion\n\n';
+  p += '### Fase 1 - Quick wins (Semanas 1-4)\n';
+  p += '[2-3 acciones inmediatas, bajo costo, alto impacto]\n\n';
+  p += '### Fase 2 - Automatizacion core (Meses 2-3)\n';
+  p += '[3-4 automatizaciones que conecten los procesos principales]\n\n';
+  p += '### Fase 3 - Optimizacion avanzada (Meses 4-6)\n';
+  p += '[2-3 implementaciones avanzadas, dashboards, analisis predictivo]\n\n';
+  p += '## Analisis de ROI estimado\n';
+  p += 'Calcula con numeros reales:\n';
+  p += '- Horas ahorradas/semana: X horas x $Y/hora = $Z/mes\n';
+  p += '- Mejora en conversion de ventas: X% = $Y adicionales/mes\n';
+  p += '- Reduccion en carga de atencion: X% de ' + (d.avol || 'X') + ' consultas/dia automatizadas\n';
+  p += '- **Ahorro estimado a 6 meses**: $X\n';
+  p += '- **Ahorro estimado a 12 meses**: $X\n';
+  p += '- **Inversion recomendada**: $X/mes en herramientas\n';
+  p += '- **Payback estimado**: X semanas/meses\n\n';
+  p += '## Riesgos y plan de mitigacion\n';
+  p += 'Con resistencia al cambio de ' + (d.resistencia || 50) + '/100, identifica los 3-4 riesgos mas reales y un plan concreto para cada uno.\n\n';
+  p += '## Proximos 30 dias - Plan de accion\n';
+  p += 'Lista numerada de exactamente 5 acciones concretas con: que hacer, quien lo hace, que herramienta usar y resultado esperado.\n\n';
+  p += '---\n';
+  p += 'IMPORTANTE: Minimo 1000 palabras. Todo basado en los datos reales de ' + (d.empresa || 'esta empresa') + '. Numeros especificos, herramientas reales, precios reales.';
+  return p;
 }
 
+// ===================== PREVIEW =====================
 function mostrarPreview(data, texto) {
   reporteTexto = texto;
   document.getElementById('preview-empresa').textContent = data.empresa || 'Tu empresa';
   document.getElementById('preview-empresa-nav').textContent = data.empresa || '';
+
+  // Extract scores
   var scores = extractScores(texto);
   var grid = document.getElementById('scores-grid');
   grid.innerHTML = [
@@ -863,8 +860,11 @@ function mostrarPreview(data, texto) {
     var label = s.val >= 70 ? 'Alto' : s.val >= 40 ? 'Medio' : 'Bajo';
     return '<div class="card score-card"><div class="score-num">' + s.val + '</div><div class="score-label">' + s.label + '</div><span class="score-badge ' + badge + '">' + label + '</span></div>';
   }).join('');
+
+  // Summary
   var summary = extractSection(texto, 'Resumen ejecutivo') || texto.substring(0, 500);
   document.getElementById('preview-summary').innerHTML = marked.parse(summary);
+
   showScreen('s-preview');
 }
 
@@ -882,6 +882,7 @@ function extractSection(text, section) {
   return m ? m[1].trim() : null;
 }
 
+// ===================== LOGIN =====================
 function doLogin() {
   var u = document.getElementById('login-user').value.trim();
   var p = document.getElementById('login-pass').value;
@@ -901,6 +902,7 @@ function doLogout() {
   showScreen('s-login');
 }
 
+// ===================== CLIENTES =====================
 async function cargarClientes() {
   try {
     var res = await fetch(VERCEL_CLIENTES);
@@ -937,12 +939,16 @@ async function seleccionarCliente(id) {
 function mostrarDetalle(c) {
   document.getElementById('detail-nav-empresa').textContent = c.empresa || '—';
   document.getElementById('detail-nav-nombre').textContent = 'Diagnóstico de ' + (c.nombre || '—');
+
+  // Empresa grid
   var dg = [
     { l: 'Industria', v: c.industria }, { l: 'Empleados', v: c.empleados },
     { l: 'Años en el mercado', v: c.anios }, { l: 'País', v: c.pais }
   ];
   document.getElementById('d-empresa-grid').innerHTML = dg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
   document.getElementById('d-descripcion').textContent = c.modelo || '—';
+
+  // Procesos
   var pg = [
     { l: 'Cómo consiguen clientes', v: c.vcanal }, { l: 'Tiempo en cerrar venta', v: c.vtiempo },
     { l: 'Proceso más lento', v: c.vdolor }, { l: 'Canales de atención', v: c.acanal },
@@ -950,23 +956,32 @@ function mostrarDetalle(c) {
     { l: 'Tareas manuales', v: c.otareas }, { l: 'Horas perdidas/semana', v: c.ohoras }
   ];
   document.getElementById('d-procesos-grid').innerHTML = pg.map(x => '<div><div class="detail-label">' + x.l + '</div><div class="detail-val">' + (x.v || '—') + '</div></div>').join('');
+
+  // Tech & dolores
   var adicional = {};
   try { adicional = JSON.parse(c.adicional || '{}'); } catch(e) {}
   document.getElementById('d-tech-content').innerHTML = '<div class="detail-grid-4" style="margin-bottom:16px"><div><div class="detail-label">Nivel tecnológico</div><div class="detail-val">' + (c.nivel_tech || '—') + '%</div></div><div><div class="detail-label">Resistencia al cambio</div><div class="detail-val">' + (c.resistencia || '—') + '%</div></div><div><div class="detail-label">Urgencia</div><div class="detail-val">' + (c.urgencia || '—') + '%</div></div><div><div class="detail-label">Disposición a invertir</div><div class="detail-val">' + (c.disposicion || '—') + '%</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Herramientas</div><div class="detail-val">' + ((adicional.herramientas || []).join(', ') || '—') + '</div></div><div><div class="detail-label">Problema operativo</div><div class="detail-val">' + (c.d1 || '—') + '</div></div><div><div class="detail-label">Dónde se pierden clientes</div><div class="detail-val">' + (c.d2 || '—') + '</div></div><div><div class="detail-label">Tarea más odiada</div><div class="detail-val">' + (c.d3 || '—') + '</div></div></div>';
+
+  // Inversión
   document.getElementById('d-inversion-content').innerHTML = '<div class="detail-grid-2" style="margin-bottom:14px"><div><div class="detail-label">Quién decide</div><div class="detail-val">' + (c.decisor || '—') + '</div></div><div><div class="detail-label">Presupuesto</div><div class="detail-val">' + (c.presupuesto || '—') + '</div></div></div><div style="display:grid;gap:12px"><div><div class="detail-label">Soluciones previas intentadas</div><div class="detail-val">' + (c.intentos || '—') + '</div></div><div><div class="detail-label">Objetivo a 12 meses</div><div class="detail-val">' + (c.objetivo || '—') + '</div></div><div><div class="detail-label">Prioridades</div><div class="detail-val">' + ((adicional.prioridades || []).join(', ') || '—') + '</div></div></div>';
+
+  // Report state
   document.getElementById('report-view').innerHTML = '<div class="report-not-generated">El informe aún no ha sido generado. Haz clic en "Generar informe con IA" para comenzar.</div>';
   document.getElementById('report-edit').style.display = 'none';
   document.getElementById('btn-edit-report').style.display = 'none';
   document.getElementById('btn-pdf').style.display = 'none';
   reporteTexto = '';
+
   showScreen('s-detail');
 }
 
+// ===================== GENERAR INFORME =====================
 async function generarInforme() {
   if (!clienteActual) return;
   var btn = document.getElementById('btn-gen-report');
   btn.textContent = 'Generando...';
   btn.disabled = true;
+
   var prompt = buildPrompt(clienteActual);
   try {
     var res = await fetch(VERCEL_API, {
@@ -980,6 +995,7 @@ async function generarInforme() {
   } catch(e) {
     document.getElementById('report-view').innerHTML = '<div class="report-not-generated" style="color:#a03b3b">Error al conectar con el servidor.</div>';
   }
+
   btn.textContent = 'Regenerar informe';
   btn.disabled = false;
   document.getElementById('btn-edit-report').style.display = 'inline-block';
@@ -989,12 +1005,16 @@ async function generarInforme() {
 function mostrarReporte(texto) {
   var c = clienteActual || {};
   var adicional = {}; try { adicional = JSON.parse(c.adicional || '{}'); } catch(e) {}
+
   var scores = extractScores(texto);
   var vals = [
-    scores[0] || 50, scores[1] || 50, scores[2] || 50,
+    scores[0] || 50,
+    scores[1] || 50,
+    scores[2] || 50,
     Math.max(10, 100 - parseInt(c.resistencia || 50)),
     scores[3] || Math.round(parseInt(c.disposicion || 50) * 0.9)
   ];
+
   var chartsHtml = `
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:0 0 24px">
     <div class="card" style="padding:24px">
@@ -1026,9 +1046,11 @@ function mostrarReporte(texto) {
       </div>
     </div>
   </div>`;
+
   document.getElementById('report-view').innerHTML = chartsHtml + '<div class="report-html">' + marked.parse(texto) + '</div>';
   document.getElementById('report-edit').value = texto;
   document.getElementById('report-subtitle').textContent = 'Informe generado · puedes editarlo antes de enviar.';
+
   setTimeout(function() {
     var rCtx = document.getElementById('radarChart');
     if (rCtx && window.Chart) {
